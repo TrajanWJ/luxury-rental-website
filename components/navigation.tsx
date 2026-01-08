@@ -41,13 +41,13 @@ export default function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-            ? "bg-white/80 backdrop-blur-lg border-b border-slate-200/50 shadow-lg py-2"
-            : "bg-transparent py-4"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+            ? "bg-white/5 backdrop-blur-xl border-b border-white/10 py-1.5"
+            : "bg-transparent py-3"
           }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
+          <div className="flex items-center justify-between h-10 md:h-12">
             {/* Logo */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -55,14 +55,13 @@ export default function Navigation() {
               transition={{ delay: 0.2 }}
               className="flex-shrink-0"
             >
-              <h1 className={`text-2xl font-bold transition-colors duration-300 ${scrolled ? "text-primary" : "text-white"
-                }`}>
+              <h1 className="text-lg md:text-xl font-bold text-white drop-shadow-md tracking-tight">
                 Wilson Premier Properties
               </h1>
             </motion.div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-10">
               {navLinks.map((link, index) => (
                 <motion.button
                   key={link.label}
@@ -70,8 +69,7 @@ export default function Navigation() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index + 0.3 }}
                   onClick={() => scrollToSection(link.href)}
-                  className={`transition-colors font-medium hover:text-secondary ${scrolled ? "text-slate-700" : "text-white/90"
-                    }`}
+                  className="transition-all duration-300 font-medium text-sm md:text-base text-white/90 hover:text-white hover:scale-105 drop-shadow-sm"
                 >
                   {link.label}
                 </motion.button>
@@ -83,7 +81,7 @@ export default function Navigation() {
               >
                 <Button
                   onClick={() => setBookingOpen(true)}
-                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-6"
+                  className="bg-white text-primary hover:bg-secondary hover:text-secondary-foreground rounded-full px-6 py-4 text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20"
                 >
                   Book Now
                 </Button>
@@ -94,13 +92,10 @@ export default function Navigation() {
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="md:hidden p-2"
+              className="md:hidden p-2 text-white"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              {mobileMenuOpen
-                ? <X className={`h-6 w-6 ${scrolled ? "text-slate-700" : "text-white"}`} />
-                : <Menu className={`h-6 w-6 ${scrolled ? "text-slate-700" : "text-white"}`} />
-              }
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </motion.button>
           </div>
 
@@ -108,31 +103,29 @@ export default function Navigation() {
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="md:hidden py-4 border-t border-slate-200 bg-white rounded-b-2xl shadow-xl mt-2 px-4"
+                initial={{ opacity: 0, scale: 0.95, y: -20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                className="md:hidden absolute top-20 left-4 right-4 py-8 bg-slate-900/90 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl px-6 flex flex-col gap-6"
               >
-                <div className="flex flex-col gap-4">
-                  {navLinks.map((link) => (
-                    <button
-                      key={link.label}
-                      onClick={() => scrollToSection(link.href)}
-                      className="text-left text-slate-700 hover:text-primary transition-colors font-medium py-2"
-                    >
-                      {link.label}
-                    </button>
-                  ))}
-                  <Button
-                    onClick={() => {
-                      setBookingOpen(true)
-                      setMobileMenuOpen(false)
-                    }}
-                    className="bg-secondary text-secondary-foreground w-full"
+                {navLinks.map((link) => (
+                  <button
+                    key={link.label}
+                    onClick={() => scrollToSection(link.href)}
+                    className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-lg border-b border-white/5"
                   >
-                    Book Now
-                  </Button>
-                </div>
+                    {link.label}
+                  </button>
+                ))}
+                <Button
+                  onClick={() => {
+                    setBookingOpen(true)
+                    setMobileMenuOpen(false)
+                  }}
+                  className="bg-secondary text-secondary-foreground w-full py-6 text-lg rounded-full"
+                >
+                  Book Now
+                </Button>
               </motion.div>
             )}
           </AnimatePresence>

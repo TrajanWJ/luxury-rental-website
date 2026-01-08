@@ -26,17 +26,13 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
 
   // Calculate scale based on index and scroll progress
   // As the section scrolls up, it scales down slightly
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85])
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.5])
-
-  // Sticky position offset - each panel can stack slightly below the previous or exactly on top
-  const topOffset = 80 + (index * 20) // 80 is nav height
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9])
+  const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.6])
 
   return (
     <div
       ref={container}
-      className="h-screen w-full flex items-center justify-center sticky"
-      style={{ top: `80px` }} // All panels stick at the bottom of the nav
+      className="h-screen w-full sticky top-0 overflow-hidden"
     >
       <motion.div
         style={{
@@ -44,7 +40,7 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
           opacity,
           zIndex: index,
         }}
-        className="relative h-[90vh] w-[95%] overflow-hidden cursor-pointer group rounded-3xl shadow-2xl origin-top"
+        className="relative h-full w-full overflow-hidden cursor-pointer group shadow-2xl origin-center"
         onClick={onClick}
       >
         {/* Background Image */}
@@ -52,7 +48,7 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
           className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
           style={{ backgroundImage: `url('${property.image}')` }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-slate-900/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-slate-900/10" />
         </motion.div>
 
         {/* Content Overlay */}
@@ -82,9 +78,9 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
           >
             <Button
               size="lg"
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-8 py-6 text-lg"
+              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform"
             >
-              Learn More
+              Explore Property
             </Button>
           </motion.div>
         </div>
