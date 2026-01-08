@@ -75,7 +75,6 @@ export default function Experiences() {
   }
 
   return (
-  return (
     <section id="experiences" ref={ref} className="py-20 md:py-32 bg-slate-950 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
