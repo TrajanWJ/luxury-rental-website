@@ -22,6 +22,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# large photos
+PHOTOS FROM PHOTOGRAPHER/
+*.tif
+*.tiff
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env*.local

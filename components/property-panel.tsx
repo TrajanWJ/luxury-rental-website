@@ -10,13 +10,16 @@ interface PropertyPanelProps {
     name: string
     teaser: string
     image: string
+    position?: string
+    matterportUrl?: string
   }
   index: number
   total: number
   onClick: () => void
+  on3DClick?: (e: React.MouseEvent) => void
 }
 
-export function PropertyPanel({ property, index, total, onClick }: PropertyPanelProps) {
+export function PropertyPanel({ property, index, total, onClick, on3DClick }: PropertyPanelProps) {
   const container = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -32,7 +35,7 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
   return (
     <div
       ref={container}
-      className="h-screen w-full sticky top-0 overflow-hidden"
+      className="h-screen w-full flex items-center justify-center sticky top-0 overflow-hidden"
     >
       <motion.div
         style={{
@@ -40,13 +43,16 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
           opacity,
           zIndex: index,
         }}
-        className="relative h-full w-full overflow-hidden cursor-pointer group shadow-2xl origin-center"
+        className="relative h-screen w-full overflow-hidden cursor-pointer group shadow-2xl origin-center"
         onClick={onClick}
       >
         {/* Background Image */}
         <motion.div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-          style={{ backgroundImage: `url('${property.image}')` }}
+          style={{
+            backgroundImage: `url('${property.image}')`,
+            backgroundPosition: property.position || 'center'
+          }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-slate-900/10" />
         </motion.div>
@@ -75,6 +81,7 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4 items-center justify-center"
           >
             <Button
               size="lg"
@@ -82,6 +89,18 @@ export function PropertyPanel({ property, index, total, onClick }: PropertyPanel
             >
               Explore Property
             </Button>
+            {property.matterportUrl && (
+              <Button
+                size="lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  on3DClick?.(e);
+                }}
+                className="bg-white text-blue-600 hover:bg-slate-50 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
+              >
+                3D View
+              </Button>
+            )}
           </motion.div>
         </div>
       </motion.div>

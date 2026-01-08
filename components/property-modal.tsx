@@ -16,15 +16,18 @@ interface Property {
   amenities: string[]
   description: string
   images: string[]
+  matterportUrl?: string
 }
 
 interface PropertyModalProps {
   property: Property
   onClose: () => void
+  initialShow3D?: boolean
 }
 
-export function PropertyModal({ property, onClose }: PropertyModalProps) {
+export function PropertyModal({ property, onClose, initialShow3D = false }: PropertyModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [show3DView, setShow3DView] = useState(initialShow3D)
 
   useEffect(() => {
     // Prevent body scroll when modal is open
@@ -164,16 +167,49 @@ export function PropertyModal({ property, onClose }: PropertyModalProps) {
             >
               Book This Home
             </Button>
+            {property.matterportUrl && (
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1 bg-white text-blue-600 border-2 border-blue-600 hover:bg-blue-50 rounded-xl shadow-lg hover:shadow-xl transition-all font-bold"
+                onClick={() => setShow3DView(true)}
+              >
+                3D View
+              </Button>
+            )}
             <Button
               size="lg"
               variant="outline"
-              className="flex-1 border-2 border-blue-600 text-blue-600 hover:bg-blue-50 rounded-xl transition-all bg-transparent"
+              className="flex-1 border-2 border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl transition-all bg-transparent"
             >
               View Full Details
             </Button>
           </div>
         </div>
       </div>
+
+      {/* 3D View Modal Overlay */}
+      {show3DView && property.matterportUrl && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <button
+              onClick={() => setShow3DView(false)}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-colors"
+              aria-label="Close 3D view"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <iframe
+              width="100%"
+              height="100%"
+              src={property.matterportUrl}
+              frameBorder="0"
+              allowFullScreen
+              allow="xr-spatial-tracking"
+            ></iframe>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

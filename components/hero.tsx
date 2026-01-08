@@ -21,7 +21,7 @@ export default function Hero() {
         <motion.div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('/luxury-lakefront-estate-sunset-view.jpg')",
+            backgroundImage: "url('https://wilson-premier.com/wp-content/uploads/2023/11/WP-crane-flying-over-water.jpg')",
             y,
             scale,
           }}
@@ -41,18 +41,18 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl md:text-7xl font-bold text-white mb-6"
+              className="text-4xl md:text-7xl font-bold text-white mb-8 tracking-tight"
             >
-              Luxury Lakefront Retreats at Smith Mountain Lake
+              Wilson Premier Properties
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto"
+              className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto font-light leading-relaxed"
             >
-              Perfect for family reunions, corporate retreats, and unforgettable group getaways
+              Set your sights on a truly luxurious lake experience at any one of our Properties on the beautiful Smith Mountain Lake.
             </motion.p>
 
             <motion.div

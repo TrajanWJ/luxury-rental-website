@@ -15,38 +15,70 @@ interface Property {
   amenities: string[]
   description: string
   images: string[]
+  position?: string
+  matterportUrl?: string
 }
 
 const properties: Property[] = [
   {
-    id: "1",
-    name: "The Grand Vista Estate",
-    teaser: "Unparalleled luxury with breathtaking panoramic lake views",
-    image: "/luxury-lakefront-estate-sunset-view.jpg",
-    sleeps: 36,
-    bedrooms: 12,
-    bathrooms: 10,
-    amenities: ["Private Dock", "Infinity Pool", "Hot Tub", "Game Room", "Chef Kitchen"],
+    id: "6",
+    name: "Milan Manor House",
+    teaser: "Enchanting 1940s historic manor on 30 private acres",
+    image: "https://wilson-premier.com/wp-content/uploads/2024/08/BackOfHouse-495x400.jpg",
+    sleeps: 14,
+    bedrooms: 5,
+    bathrooms: 8,
+    amenities: ["30 Private Acres", "Speakeasy Bar", "Pickleball Court", "Piano", "650ft Shoreline", "Historic Charm"],
     description:
-      "Experience unparalleled luxury at our crown jewel property. This magnificent estate offers breathtaking panoramic lake views, resort-style amenities, and spacious accommodations perfect for large family reunions and corporate retreats.",
+      "Set your sights on a truly luxurious lake experience. Escape to an enchanting private manor on 30 acres of secluded beauty along Smith Mountain Lake. Immerse yourself in 1940s charm elegantly blended with midcentury modern style, offering bespoke surprises around every corner.",
+    images: ["https://wilson-premier.com/wp-content/uploads/2024/08/BackOfHouse-495x400.jpg"],
+  },
+  {
+    id: "1",
+    name: "Suite Retreat",
+    teaser: "14,000 sq ft ultimate entertainment estate for large groups",
+    image: "/backcove-estate-primary.jpg",
+    sleeps: 32,
+    bedrooms: 9,
+    bathrooms: 11,
+    amenities: ["7 Suites", "2 Bunkrooms", "Bowling Alley", "Golf Simulator", "Pool & Spa", "Home Theater"],
+    description:
+      "A massive 14,000 sq ft luxury estate built for the ultimate group getaway. Features 7 private suites, 2 bunkrooms sleeping 12 each, an elevator, and a world-class entertainment wing with a bowling alley, golf simulator, and theater.",
     images: [
-      "/luxury-lakefront-estate-sunset-view.jpg",
-      "/modern-luxury-living-room-lake-view.jpg",
-      "/gourmet-kitchen-marble-countertops.jpg",
+      "/backcove-estate-primary.jpg",
+      "/PHOTOS FROM PHOTOGRAPHER/399 Backcove_website-05.jpg",
+      "/PHOTOS FROM PHOTOGRAPHER/399 Backcove_website-06.jpg",
+      "/PHOTOS FROM PHOTOGRAPHER/399 Backcove_website-09.jpg",
+      "/PHOTOS FROM PHOTOGRAPHER/399 Backcove_website-10.jpg",
     ],
+    position: "center 70%",
   },
   {
     id: "2",
-    name: "Sunset Shores Manor",
-    teaser: "Modern elegance meets spectacular sunset views",
-    image: "/modern-lakefront-home-dock.jpg",
-    sleeps: 24,
+    name: "Suite View",
+    teaser: "13,000+ sq ft of luxury for large groups and multifamily retreats",
+    image: "/sunset-shores-manor-night.jpg",
+    sleeps: 28,
     bedrooms: 8,
-    bathrooms: 7,
-    amenities: ["Private Dock", "Pool", "Fire Pit", "Game Room", "Boat Slip"],
+    bathrooms: 9,
+    amenities: ["7 Private Suites", "Large Bunkrooms", "Game Room", "Commercial Kitchen", "400ft Shoreline", "Spa", "Boat Dock"],
     description:
-      "A stunning modern retreat with floor-to-ceiling windows showcasing spectacular lake sunsets. Perfect for weddings, family gatherings, and special celebrations with its elegant design and premium amenities.",
-    images: ["/modern-lakefront-home-dock.jpg", "/luxury-bedroom-lake-view.jpg", "/outdoor-patio-fire-pit-lake.jpg"],
+      "Over 13,000 square feet of vacation home living built for multifamily and large groups (28 person Capacity). Featuring 7 suites with attached bathrooms, large bunkrooms, and extensive indoor and outdoor entertainment areas including a spa and private dock.",
+    images: ["/sunset-shores-manor-night.jpg", "/luxury-bedroom-lake-view.jpg", "/outdoor-patio-fire-pit-lake.jpg"],
+  },
+  {
+    id: "5",
+    name: "Lake View",
+    teaser: "Luxury 2-bedroom condo with stunning waterfront views and 3D tour",
+    image: "https://wilson-premier.com/wp-content/uploads/2024/01/309-Living-Room-With-Patio-Lake-Views-1.jpg",
+    sleeps: 6,
+    bedrooms: 2,
+    bathrooms: 2,
+    amenities: ["Waterfront Views", "3D Tour", "Screened Decks", "Traeger Grill", "Swim Dock", "Wi-Fi"],
+    description:
+      "Beautiful 2-bedroom, 2-bath ground floor condo offering 1,040 sq ft of comfortable living space. Features stunning waterfront views, fully equipped kitchen, private decks, and access to a swim dock and boat docking.",
+    images: ["https://wilson-premier.com/wp-content/uploads/2024/01/309-Living-Room-With-Patio-Lake-Views-1.jpg"],
+    matterportUrl: "https://my.matterport.com/show/?m=vih9WU3PNQj"
   },
   {
     id: "3",
@@ -86,7 +118,18 @@ const properties: Property[] = [
 
 export default function FullScreenHomes() {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
+  const [startWith3D, setStartWith3D] = useState(false)
   const containerRef = useRef<HTMLElement>(null)
+
+  const handlePropertyClick = (property: Property) => {
+    setStartWith3D(false)
+    setSelectedProperty(property)
+  }
+
+  const handle3DClick = (property: Property) => {
+    setStartWith3D(true)
+    setSelectedProperty(property)
+  }
 
   return (
     <>
@@ -97,12 +140,19 @@ export default function FullScreenHomes() {
             property={property}
             index={index}
             total={properties.length}
-            onClick={() => setSelectedProperty(property)}
+            onClick={() => handlePropertyClick(property)}
+            on3DClick={() => handle3DClick(property)}
           />
         ))}
       </section>
 
-      {selectedProperty && <PropertyModal property={selectedProperty} onClose={() => setSelectedProperty(null)} />}
+      {selectedProperty && (
+        <PropertyModal
+          property={selectedProperty}
+          onClose={() => setSelectedProperty(null)}
+          initialShow3D={startWith3D}
+        />
+      )}
     </>
   )
 }

@@ -11,17 +11,19 @@ interface Property {
   sleeps: number
   bedrooms: number
   bathrooms: number
+  matterportUrl?: string
 }
 
 interface PropertyCardProps {
   property: Property
   onClick: () => void
+  on3DClick?: (e: React.MouseEvent) => void
 }
 
-export function PropertyCard({ property, onClick }: PropertyCardProps) {
+export function PropertyCard({ property, onClick, on3DClick }: PropertyCardProps) {
   return (
     <Card
-      className="group overflow-hidden cursor-pointer border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white rounded-2xl"
+      className="group overflow-hidden cursor-pointer border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white rounded-2xl relative"
       onClick={onClick}
     >
       <div className="relative h-[300px] md:h-[350px] overflow-hidden">
@@ -31,6 +33,21 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
+
+        {/* 3D View Button Overlay */}
+        {property.matterportUrl && (
+          <div className="absolute top-4 right-4 z-20">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                on3DClick?.(e);
+              }}
+              className="bg-white/90 backdrop-blur-sm text-blue-600 px-4 py-2 rounded-full text-sm font-bold shadow-lg hover:bg-white transition-all transform hover:scale-110"
+            >
+              3D View
+            </button>
+          </div>
+        )}
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
