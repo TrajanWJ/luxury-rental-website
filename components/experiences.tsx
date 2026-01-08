@@ -75,14 +75,15 @@ export default function Experiences() {
   }
 
   return (
-    <section id="experiences" ref={ref} className="py-20 md:py-32 bg-slate-50 overflow-hidden">
+  return (
+    <section id="experiences" ref={ref} className="py-20 md:py-32 bg-slate-950 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-5xl font-bold text-slate-900 mb-4"
+            className="text-4xl md:text-5xl font-bold text-white mb-4"
           >
             Unforgettable Lake Experiences
           </motion.h2>
@@ -90,7 +91,7 @@ export default function Experiences() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl text-slate-600 max-w-3xl mx-auto"
+            className="text-xl text-slate-400 max-w-3xl mx-auto"
           >
             From water sports to weddings, Smith Mountain Lake offers something special for everyone
           </motion.p>
@@ -109,7 +110,7 @@ export default function Experiences() {
                 key={exp.title}
                 variants={itemVariants}
                 whileHover={{ y: -10 }}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                className="group relative bg-slate-900/50 rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300"
               >
                 <div className="relative h-48 overflow-hidden">
                   <motion.div
@@ -118,7 +119,7 @@ export default function Experiences() {
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-slate-900/20" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-slate-950/20" />
                   </motion.div>
                   <div className="absolute bottom-4 left-4">
                     <div className="p-3 bg-secondary/90 backdrop-blur-sm rounded-xl">
@@ -127,8 +128,8 @@ export default function Experiences() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{exp.title}</h3>
-                  <p className="text-slate-600 leading-relaxed">{exp.description}</p>
+                  <h3 className="text-xl font-bold text-white mb-2">{exp.title}</h3>
+                  <p className="text-slate-400 leading-relaxed">{exp.description}</p>
                 </div>
               </motion.div>
             )

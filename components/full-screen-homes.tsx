@@ -81,38 +81,18 @@ const properties: Property[] = [
     matterportUrl: "https://my.matterport.com/show/?m=vih9WU3PNQj"
   },
   {
-    id: "3",
-    name: "Lakeside Haven",
-    teaser: "Charming waterfront escape with rustic elegance",
-    image: "/cozy-lakefront-cabin-private-dock.jpg",
-    sleeps: 16,
-    bedrooms: 6,
-    bathrooms: 5,
-    amenities: ["Private Dock", "Hot Tub", "Kayaks", "BBQ Area", "Lake Access"],
+    id: "7",
+    name: "Penthouse View",
+    teaser: "Stunning 3-bedroom penthouse with private decks and long water views",
+    image: "https://wilson-premier.com/wp-content/uploads/2024/01/313_GreatRoomFacingUpstairsKitchen-495x400.jpg",
+    sleeps: 8,
+    bedrooms: 3,
+    bathrooms: 3,
+    amenities: ["Penthouse Views", "3D Tour", "Traeger Grill", "Swim Dock", "Elevator", "Screened Decks"],
     description:
-      "Charming waterfront escape combining rustic elegance with modern comforts. Ideal for intimate family gatherings with direct lake access, water sports equipment, and peaceful surroundings.",
-    images: [
-      "/cozy-lakefront-cabin-private-dock.jpg",
-      "/rustic-dining-room-wooden-beams.jpg",
-      "/deck-with-hot-tub-lake-view.jpg",
-    ],
-  },
-  {
-    id: "4",
-    name: "Blue Water Retreat",
-    teaser: "Contemporary luxury with state-of-the-art amenities",
-    image: "/contemporary-lake-house-boat-dock.jpg",
-    sleeps: 20,
-    bedrooms: 7,
-    bathrooms: 6,
-    amenities: ["Private Dock", "Pool & Hot Tub", "Theater Room", "Wine Cellar", "Gym"],
-    description:
-      "Contemporary luxury meets lakeside living in this architectural masterpiece. Features state-of-the-art entertainment spaces, fitness facilities, and premium outdoor living areas for the ultimate vacation experience.",
-    images: [
-      "/contemporary-lake-house-boat-dock.jpg",
-      "/home-theater-room-luxury.jpg",
-      "/infinity-pool-overlooking-lake.jpg",
-    ],
+      "Beautifully appointed 3-bedroom penthouse condo offering 1,453 sq ft of refined living space. Features spectacular long water views, private screened-in decks, a Traeger electric grill, and direct access to swimming and fishing docks.",
+    images: ["https://wilson-premier.com/wp-content/uploads/2024/01/313_GreatRoomFacingUpstairsKitchen-495x400.jpg"],
+    matterportUrl: "https://my.matterport.com/show/?m=bRM4Kkhfu6T"
   },
 ]
 

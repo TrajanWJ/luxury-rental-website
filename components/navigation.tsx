@@ -22,7 +22,6 @@ export default function Navigation() {
   const navLinks = [
     { label: "Homes", href: "#homes" },
     { label: "Experiences", href: "#experiences" },
-    { label: "Weddings & Retreats", href: "#experiences" },
     { label: "About", href: "#about" },
     { label: "Contact", href: "#contact" },
   ]
@@ -42,8 +41,8 @@ export default function Navigation() {
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-            ? "bg-white/5 backdrop-blur-xl border-b border-white/10 py-1.5"
-            : "bg-transparent py-3"
+          ? "bg-white/5 backdrop-blur-xl border-b border-white/10 py-1.5"
+          : "bg-transparent py-3"
           }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
