@@ -1,0 +1,8 @@
+.git
+node_modules
+.next
+PHOTOS FROM PHOTOGRAPHER
+photos/
+*.tif
+*.tiff
+!public/**

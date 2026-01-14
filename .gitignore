@@ -1,0 +1,46 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# debug
+npm-debug.log*
+
+# env files
+.env*
+
+# vercel
+.vercel
+
+# large source/duplicate asset folders
+photos/
+/public/Penthouse-View[3000x2000]/
+/public/suite retreat 400 backcove/
+/public/suite view 399 backcove/
+
+# source files/scripts
+milan_manor.html
+lake_view.html
+booking_page.html
+extract_links.py
+process_images.py
+update_data.py
+scrape_booking_site.py
+booking_site_data.json
+
+# large image formats and media
+*.tif
+*.tiff
+*.psd
+*.mov
+*.mp4
+*.avi
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
