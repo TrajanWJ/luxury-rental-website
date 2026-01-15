@@ -8,6 +8,7 @@ import { AdvancedBookingPopup } from "./advanced-booking-popup"
 import { properties } from "@/lib/data"
 import Link from "next/link"
 import Image from "next/image"
+import { DemoToggle } from "./demo-toggle"
 
 export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -15,7 +16,12 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [hoveringProperties, setHoveringProperties] = useState(false)
 
-  const [preselectedProperty, setPreselectedProperty] = useState("")
+  const [searchParams, setSearchParams] = useState({
+    location: "",
+    checkIn: "",
+    checkOut: "",
+    guests: "1"
+  })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,22 +32,42 @@ export default function Navigation() {
   }, [])
 
   useEffect(() => {
+    // Handle simple booking event (just property name)
     const handleOpenBooking = (e: any) => {
-      if (e.detail?.propertyName) {
-        setPreselectedProperty(e.detail.propertyName)
-      }
+      setSearchParams({
+        location: e.detail?.propertyName || "",
+        checkIn: "",
+        checkOut: "",
+        guests: "1"
+      })
+      setBookingOpen(true)
+    }
+
+    // Handle booking event with full context (property, dates, guests)
+    const handleOpenBookingWithContext = (e: any) => {
+      setSearchParams({
+        location: e.detail?.propertyName || "",
+        checkIn: e.detail?.checkIn || "",
+        checkOut: e.detail?.checkOut || "",
+        guests: e.detail?.guests || "1"
+      })
       setBookingOpen(true)
     }
 
     window.addEventListener("open-booking", handleOpenBooking)
-    return () => window.removeEventListener("open-booking", handleOpenBooking)
+    window.addEventListener("open-booking-with-context", handleOpenBookingWithContext)
+    return () => {
+      window.removeEventListener("open-booking", handleOpenBooking)
+      window.removeEventListener("open-booking-with-context", handleOpenBookingWithContext)
+    }
   }, [])
+
 
   const navLinks = [
     { label: "Experiences", href: "#experiences" },
     { label: "Book", href: "/book" },
     { label: "Contact", href: "#contact" },
-    { label: "Map Booking", href: "/map" },
+    { label: "Map", href: "/map" },
   ]
 
   const scrollToSection = (href: string) => {
@@ -66,6 +92,7 @@ export default function Navigation() {
 
   return (
     <>
+      <DemoToggle />
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -212,14 +239,14 @@ export default function Navigation() {
         isOpen={bookingOpen}
         onClose={() => {
           setBookingOpen(false)
-          setPreselectedProperty("")
+          setSearchParams({
+            location: "",
+            checkIn: "",
+            checkOut: "",
+            guests: "1"
+          })
         }}
-        searchParams={{
-          location: preselectedProperty,
-          checkIn: "",
-          checkOut: "",
-          guests: "1"
-        }}
+        searchParams={searchParams}
       />
     </>
   )

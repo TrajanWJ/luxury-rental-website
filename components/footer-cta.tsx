@@ -3,7 +3,7 @@
 import { useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { BookingPopup } from "./booking-popup"
+import { AdvancedBookingPopup } from "./advanced-booking-popup"
 
 export default function FooterCTA() {
   const [bookingOpen, setBookingOpen] = useState(false)
@@ -91,7 +91,16 @@ export default function FooterCTA() {
         </div>
       </section>
 
-      <BookingPopup isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
+      <AdvancedBookingPopup
+        isOpen={bookingOpen}
+        onClose={() => setBookingOpen(false)}
+        searchParams={{
+          location: "all",
+          checkIn: "",
+          checkOut: "",
+          guests: "1"
+        }}
+      />
     </>
   )
 }

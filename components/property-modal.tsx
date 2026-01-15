@@ -20,14 +20,6 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
   const [show3DView, setShow3DView] = useState(initialShow3D)
 
   useEffect(() => {
-    // Prevent body scroll when modal is open
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = "unset"
-    }
-  }, [])
-
-  useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose()
@@ -101,7 +93,17 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
                       onClick={() => setCurrentImageIndex(index)}
                       className={cn(
                         "rounded-full transition-all flex-shrink-0 bg-white/50 hover:bg-white/80",
-                        index === currentImageIndex ? "w-2.5 h-2.5 bg-white" : "w-1.5 h-1.5"
+                        index === currentImageIndex
+                          ? property.images.length > 20
+                            ? "w-2 h-2 md:w-2.5 md:h-2.5 bg-white"
+                            : property.images.length > 10
+                              ? "w-2 h-2 md:w-3 md:h-3 bg-white"
+                              : "w-2.5 h-2.5 md:w-3 md:h-3 bg-white"
+                          : property.images.length > 20
+                            ? "w-1 h-1 md:w-1.5 md:h-1.5"
+                            : property.images.length > 10
+                              ? "w-1.5 h-1.5 md:w-2 md:h-2"
+                              : "w-1.5 h-1.5 md:w-2 md:h-2"
                       )}
                       aria-label={`Go to image ${index + 1}`}
                     />

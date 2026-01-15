@@ -27,8 +27,8 @@ export default function Hero() {
       </motion.div>
 
       {/* Content Container - Constrained and Centered */}
-      <div className="relative z-10 w-full">
-        <div className="container mx-auto px-6 md:px-8 lg:px-12 max-w-7xl" style={{ marginLeft: '7%', marginRight: 'auto' }}>
+      <div className="relative z-10 w-full py-20 md:py-0">
+        <div className="container mx-auto px-6 md:px-8 lg:px-12 max-w-7xl md:ml-[7%] md:mr-auto">
 
           {/* Single Column Layout */}
           <div className="max-w-5xl">
@@ -38,7 +38,8 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="space-y-6 max-w-xl mb-8"
+              className="space-y-6 max-w-xl mb-12 md:mb-28 relative origin-center md:origin-left text-center md:text-left scale-100 md:scale-[1.05]"
+              style={{ transform: 'translateY(-5%)' }}
             >
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -60,7 +61,7 @@ export default function Hero() {
             </motion.div>
 
             {/* Widgets Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-5 items-start relative origin-center md:origin-left scale-100 md:scale-[1.05]" style={{ transform: 'translateY(10%)' }}>
               {/* Quick Booking Widget */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -91,9 +92,12 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
         style={{ opacity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
       >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 whitespace-nowrap">
+          Discover Residences
+        </span>
+        <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center p-1">
           <motion.div
             animate={{
               y: [0, 12, 0],
@@ -103,7 +107,7 @@ export default function Hero() {
               repeat: Infinity,
               ease: "easeInOut"
             }}
-            className="w-1.5 h-1.5 bg-white rounded-full"
+            className="w-1.5 h-1.5 bg-white/60 rounded-full"
           />
         </div>
       </motion.div>

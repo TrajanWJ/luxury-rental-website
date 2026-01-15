@@ -23,17 +23,31 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { properties, isDateUnavailable } from "@/lib/data"
-import { AdvancedBookingPopup } from "./advanced-booking-popup"
+
+import { useDemo } from "@/components/demo-context"
 
 export function HeroBookingWidget() {
-    const [popupOpen, setPopupOpen] = React.useState(false)
+    const { isDemoMode } = useDemo()
     const [location, setLocation] = React.useState("")
     const [date, setDate] = React.useState<DateRange | undefined>()
     const [guests, setGuests] = React.useState("2")
 
+    // Filter properties based on Demo Mode
+    const displayProperties = isDemoMode
+        ? properties
+        : properties.filter(p => !!p.hostawayId)
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault()
-        setPopupOpen(true)
+        // Trigger the global booking popup with context
+        window.dispatchEvent(new CustomEvent("open-booking-with-context", {
+            detail: {
+                propertyName: location && location !== "all" ? location : "",
+                checkIn: date?.from ? format(date.from, "yyyy-MM-dd") : "",
+                checkOut: date?.to ? format(date.to, "yyyy-MM-dd") : "",
+                guests: guests
+            }
+        }))
     }
 
     // Custom unavailable logic for the calendar
@@ -72,7 +86,7 @@ export function HeroBookingWidget() {
                             </SelectTrigger>
                             <SelectContent className="rounded-xl border-none shadow-2xl bg-white/95 backdrop-blur-xl max-h-[300px]">
                                 <SelectItem value="all" className="py-2.5 px-4 focus:bg-slate-100 font-medium text-sm">Any Residence</SelectItem>
-                                {properties.map(p => (
+                                {displayProperties.map(p => (
                                     <SelectItem key={p.id} value={p.name} className="py-2 px-4 focus:bg-slate-100 text-sm">
                                         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                                             <span className="font-medium">{p.name}</span>
@@ -165,17 +179,6 @@ export function HeroBookingWidget() {
                     </div>
                 </form>
             </div>
-
-            <AdvancedBookingPopup
-                isOpen={popupOpen}
-                onClose={() => setPopupOpen(false)}
-                searchParams={{
-                    location: location || "all",
-                    checkIn: date?.from ? format(date.from, "yyyy-MM-dd") : "",
-                    checkOut: date?.to ? format(date.to, "yyyy-MM-dd") : "",
-                    guests
-                }}
-            />
         </>
     )
 }

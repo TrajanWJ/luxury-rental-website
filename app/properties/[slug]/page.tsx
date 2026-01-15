@@ -9,6 +9,7 @@ import FooterCTA from "@/components/footer-cta"
 import { Button } from "@/components/ui/button"
 import { Users, Info, MapPin, Check, Star, Wifi, Car, Anchor, Utensils } from "lucide-react"
 import { cn } from "@/lib/utils"
+import HostawayCalendar from "@/components/hostaway-calendar"
 
 function slugify(text: string) {
     return text.toLowerCase().replace(/\s+/g, '-')
@@ -166,19 +167,27 @@ export default function PropertyPage({ params }: { params: Promise<{ slug: strin
                                     <h3 className="text-xl font-bold text-slate-900 mb-1">Reserve Your Stay</h3>
                                     <p className="text-slate-500 text-sm mb-6">Best rates guaranteed when booking direct.</p>
 
-                                    <Button
-                                        size="lg"
-                                        className="w-full h-14 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mb-4 text-base font-semibold"
-                                        onClick={() => {
-                                            window.dispatchEvent(new CustomEvent("open-booking", { detail: { propertyName: property.name } }))
-                                        }}
-                                    >
-                                        Check Availability
-                                    </Button>
+                                    {property.hostawayId ? (
+                                        <div className="mt-4">
+                                            <HostawayCalendar listingId={property.hostawayId} />
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <Button
+                                                size="lg"
+                                                className="w-full h-14 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mb-4 text-base font-semibold"
+                                                onClick={() => {
+                                                    window.dispatchEvent(new CustomEvent("open-booking", { detail: { propertyName: property.name } }))
+                                                }}
+                                            >
+                                                Check Availability
+                                            </Button>
 
-                                    <p className="text-center text-xs text-slate-400">
-                                        You won&apos;t be charged yet.
-                                    </p>
+                                            <p className="text-center text-xs text-slate-400">
+                                                You won&apos;t be charged yet.
+                                            </p>
+                                        </>
+                                    )}
 
                                     <div className="mt-8 pt-8 border-t border-slate-100 space-y-4">
                                         <div className="flex justify-between items-center text-sm font-medium text-slate-600">

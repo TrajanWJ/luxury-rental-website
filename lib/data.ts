@@ -12,6 +12,9 @@ export interface Property {
     matterportUrl?: string
     position?: string
     pricePerNight: number
+    lat: number
+    lng: number
+    hostawayId?: string
 }
 
 export const properties: Property[] = [
@@ -110,8 +113,11 @@ export const properties: Property[] = [
             "/images/milan-manor/milan-manor-81.jpg",
             "/images/milan-manor/milan-manor-82.jpg",
             "/images/milan-manor/milan-manor-83.jpg",
-            "/images/milan-manor/milan-manor-84.jpg",
         ],
+        pricePerNight: 1200,
+        lat: 37.1755,
+        lng: -79.6170,
+        hostawayId: "466648",
     },
     {
         id: "1",
@@ -292,9 +298,12 @@ export const properties: Property[] = [
             "/images/suite-retreat/suite-retreat-165.jpg",
             "/images/suite-retreat/suite-retreat-166.jpg",
             "/images/suite-retreat/suite-retreat-167.jpg",
-            "/images/suite-retreat/suite-retreat-168.jpg",
         ],
         position: "center 70%",
+        pricePerNight: 2500,
+        lat: 37.1594,
+        lng: -79.6455,
+        hostawayId: "466647",
     },
     {
         id: "2",
@@ -500,8 +509,11 @@ export const properties: Property[] = [
             "/images/suite-view/suite-view-190.jpg",
             "/images/suite-view/suite-view-191.jpg",
             "/images/suite-view/suite-view-192.jpg",
-            "/images/suite-view/suite-view-193.jpg",
         ],
+        pricePerNight: 2200,
+        lat: 37.1710,
+        lng: -79.6210,
+        hostawayId: "466646",
     },
     {
         id: "5",
@@ -541,13 +553,17 @@ export const properties: Property[] = [
             "/images/lake-view/lake-view-24.jpg",
             "/images/lake-view/lake-view-25.jpg",
         ],
-        matterportUrl: "https://my.matterport.com/show/?m=vih9WU3PNQj"
+        matterportUrl: "https://my.matterport.com/show/?m=vih9WU3PNQj",
+        pricePerNight: 450,
+        lat: 37.1506,
+        lng: -79.6644,
+        hostawayId: "466645",
     },
     {
         id: "7",
         name: "Penthouse View",
         teaser: "Stunning 3-bedroom penthouse with private decks and long water views",
-        image: "/images/penthouse-view/penthouse-view-1.jpg",
+        image: "/images/penthouse-view/penthouse-view-2.jpg",
         sleeps: 8,
         bedrooms: 3,
         bathrooms: 3,
@@ -589,7 +605,11 @@ export const properties: Property[] = [
             "/images/penthouse-view/penthouse-view-32.jpg",
             "/images/penthouse-view/penthouse-view-33.jpg",
         ],
-        matterportUrl: "https://my.matterport.com/show/?m=bRM4Kkhfu6T"
+        matterportUrl: "https://my.matterport.com/show/?m=bRM4Kkhfu6T",
+        pricePerNight: 650,
+        lat: 37.0471,
+        lng: -79.6048,
+        hostawayId: "466644",
     },
 ]
 

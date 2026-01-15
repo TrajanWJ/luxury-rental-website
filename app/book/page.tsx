@@ -16,7 +16,10 @@ import { format } from "date-fns"
 import { DateRange } from "react-day-picker"
 import { cn } from "@/lib/utils"
 
+import { useDemo } from "@/components/demo-context"
+
 function BookContent() {
+    const { isDemoMode } = useDemo()
     const searchParams = useSearchParams()
     const router = useRouter()
 
@@ -36,6 +39,11 @@ function BookContent() {
     const [guestCount, setGuestCount] = useState(parseInt(searchParams.get("guests") || "2"))
 
     const property = properties.find(p => p.name === selectedPropertyName)
+
+    // Filter properties based on Demo Mode
+    const displayProperties = isDemoMode
+        ? properties
+        : properties.filter(p => !!p.hostawayId)
 
     const [paymentStep, setPaymentStep] = useState<"details" | "payment" | "confirmation">("details")
     const [formData, setFormData] = useState({
@@ -95,13 +103,27 @@ function BookContent() {
 
                 <div className="container mx-auto px-4 py-24 max-w-2xl">
                     <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-100 text-center">
-                        <div className="h-20 w-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-                            <Check className="h-10 w-10 text-green-600" />
-                        </div>
-                        <h1 className="text-3xl font-bold text-slate-900 mb-4">Booking Confirmed!</h1>
-                        <p className="text-lg text-slate-600 mb-8">
-                            Your reservation at <span className="font-semibold">{property?.name}</span> has been confirmed.
-                        </p>
+                        {isDemoMode && property?.hostawayId ? (
+                            <div className="flex flex-col items-center">
+                                <div className="h-20 w-20 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-6">
+                                    <Check className="h-10 w-10 text-amber-600" />
+                                </div>
+                                <h1 className="text-3xl font-bold text-slate-900 mb-4">PLACEHOLDER FOR HOSTAWAY FINAL BOOKING</h1>
+                                <p className="text-lg text-slate-600 mb-8">
+                                    In production, the customer would have been redirected to the Hostaway checkout page for <span className="font-semibold">{property?.name}</span>.
+                                </p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="h-20 w-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
+                                    <Check className="h-10 w-10 text-green-600" />
+                                </div>
+                                <h1 className="text-3xl font-bold text-slate-900 mb-4">Booking Confirmed!</h1>
+                                <p className="text-lg text-slate-600 mb-8">
+                                    Your reservation at <span className="font-semibold">{property?.name}</span> has been confirmed.
+                                </p>
+                            </>
+                        )}
 
                         <div className="bg-slate-50 rounded-2xl p-6 mb-8 text-left">
                             <div className="space-y-3">
@@ -169,7 +191,7 @@ function BookContent() {
                                     <SelectValue placeholder="Select property" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {properties.map((prop) => (
+                                    {displayProperties.map((prop) => (
                                         <SelectItem key={prop.id} value={prop.name}>
                                             {prop.name}
                                         </SelectItem>

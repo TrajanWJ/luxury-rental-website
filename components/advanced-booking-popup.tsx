@@ -11,6 +11,7 @@ import { Property, properties, getMockAvailability, isDateUnavailable } from "@/
 import { format, addDays, getDay, isSameDay } from "date-fns"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import HostawayCalendar from "./hostaway-calendar"
 
 
 // Helper to check if a range includes any booked dates
@@ -39,11 +40,20 @@ interface AdvancedBookingPopupProps {
     }
 }
 
+import { useDemo } from "@/components/demo-context"
+
 export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: AdvancedBookingPopupProps) {
+    const { isDemoMode } = useDemo()
     const [matches, setMatches] = useState<Property[]>([])
     const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
     const [viewMode, setViewMode] = useState<"detail" | "alternatives">("detail")
     const router = useRouter()
+
+    // Filter properties based on Demo Mode
+    const displayProperties = isDemoMode
+        ? properties
+        : properties.filter(p => !!p.hostawayId)
+
     // State for dates
     const [dateRange, setDateRange] = useState<DateRange | undefined>()
     const [guestCount, setGuestCount] = useState(1)
@@ -54,18 +64,6 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
     useEffect(() => {
         setCurrentImageIndex(0)
     }, [selectedProperty])
-
-    // Prevent body scroll when popup is open
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = "unset"
-        }
-        return () => {
-            document.body.style.overflow = "unset"
-        }
-    }, [isOpen])
 
     // Auto-collapse calendar when dates are selected
     useEffect(() => {
@@ -105,8 +103,8 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                 setDateRange({ from, to })
             }
 
-            // Filter by guests
-            let validProps = properties.filter(p => p.sleeps >= initialGuests)
+            // Filter by guests using valid display properties
+            let validProps = displayProperties.filter(p => p.sleeps >= initialGuests)
 
             // If location specific
             if (searchParams.location && searchParams.location !== "all") {
@@ -237,7 +235,17 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                     onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index); }}
                                                     className={cn(
                                                         "rounded-full transition-all flex-shrink-0 bg-white/50 hover:bg-white/80",
-                                                        index === currentImageIndex ? "w-2.5 h-2.5 bg-white" : "w-1.5 h-1.5"
+                                                        index === currentImageIndex
+                                                            ? (selectedProperty.images?.length || 0) > 20
+                                                                ? "w-2 h-2 md:w-2.5 md:h-2.5 bg-white"
+                                                                : (selectedProperty.images?.length || 0) > 10
+                                                                    ? "w-2 h-2 md:w-3 md:h-3 bg-white"
+                                                                    : "w-2.5 h-2.5 md:w-3 md:h-3 bg-white"
+                                                            : (selectedProperty.images?.length || 0) > 20
+                                                                ? "w-1 h-1 md:w-1.5 md:h-1.5"
+                                                                : (selectedProperty.images?.length || 0) > 10
+                                                                    ? "w-1.5 h-1.5 md:w-2 md:h-2"
+                                                                    : "w-1.5 h-1.5 md:w-2 md:h-2"
                                                     )}
                                                     aria-label={`Go to image ${index + 1}`}
                                                 />
@@ -261,14 +269,9 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                         <Button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                if (selectedProperty) {
-                                                    const params = new URLSearchParams({
-                                                        property: selectedProperty.name,
-                                                        checkIn: dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : "",
-                                                        checkOut: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : "",
-                                                        guests: guestCount.toString()
-                                                    })
-                                                    router.push(`/book?${params.toString()}`)
+                                                if (selectedProperty?.hostawayId) {
+                                                    const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
+                                                    window.open(url, '_blank');
                                                 }
                                             }}
                                             className="flex-1 bg-white text-slate-900 hover:bg-slate-100"
@@ -293,71 +296,76 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                 </h3>
 
                                 {/* 1. Functional Calendar */}
-                                {/* 1. Functional Collapsible Calendar */}
-                                <div className="mb-6 rounded-2xl border border-slate-100 bg-slate-50 overflow-hidden transition-all duration-300">
-                                    <button
-                                        onClick={() => setIsCalendarExpanded(!isCalendarExpanded)}
-                                        className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 transition-colors group"
-                                    >
-                                        <div className="text-left flex items-center gap-3">
-                                            <div className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center">
-                                                <CalendarIcon className="h-4 w-4 text-blue-600" />
+                                {selectedProperty?.hostawayId ? (
+                                    <div className="mb-6 rounded-2xl border border-slate-100 bg-white overflow-hidden p-4">
+                                        <HostawayCalendar listingId={selectedProperty.hostawayId} />
+                                    </div>
+                                ) : (
+                                    <div className="mb-6 rounded-2xl border border-slate-100 bg-slate-50 overflow-hidden transition-all duration-300">
+                                        <button
+                                            onClick={() => setIsCalendarExpanded(!isCalendarExpanded)}
+                                            className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 transition-colors group"
+                                        >
+                                            <div className="text-left flex items-center gap-3">
+                                                <div className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center">
+                                                    <CalendarIcon className="h-4 w-4 text-blue-600" />
+                                                </div>
+                                                <div>
+                                                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">Dates</label>
+                                                    <span className="text-sm font-semibold text-slate-900 block">
+                                                        {dateRange?.from ? format(dateRange.from, "MMM dd") : "Check-in"} — {dateRange?.to ? format(dateRange.to, "MMM dd") : "Check-out"}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">Dates</label>
-                                                <span className="text-sm font-semibold text-slate-900 block">
-                                                    {dateRange?.from ? format(dateRange.from, "MMM dd") : "Check-in"} — {dateRange?.to ? format(dateRange.to, "MMM dd") : "Check-out"}
+                                            <div className={cn("transition-transform duration-300 text-slate-300 group-hover:text-slate-500", isCalendarExpanded ? "rotate-90" : "rotate-0")}>
+                                                <ArrowRight className="h-4 w-4" />
+                                            </div>
+                                        </button>
+
+                                        <AnimatePresence initial={false} mode="wait">
+                                            {isCalendarExpanded && (
+                                                <motion.div
+                                                    key="calendar-expand"
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: "auto", opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                                                    className="overflow-hidden will-change-[height,opacity]"
+                                                >
+                                                    <div className="p-4 pt-0 border-t border-slate-100">
+                                                        <Calendar
+                                                            key={selectedProperty?.id || "default"}
+                                                            mode="range"
+                                                            selected={dateRange}
+                                                            onSelect={setDateRange}
+                                                            numberOfMonths={1}
+                                                            disabled={(date) => {
+                                                                const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
+                                                                const isBooked = isDateUnavailable(date, selectedProperty?.id || "")
+                                                                return isPast || isBooked
+                                                            }}
+                                                            modifiers={{ today: undefined }}
+                                                            modifiersClassNames={{ today: "" }}
+                                                            className="rounded-md border bg-white w-full flex justify-center p-2 mb-3 shadow-sm pointer-events-auto mt-4"
+                                                        />
+                                                        <p className="text-xs text-slate-400 text-center">
+                                                            Select start and end dates to update quote
+                                                        </p>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+
+                                        {!isCalendarExpanded && (
+                                            <div className="px-4 py-2 border-t border-slate-100 flex items-center justify-between bg-white">
+                                                <span className="text-xs font-medium text-slate-500">Total Stay</span>
+                                                <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                                                    {nights > 0 ? `${nights} Nights` : "-"}
                                                 </span>
                                             </div>
-                                        </div>
-                                        <div className={cn("transition-transform duration-300 text-slate-300 group-hover:text-slate-500", isCalendarExpanded ? "rotate-90" : "rotate-0")}>
-                                            <ArrowRight className="h-4 w-4" />
-                                        </div>
-                                    </button>
-
-                                    <AnimatePresence initial={false} mode="wait">
-                                        {isCalendarExpanded && (
-                                            <motion.div
-                                                key="calendar-expand"
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.2, ease: "easeInOut" }}
-                                                className="overflow-hidden will-change-[height,opacity]"
-                                            >
-                                                <div className="p-4 pt-0 border-t border-slate-100">
-                                                    <Calendar
-                                                        key={selectedProperty?.id || "default"}
-                                                        mode="range"
-                                                        selected={dateRange}
-                                                        onSelect={setDateRange}
-                                                        numberOfMonths={1}
-                                                        disabled={(date) => {
-                                                            const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
-                                                            const isBooked = isDateUnavailable(date, selectedProperty?.id || "")
-                                                            return isPast || isBooked
-                                                        }}
-                                                        modifiers={{ today: undefined }}
-                                                        modifiersClassNames={{ today: "" }}
-                                                        className="rounded-md border bg-white w-full flex justify-center p-2 mb-3 shadow-sm pointer-events-auto mt-4"
-                                                    />
-                                                    <p className="text-xs text-slate-400 text-center">
-                                                        Select start and end dates to update quote
-                                                    </p>
-                                                </div>
-                                            </motion.div>
                                         )}
-                                    </AnimatePresence>
-
-                                    {!isCalendarExpanded && (
-                                        <div className="px-4 py-2 border-t border-slate-100 flex items-center justify-between bg-white">
-                                            <span className="text-xs font-medium text-slate-500">Total Stay</span>
-                                            <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                                                {nights > 0 ? `${nights} Nights` : "-"}
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
+                                    </div>
+                                )}
 
                                 {/* 2. Guests Selection */}
                                 <div className="mb-8">
@@ -497,6 +505,12 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                     <Button
                                         disabled={!selectedProperty || !checkAvailability(selectedProperty.id, dateRange?.from, dateRange?.to)}
                                         className="flex-1 md:flex-[2] h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
+                                        onClick={() => {
+                                            if (selectedProperty?.hostawayId) {
+                                                const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
+                                                window.open(url, '_blank');
+                                            }
+                                        }}
                                     >
                                         {!selectedProperty || !checkAvailability(selectedProperty.id, dateRange?.from, dateRange?.to) ? "Dates Unavailable" : "Proceed to Booking"}
                                     </Button>
