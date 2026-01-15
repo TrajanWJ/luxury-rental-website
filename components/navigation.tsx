@@ -64,6 +64,7 @@ export default function Navigation() {
 
 
   const navLinks = [
+    { label: "Home", href: "/" },
     { label: "Experiences", href: "#experiences" },
     { label: "Book", href: "/book" },
     { label: "Contact", href: "#contact" },
@@ -92,7 +93,7 @@ export default function Navigation() {
 
   return (
     <>
-      <DemoToggle />
+      {/* <DemoToggle /> */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}

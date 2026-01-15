@@ -22,7 +22,7 @@ export const properties: Property[] = [
         id: "6",
         name: "Milan Manor House",
         teaser: "Enchanting 1940s historic manor on 30 private acres",
-        image: "/images/milan-manor/milan-manor-8.jpg",
+        image: "/images/milan-manor/milan-manor-2.jpg",
         sleeps: 14,
         bedrooms: 5,
         bathrooms: 8,
