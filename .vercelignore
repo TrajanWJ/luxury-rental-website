@@ -2,7 +2,17 @@
 node_modules
 .next
 PHOTOS FROM PHOTOGRAPHER
-photos/
+/photos/
+public/suite view 399 backcove/
+public/suite retreat 400 backcove/
+public/Penthouse-View[3000x2000]/
 *.tif
 *.tiff
-!public/**
+*.psd
+*.mov
+*.mp4
+*.avi
+# Ignore specific large folders but keep the rest of public
+public/suite view 399 backcove/**
+public/suite retreat 400 backcove/**
+public/Penthouse-View[3000x2000]/**

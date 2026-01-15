@@ -18,7 +18,7 @@ npm-debug.log*
 .vercel
 
 # large source/duplicate asset folders
-photos/
+/photos/
 /public/Penthouse-View[3000x2000]/
 /public/suite retreat 400 backcove/
 /public/suite view 399 backcove/
