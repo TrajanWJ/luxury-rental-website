@@ -66,7 +66,6 @@ export default function Navigation() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Experiences", href: "#experiences" },
-    { label: "Book", href: "/book" },
     { label: "Contact", href: "#contact" },
     { label: "Map", href: "/map" },
   ]
@@ -112,7 +111,10 @@ export default function Navigation() {
               transition={{ delay: 0.2 }}
               className="flex-shrink-0"
             >
-              <h1 className="text-lg md:text-xl font-bold text-white drop-shadow-md tracking-tight">
+              <h1
+                onDoubleClick={() => window.dispatchEvent(new CustomEvent('toggle-dev-tools'))}
+                className="text-lg md:text-xl font-bold text-white drop-shadow-md tracking-tight cursor-pointer select-none"
+              >
                 Wilson Premier Properties
               </h1>
             </motion.div>

@@ -140,7 +140,7 @@
 
         const popup = document.createElement('div');
         popup.id = 'dev-state-popup';
-        popup.className = 'visible';
+        popup.className = 'hidden';
         popup.style.cssText = `
             position: fixed; bottom: 20px; left: 20px; width: 280px; 
             background: #0f172a; color: #e2e8f0; border-radius: 12px; 
@@ -346,6 +346,12 @@
             window.clearContext();
         }
     }, true);
+
+    // Global toggle listener for Logo Double Click trigger
+    window.addEventListener('toggle-dev-tools', () => {
+        const p = document.getElementById('dev-state-popup');
+        if (p) p.classList.toggle('hidden');
+    });
 
 
     // IFRAME SYNC BRIDGE

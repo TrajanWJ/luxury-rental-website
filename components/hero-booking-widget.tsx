@@ -60,6 +60,16 @@ export function HeroBookingWidget() {
         }))
     }
 
+    const formatReadableDate = (dateStr: string | null) => {
+        if (!dateStr) return "";
+        try {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            return format(new Date(y, m - 1, d), "MMM d");
+        } catch (e) {
+            return dateStr;
+        }
+    }
+
     // Refined Glass Card styles - More subtle and premium
     const glassCardStyle = "bg-black/20 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl p-[18px]"
     const pillInputStyle = "h-[50px] bg-white/5 border border-white/10 text-white placeholder:text-white/50 rounded-2xl px-[14px] transition-all hover:bg-white/10 focus-visible:bg-white/10 focus-visible:border-white/30 text-sm md:text-base outline-none ring-0 w-full flex items-center"
@@ -115,11 +125,11 @@ export function HeroBookingWidget() {
                                     {checkIn ? (
                                         checkOut ? (
                                             <span className="truncate text-sm font-medium">
-                                                {checkIn} - {checkOut}
+                                                {formatReadableDate(checkIn)} - {formatReadableDate(checkOut)}
                                             </span>
                                         ) : (
                                             <span className="truncate text-sm font-medium">
-                                                {checkIn}
+                                                {formatReadableDate(checkIn)}
                                             </span>
                                         )
                                     ) : (

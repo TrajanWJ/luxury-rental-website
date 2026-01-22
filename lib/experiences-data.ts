@@ -44,3 +44,14 @@ export const experiences = [
         type: "activity"
     },
 ]
+
+export const activities = [
+    { name: "Wakeboarding", image: "/modern-lakefront-home-dock.jpg" },
+    { name: "Paddleboarding", image: "/cozy-lakefront-cabin-private-dock.jpg" },
+    { name: "Bass Fishing", image: "/modern-luxury-living-room-lake-view.jpg" },
+    { name: "Kayaking", image: "/outdoor-patio-fire-pit-lake.jpg" },
+    { name: "Golfing", image: "/rustic-dining-room-wooden-beams.jpg" },
+    { name: "Wine Tasting", image: "/luxury-lakefront-estate-sunset-view.jpg" },
+    { name: "Hiking", image: "/images/lakeview/lakeview-exterior.jpg" },
+    { name: "Jet Skiing", image: "/images/lakeview/lakeview-exterior.jpg" },
+]

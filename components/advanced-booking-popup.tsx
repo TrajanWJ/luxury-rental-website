@@ -100,13 +100,15 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
             // Filter by guests using valid display properties
             let validProps = displayProperties.filter(p => p.sleeps >= initialGuests)
 
-            // If location specific
-            if (searchParams.location && searchParams.location !== "all") {
-                const precise = validProps.find(p => p.name === searchParams.location)
-                if (precise) {
-                    // Put chosen one first
-                    validProps = [precise, ...validProps.filter(p => p.id !== precise.id)]
-                }
+            // Default to Suite Retreat if no location specified
+            const targetLocation = (searchParams.location && searchParams.location !== "all")
+                ? searchParams.location
+                : "Suite Retreat";
+
+            const precise = validProps.find(p => p.name === targetLocation)
+            if (precise) {
+                // Put chosen/default one first
+                validProps = [precise, ...validProps.filter(p => p.id !== precise.id)]
             }
 
             setMatches(validProps)
