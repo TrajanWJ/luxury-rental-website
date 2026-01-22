@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostaway Integration Dashboard</title>
+    <!-- PRODUCTION BRIDGE -->
+    <script src="/hostaway-debug.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --panel-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --primary-color: #2563eb;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --nav-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-main);
+        }
+
+        .header {
+            background: var(--nav-bg);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lab-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .left-panel {
+            width: 350px;
+            background: var(--panel-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .control-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        button {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        button:hover {
+            border-color: var(--primary-color);
+            background: #f0f7ff;
+        }
+
+        button.primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        button.primary:hover {
+            background: #1d4ed8;
+        }
+
+        .right-panel {
+            flex: 1;
+            padding: 2rem;
+            background: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .widget-wrapper {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 900px;
+        }
+
+        #log-area {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 12px;
+            border-radius: 8px;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Hostaway Integration Status</h1>
+        <div style="font-size: 0.8rem; opacity: 0.7;">Ctrl + Shift + D for State Popup</div>
+    </div>
+
+    <div class="lab-container">
+        <div class="left-panel">
+            <div class="panel-section">
+                <div class="panel-title">Current Target</div>
+                <div style="font-size: 0.9rem; font-weight: 600; color: #2563eb;">Feb 28 - Mar 5, 2026</div>
+                <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Cross-month boundary sweep test</div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">Production Controls</div>
+                <div class="control-grid">
+                    <button class="primary" onclick="runSIMA()">🚀 SIM A: Bridge Builder</button>
+                    <button onclick="window.clearContext()">🧹 Force Clear State</button>
+                    <button onclick="location.reload()">🔄 Refresh Lab</button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">Integration Logs</div>
+                <div id="log-area">Ready...</div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="widget-wrapper">
+                <div id="hostaway-calendar-widget"></div>
+                <!-- HOSTAWAY SCRIPT -->
+                <script src="https://d2q3n06xhbi0am.cloudfront.net/calendar.js"></script>
+                <script>
+                    window.hostawayCalendarWidget({
+                        baseUrl: 'https://wilson-premier.holidayfuture.com/',
+                        listingId: 466647,
+                        numberOfMonths: 2,
+                        openInNewTab: true,
+                        rounded: true,
+                        button: { action: 'checkout', text: 'Book Stay' },
+                        color: { mainColor: '#2563eb', textColor: '#0f172a' },
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTEGRATION GLUE -->
+    <script>
+        function log(msg) {
+            const area = document.getElementById('log-area');
+            area.innerHTML = `<div style="margin-bottom:4px;">[${new Date().toLocaleTimeString()}] ${msg}</div>` + area.innerHTML;
+            console.log(msg);
+        }
+
+        function findCell(dayNum, occurrences = 1) {
+            const cells = Array.from(document.querySelectorAll('#hostaway-calendar-widget div[class*="Day"], .CalendarDay, td'));
+            const matches = cells.filter(c => c.innerText.trim() === String(dayNum) && !c.className.includes('Outside'));
+            return matches[occurrences - 1];
+        }
+
+        function waft(el) {
+            if (!el) return;
+            ['mouseenter', 'mouseover', 'mousemove', 'pointerenter', 'pointermove'].forEach(type => {
+                el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window }));
+            });
+        }
+
+        async function runSIMA() {
+            log('🚀 Starting SIM A: Bridge Builder...');
+
+            // 1. Feb 28
+            const start = findCell(28, 1);
+            if (!start) { log('❌ Start date Feb 28 not found'); return; }
+
+            log('Clicking Feb 28');
+            waft(start);
+            start.click();
+            await new Promise(r => setTimeout(r, 400));
+
+            // 2. Hover Bridge (Mar 1-4)
+            log('Building Hover Bridge (Mar 1-4)');
+            for (let i = 1; i <= 4; i++) {
+                const node = findCell(i, 2); // Occurrence 2 is usually the second month in view
+                if (node) {
+                    waft(node);
+                    await new Promise(r => setTimeout(r, 30));
+                }
+            }
+
+            // 3. Mar 5
+            const end = findCell(5, 2);
+            if (!end) { log('❌ End date Mar 5 not found'); return; }
+            log('Clicking Mar 5');
+            waft(end);
+            end.click();
+            log('✅ SIM A Complete');
+        }
+    </script>
+</body>
+
+</html>

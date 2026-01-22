@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        #hostaway-calendar-widget {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 5px;
+            /* Tiny adjustment for centering */
+        }
+
+        /* 🗡️ GLOBAL ASSASSIN FALLBACK CSS */
+        .hostaway-book-stay,
+        button[type="submit"]:not(.keep-clear),
+        form[action*="checkout"] button,
+        input[value*="Book"],
+        input[value*="Checkout"],
+        [id*="book-stay"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* Smooth out the Hostaway container if it has weird margins */
+        .styled__WidgetContainer-sc-vhlqs-0,
+        .styled__Wrapper-sc-vhlqs-1 {
+            margin: 0 auto !important;
+            max-width: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="hostaway-calendar-widget"></div>
+    <script src="https://d2q3n06xhbi0am.cloudfront.net/calendar.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const listingId = params.get('listingId') || '466647';
+        const startDate = params.get('start');
+        const endDate = params.get('end');
+
+        let hasInjected = false;
+
+        window.hostawayCalendarWidget({
+            baseUrl: 'https://wilson-premier.holidayfuture.com/',
+            listingId: Number(listingId),
+            numberOfMonths: 1,
+            openInNewTab: true,
+            rounded: true,
+            button: { action: 'checkout', text: 'Book Stay' },
+            color: { mainColor: '#2563eb', textColor: '#0f172a' },
+        });
+
+        // 🗡️ LOCAL B2 ASSASSIN
+        function killBookButtons() {
+            const selectors = 'button, input[type="submit"], input[type="button"], [role="button"], a[href*="checkout"]';
+            const btns = document.querySelectorAll(selectors);
+            btns.forEach(btn => {
+                const text = (btn.innerText || btn.textContent || btn.value || '').toLowerCase();
+
+                if (text.includes('clear')) {
+                    btn.classList.add('keep-clear');
+                    return;
+                }
+
+                if (text.includes('<') || text.includes('>') ||
+                    (btn.className && typeof btn.className === 'string' && btn.className.includes('Nav'))) return;
+
+                if (/book|stay|checkout|continue|confirm/.test(text) || (btn.type === 'submit' && !text.includes('clear'))) {
+                    btn.remove();
+                    btn.style.setProperty('display', 'none', 'important');
+                }
+            });
+        }
+
+        function findCell(dayNum, occurrences = 1) {
+            const cells = Array.from(document.querySelectorAll('#hostaway-calendar-widget div[class*="Day"], .CalendarDay, td'));
+            const matches = cells.filter(c => c.innerText.trim() === String(dayNum) && !c.className.includes('Outside') && !c.closest('.CalendarDay__Outside'));
+            return matches[occurrences - 1];
+        }
+
+        function waft(el) {
+            if (!el) return;
+            ['mouseenter', 'mouseover', 'mousemove', 'pointerenter', 'pointermove'].forEach(type => {
+                el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window }));
+            });
+        }
+
+        async function waitForElement(finderFn, timeout = 5000) {
+            const start = Date.now();
+            while (Date.now() - start < timeout) {
+                const el = finderFn();
+                if (el) return el;
+                await new Promise(r => setTimeout(r, 100));
+            }
+            return null;
+        }
+
+        function safeParseDate(dateStr) {
+            if (!dateStr) return null;
+            // Handle YYYY-MM-DD strictly as local time to avoid timezone shifts
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+                const [y, m, d] = dateStr.split('-').map(Number);
+                return new Date(y, m - 1, d);
+            }
+            return new Date(dateStr);
+        }
+
+        async function injectSavedDates(start, end) {
+            if (!start || !end || hasInjected) return;
+            hasInjected = true;
+
+            const sDate = safeParseDate(start);
+            const eDate = safeParseDate(end);
+            if (!sDate || !eDate || isNaN(sDate.getTime()) || isNaN(eDate.getTime())) return;
+
+            const startDay = sDate.getDate();
+            const endDay = eDate.getDate();
+
+            const startCell = await waitForElement(() => findCell(startDay), 5000);
+            if (startCell) {
+                waft(startCell);
+                startCell.click();
+                await new Promise(r => setTimeout(r, 200));
+
+                const sameMonth = sDate.getMonth() === eDate.getMonth();
+                if (!sameMonth) {
+                    for (let i = startDay + 1; i <= 31; i++) {
+                        const node = findCell(i);
+                        if (node) { waft(node); await new Promise(r => setTimeout(r, 10)); }
+                    }
+                }
+                const endCell = findCell(endDay, sameMonth ? 1 : 2);
+                if (endCell) {
+                    waft(endCell);
+                    endCell.click();
+                }
+            }
+        }
+
+        if (startDate && endDate) {
+            injectSavedDates(startDate, endDate);
+        }
+
+        let lastCheckIn = null;
+        let lastCheckOut = null;
+
+        const observer = new MutationObserver(() => {
+            killBookButtons();
+
+            document.querySelectorAll('button, input').forEach(btn => {
+                const text = (btn.innerText || btn.textContent || btn.value || '').toLowerCase();
+                if (text.includes('clear') && !btn.dataset.clearMonitored) {
+                    btn.dataset.clearMonitored = 'true';
+                    btn.addEventListener('click', () => {
+                        window.parent.postMessage({ type: 'hostaway-dates-cleared' }, '*');
+                    });
+                }
+            });
+
+            const text = document.body.innerText;
+            const dateRegex = /([A-Z][a-z]{2,})\s+(\d+)(?:,\s+(\d{4}))?/;
+            const inMatch = text.match(new RegExp("Check-in:\\s*" + dateRegex.source, "i"));
+            const outMatch = text.match(new RegExp("Check-out:\\s*" + dateRegex.source, "i"));
+
+            const newCheckIn = inMatch ? inMatch[1] + " " + inMatch[2] + (inMatch[3] ? ", " + inMatch[3] : "") : null;
+            const newCheckOut = outMatch ? outMatch[1] + " " + outMatch[2] + (outMatch[3] ? ", " + outMatch[3] : "") : null;
+
+            if (newCheckIn !== lastCheckIn || newCheckOut !== lastCheckOut) {
+                lastCheckIn = newCheckIn; lastCheckOut = newCheckOut;
+                if (newCheckIn || newCheckOut) {
+                    window.parent.postMessage({ type: 'hostaway-dates-updated', checkIn: newCheckIn, checkOut: newCheckOut }, '*');
+                }
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    </script>
+</body>
+
+</html>

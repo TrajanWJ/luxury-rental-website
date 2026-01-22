@@ -3,50 +3,11 @@
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Waves, Fish, Anchor, Heart, Users, Sparkles } from "lucide-react"
+import { experiences } from "@/lib/experiences-data"
 
 export default function Experiences() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
-
-  const experiences = [
-    {
-      icon: Waves,
-      title: "Boating & Water Sports",
-      description: "Private docks and boat slips for easy lake access. Enjoy wakeboarding, tubing, and jet skiing.",
-      image: "/modern-lakefront-home-dock.jpg",
-    },
-    {
-      icon: Fish,
-      title: "Fishing & Recreation",
-      description: "Smith Mountain Lake offers world-class bass fishing and peaceful kayaking adventures.",
-      image: "/cozy-lakefront-cabin-private-dock.jpg",
-    },
-    {
-      icon: Heart,
-      title: "Weddings & Celebrations",
-      description: "Host your dream lakefront wedding with stunning views and luxury accommodations.",
-      image: "/luxury-lakefront-estate-sunset-view.jpg",
-    },
-    {
-      icon: Users,
-      title: "Corporate Retreats",
-      description: "Team-building activities, conference spaces, and premium amenities for business groups.",
-      image: "/modern-luxury-living-room-lake-view.jpg",
-    },
-    {
-      icon: Sparkles,
-      title: "Family Reunions",
-      description: "Create lasting memories with spacious homes perfect for multi-generational gatherings.",
-      image: "/rustic-dining-room-wooden-beams.jpg",
-    },
-    {
-      icon: Anchor,
-      title: "Sunset Cruises",
-      description: "Experience breathtaking Smith Mountain Lake sunsets from your private waterfront.",
-      image: "/outdoor-patio-fire-pit-lake.jpg",
-    },
-  ]
 
   const containerVariants = {
     hidden: { opacity: 0 },

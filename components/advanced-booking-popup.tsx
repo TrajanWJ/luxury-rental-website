@@ -5,13 +5,12 @@ import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Calendar as CalendarIcon, Users, ArrowRight, Check, Star, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import { DateRange } from "react-day-picker"
-import { Property, properties, getMockAvailability, isDateUnavailable } from "@/lib/data"
-import { format, addDays, getDay, isSameDay } from "date-fns"
+import { Property, properties, isDateUnavailable } from "@/lib/data"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import HostawayCalendar from "./hostaway-calendar"
+import { useBookingContext } from "@/hooks/use-booking-context"
 
 
 // Helper to check if a range includes any booked dates
@@ -44,34 +43,31 @@ import { useDemo } from "@/components/demo-context"
 
 export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: AdvancedBookingPopupProps) {
     const { isDemoMode } = useDemo()
+    const globalContext = useBookingContext()
+
     const [matches, setMatches] = useState<Property[]>([])
     const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
     const [viewMode, setViewMode] = useState<"detail" | "alternatives">("detail")
     const router = useRouter()
+
+    // Sync dates from global context (strings "YYYY-MM-DD")
+    const from = globalContext.startDate ? new Date(globalContext.startDate + "T00:00:00") : undefined
+    const to = globalContext.endDate ? new Date(globalContext.endDate + "T00:00:00") : undefined
+    const dateRange = { from, to }
 
     // Filter properties based on Demo Mode
     const displayProperties = isDemoMode
         ? properties
         : properties.filter(p => !!p.hostawayId)
 
-    // State for dates
-    const [dateRange, setDateRange] = useState<DateRange | undefined>()
+    // State for guests and UI
     const [guestCount, setGuestCount] = useState(1)
-    const [isCalendarExpanded, setIsCalendarExpanded] = useState(true)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     // Reset image index when property changes
     useEffect(() => {
         setCurrentImageIndex(0)
     }, [selectedProperty])
-
-    // Auto-collapse calendar when dates are selected
-    useEffect(() => {
-        if (dateRange?.from && dateRange?.to) {
-            const timer = setTimeout(() => setIsCalendarExpanded(false), 800)
-            return () => clearTimeout(timer)
-        }
-    }, [dateRange])
 
     const nextImage = (e?: React.MouseEvent) => {
         e?.stopPropagation()
@@ -94,13 +90,11 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
             const initialGuests = parseInt(searchParams.guests) || 1
             setGuestCount(initialGuests)
 
-            // Parse dates
+            // Parse dates and update global context if they came from search params
             if (searchParams.checkIn) {
-                // handle "YYYY-MM-DD" parsing safely since new Date() can be finicky with hyphens in some browsers/locales
-                // but standard ISO "YYYY-MM-DD" usually works. Let's assume standard format from widget.
-                const from = new Date(searchParams.checkIn + "T00:00:00") // Force local time to avoid timezone shifts
-                const to = searchParams.checkOut ? new Date(searchParams.checkOut + "T00:00:00") : undefined
-                setDateRange({ from, to })
+                // If we have search params but global context is empty, or they differ, 
+                // we should update the global context. For now, we assume search params 
+                // were already piped into the context by the trigger.
             }
 
             // Filter by guests using valid display properties
@@ -146,7 +140,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-6xl bg-white/95 backdrop-blur-xl border border-white/40 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh]"
+                        className="relative w-full max-w-6xl bg-white/95 backdrop-blur-3xl border border-white/60 rounded-3xl shadow-[0_32px_128px_-16px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col md:flex-row h-[90vh]"
                     >
                         <Button
                             variant="ghost"
@@ -269,14 +263,12 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                         <Button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                if (selectedProperty?.hostawayId) {
-                                                    const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
-                                                    window.open(url, '_blank');
-                                                }
+                                                const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
+                                                window.open(url, '_blank');
                                             }}
-                                            className="flex-1 bg-white text-slate-900 hover:bg-slate-100"
+                                            className="flex-1 bg-blue-600/90 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/20 backdrop-blur-md border border-blue-400/30"
                                         >
-                                            Book Now
+                                            Booking Page
                                         </Button>
                                     </div>
                                 </>
@@ -288,126 +280,66 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         </div>
 
                         {/* RIGHT PANEL: Intelligence & Composer */}
-                        <div className="w-full md:w-2/5 flex flex-col h-full bg-white overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 overscroll-contain min-h-0">
-                            <div className="p-6 md:p-8 flex-1">
-                                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                                    <CalendarIcon className="h-5 w-5 text-blue-600" />
-                                    Availability & Options
-                                </h3>
+                        <div className="w-full md:w-2/5 flex flex-col h-full bg-white/80 backdrop-blur-xl min-h-0 border-l border-slate-100">
+                            {/* Scrollable Content Area */}
+                            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 overscroll-contain">
+                                <div className="p-6 md:p-8">
+                                    <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                                        <CalendarIcon className="h-5 w-5 text-blue-600" />
+                                        Availability & Options
+                                    </h3>
 
-                                {/* 1. Functional Calendar */}
-                                {selectedProperty?.hostawayId ? (
-                                    <div className="mb-6 rounded-2xl border border-slate-100 bg-white overflow-hidden p-4">
-                                        <HostawayCalendar listingId={selectedProperty.hostawayId} />
-                                    </div>
-                                ) : (
-                                    <div className="mb-6 rounded-2xl border border-slate-100 bg-slate-50 overflow-hidden transition-all duration-300">
-                                        <button
-                                            onClick={() => setIsCalendarExpanded(!isCalendarExpanded)}
-                                            className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 transition-colors group"
-                                        >
-                                            <div className="text-left flex items-center gap-3">
-                                                <div className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center">
-                                                    <CalendarIcon className="h-4 w-4 text-blue-600" />
-                                                </div>
-                                                <div>
-                                                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">Dates</label>
-                                                    <span className="text-sm font-semibold text-slate-900 block">
-                                                        {dateRange?.from ? format(dateRange.from, "MMM dd") : "Check-in"} — {dateRange?.to ? format(dateRange.to, "MMM dd") : "Check-out"}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className={cn("transition-transform duration-300 text-slate-300 group-hover:text-slate-500", isCalendarExpanded ? "rotate-90" : "rotate-0")}>
-                                                <ArrowRight className="h-4 w-4" />
-                                            </div>
-                                        </button>
-
-                                        <AnimatePresence initial={false} mode="wait">
-                                            {isCalendarExpanded && (
-                                                <motion.div
-                                                    key="calendar-expand"
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: "auto", opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                                                    className="overflow-hidden will-change-[height,opacity]"
-                                                >
-                                                    <div className="p-4 pt-0 border-t border-slate-100">
-                                                        <Calendar
-                                                            key={selectedProperty?.id || "default"}
-                                                            mode="range"
-                                                            selected={dateRange}
-                                                            onSelect={setDateRange}
-                                                            numberOfMonths={1}
-                                                            disabled={(date) => {
-                                                                const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
-                                                                const isBooked = isDateUnavailable(date, selectedProperty?.id || "")
-                                                                return isPast || isBooked
-                                                            }}
-                                                            modifiers={{ today: undefined }}
-                                                            modifiersClassNames={{ today: "" }}
-                                                            className="rounded-md border bg-white w-full flex justify-center p-2 mb-3 shadow-sm pointer-events-auto mt-4"
-                                                        />
-                                                        <p className="text-xs text-slate-400 text-center">
-                                                            Select start and end dates to update quote
-                                                        </p>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-
-                                        {!isCalendarExpanded && (
-                                            <div className="px-4 py-2 border-t border-slate-100 flex items-center justify-between bg-white">
-                                                <span className="text-xs font-medium text-slate-500">Total Stay</span>
-                                                <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                                                    {nights > 0 ? `${nights} Nights` : "-"}
-                                                </span>
+                                    {/* 1. Functional Calendar */}
+                                    {/* 1. Hostaway Calendar Widget */}
+                                    <div className="mb-6 rounded-2xl border border-slate-100 bg-white/50 backdrop-blur-sm overflow-hidden pb-4 flex flex-col items-center shadow-sm">
+                                        {selectedProperty?.hostawayId ? (
+                                            <HostawayCalendar key={selectedProperty.hostawayId} listingId={selectedProperty.hostawayId} />
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center h-48 text-slate-400 text-sm">
+                                                <CalendarIcon className="h-8 w-8 mb-2 opacity-20" />
+                                                <p>Calendar unavailable for this property</p>
                                             </div>
                                         )}
                                     </div>
-                                )}
 
-                                {/* 2. Guests Selection */}
-                                <div className="mb-8">
-                                    <label className="text-xs font-semibold uppercase text-slate-500 mb-3 block">Travelers</label>
-                                    <div className="flex items-center gap-4 bg-slate-50 rounded-2xl border border-slate-100 p-4">
-                                        <div className="h-12 w-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-500 shadow-sm">
-                                            <Users className="h-5 w-5" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="text-sm font-semibold text-slate-900">Number of Guests</p>
-                                            <p className="text-xs text-slate-500">Includes adults & children</p>
-                                        </div>
-                                        <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-200 p-1 shadow-sm">
-                                            <button
-                                                onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
-                                                className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-600 transition-colors"
-                                            >
-                                                -
-                                            </button>
-                                            <span className="text-sm font-semibold w-6 text-center">{guestCount}</span>
-                                            <button
-                                                onClick={() => setGuestCount(Math.min(20, guestCount + 1))}
-                                                className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-600 transition-colors"
-                                            >
-                                                +
-                                            </button>
+                                    {/* 2. Guests Selection */}
+                                    <div className="mb-8 p-1 rounded-2xl bg-slate-50/50 border border-slate-100 shadow-sm">
+                                        <div className="flex items-center gap-4 bg-white/80 backdrop-blur-sm rounded-xl p-4">
+                                            <div className="h-12 w-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm">
+                                                <Users className="h-5 w-5" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-semibold text-slate-900 tracking-tight">Number of Guests</p>
+                                                <p className="text-[11px] text-slate-500 font-medium">Includes adults & children</p>
+                                            </div>
+                                            <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-200 p-1 shadow-sm">
+                                                <button
+                                                    onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
+                                                    className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-600 transition-colors"
+                                                >
+                                                    -
+                                                </button>
+                                                <span className="text-sm font-semibold w-6 text-center">{guestCount}</span>
+                                                <button
+                                                    onClick={() => setGuestCount(Math.min(20, guestCount + 1))}
+                                                    className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-600 transition-colors"
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* 3. Alternative Options (Mini List) */}
-                                <div className="space-y-4">
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Available Residences</label>
-                                            <span className="text-xs text-slate-400">{matches.length} found</span>
-                                        </div>
-                                        <div className="space-y-3 pb-4">
-                                            {/* Render Available Properties */}
-                                            {matches
-                                                .filter(p => checkAvailability(p.id, dateRange?.from, dateRange?.to))
-                                                .map(prop => (
+                                    {/* 3. Alternative Options (Mini List) */}
+                                    <div className="space-y-4 pb-6">
+                                        <div className="space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Our Residences</label>
+                                                <span className="text-xs text-slate-400">{matches.length} found</span>
+                                            </div>
+                                            <div className="space-y-3">
+                                                {/* Render All Properties */}
+                                                {matches.map(prop => (
                                                     <button
                                                         key={prop.id}
                                                         onClick={() => setSelectedProperty(prop)}
@@ -441,78 +373,44 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                         </div>
                                                     </button>
                                                 ))}
-
-                                            {/* Render Unavailable Properties */}
-                                            {matches
-                                                .filter(p => !checkAvailability(p.id, dateRange?.from, dateRange?.to))
-                                                .length > 0 && (
-                                                    <>
-                                                        <div className="pt-4 pb-2">
-                                                            <div className="h-px bg-slate-100 w-full" />
-                                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider text-center mt-4">
-                                                                Not available on these dates
-                                                            </p>
-                                                        </div>
-                                                        {matches
-                                                            .filter(p => !checkAvailability(p.id, dateRange?.from, dateRange?.to))
-                                                            .map(prop => (
-                                                                <button
-                                                                    key={prop.id}
-                                                                    onClick={() => setSelectedProperty(prop)}
-                                                                    className={cn(
-                                                                        "flex gap-4 p-3 rounded-2xl w-full text-left border relative overflow-hidden transition-all",
-                                                                        selectedProperty?.id === prop.id
-                                                                            ? "bg-slate-100 border-slate-300 ring-1 ring-slate-200" // selected state for unavailable
-                                                                            : "bg-slate-50 border-slate-100 opacity-60 hover:opacity-80" // default unavailable state
-                                                                    )}
-                                                                >
-                                                                    <div className="relative h-20 w-24 rounded-xl overflow-hidden shrink-0 shadow-sm opacity-80 grayscale">
-                                                                        <Image src={prop.image} alt={prop.name} fill className="object-cover" />
-                                                                    </div>
-                                                                    <div className="flex-1 py-1 grayscale opacity-70">
-                                                                        <div className="flex justify-between items-start">
-                                                                            <h4 className="font-bold text-base text-slate-500 line-through decoration-slate-400">{prop.name}</h4>
-                                                                            {selectedProperty?.id === prop.id && (
-                                                                                <div className="h-5 w-5 rounded-full bg-slate-400 flex items-center justify-center shadow-sm -mr-1 -mt-1">
-                                                                                    <Check className="h-3 w-3 text-white" />
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                        <p className="text-xs text-slate-400 line-clamp-1 mt-1 mb-2">{prop.teaser || prop.description}</p>
-                                                                        <div className="flex items-center gap-3 text-xs font-medium text-slate-400">
-                                                                            <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {prop.sleeps}</span>
-                                                                            <span className="flex items-center gap-1"><Info className="h-3 w-3" /> {prop.bedrooms} BD</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </button>
-                                                            ))}
-                                                    </>
-                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Sticky Footer */}
-                            <div className="p-6 border-t border-slate-100 bg-slate-50/50">
+                            {/* Sticky Footer - Always Visible */}
+                            <div className="p-6 border-t border-slate-100 bg-white shadow-lg">
                                 <div className="flex gap-3">
+
                                     <Button
-                                        variant="outline"
-                                        className="flex-1 h-12 rounded-xl text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
-                                    >
-                                        Share Quote
-                                    </Button>
-                                    <Button
-                                        disabled={!selectedProperty || !checkAvailability(selectedProperty.id, dateRange?.from, dateRange?.to)}
+                                        disabled={!selectedProperty}
                                         className="flex-1 md:flex-[2] h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
                                         onClick={() => {
                                             if (selectedProperty?.hostawayId) {
-                                                const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
+                                                let url = `https://wilson-premier.holidayfuture.com/checkout/${selectedProperty.hostawayId}`;
+
+                                                if (globalContext.startDate && globalContext.endDate) {
+                                                    // Ensure we have correct ISO format YYYY-MM-DD for the link
+                                                    const formatToISO = (dateStr: string) => {
+                                                        const d = new Date(dateStr + (dateStr.includes('T') ? '' : 'T00:00:00'));
+                                                        if (isNaN(d.getTime())) return dateStr; // Fallback if parsing fails
+                                                        const y = d.getFullYear();
+                                                        const m = String(d.getMonth() + 1).padStart(2, '0');
+                                                        const day = String(d.getDate()).padStart(2, '0');
+                                                        return `${y}-${m}-${day}`;
+                                                    };
+
+                                                    const start = formatToISO(globalContext.startDate);
+                                                    const end = formatToISO(globalContext.endDate);
+                                                    url += `?start=${start}&end=${end}&numberOfGuests=${guestCount}`;
+                                                }
+
                                                 window.open(url, '_blank');
                                             }
                                         }}
                                     >
-                                        {!selectedProperty || !checkAvailability(selectedProperty.id, dateRange?.from, dateRange?.to) ? "Dates Unavailable" : "Proceed to Booking"}
+                                        {!selectedProperty ? "Choose Residence" : "Book Now"}
                                     </Button>
                                 </div>
                                 <p className="text-center text-[10px] text-slate-400 mt-3">

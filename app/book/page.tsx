@@ -8,37 +8,32 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarIcon, Users, MapPin, CreditCard, Lock, Check, ArrowLeft, ChevronDown } from "lucide-react"
-import { properties, isDateUnavailable } from "@/lib/data"
+import { properties } from "@/lib/data"
 import { format } from "date-fns"
-import { DateRange } from "react-day-picker"
 import { cn } from "@/lib/utils"
 
 import { useDemo } from "@/components/demo-context"
+import { useBookingContext } from "@/hooks/use-booking-context"
+import HostawayCalendar from "@/components/hostaway-calendar"
 
 function BookContent() {
     const { isDemoMode } = useDemo()
     const searchParams = useSearchParams()
     const router = useRouter()
+    const globalContext = useBookingContext()
 
     // Get booking details from URL params or set defaults
     const [selectedPropertyName, setSelectedPropertyName] = useState(searchParams.get("property") || "")
-    const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
-        const checkIn = searchParams.get("checkIn")
-        const checkOut = searchParams.get("checkOut")
-        if (checkIn && checkOut) {
-            return {
-                from: new Date(checkIn),
-                to: new Date(checkOut)
-            }
-        }
-        return undefined
-    })
     const [guestCount, setGuestCount] = useState(parseInt(searchParams.get("guests") || "2"))
 
+    // Sync global context to component state
+    const checkIn = globalContext.startDate
+    const checkOut = globalContext.endDate
+
     const property = properties.find(p => p.name === selectedPropertyName)
+    const activeHostawayId = property?.hostawayId || "466648"
 
     // Filter properties based on Demo Mode
     const displayProperties = isDemoMode
@@ -58,12 +53,7 @@ function BookContent() {
     })
 
     // Calculate nights and total (demo pricing)
-    const calculateNights = () => {
-        if (!dateRange?.from || !dateRange?.to) return 0
-        return Math.ceil((dateRange.to.getTime() - dateRange.from.getTime()) / (1000 * 60 * 60 * 24))
-    }
-
-    const nights = calculateNights()
+    const nights = (checkIn && checkOut) ? Math.ceil((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / (1000 * 60 * 60 * 24)) : 0
     const pricePerNight = property ? (property.bedrooms * 150 + property.sleeps * 50) : 500
     const subtotal = nights * pricePerNight
     const cleaningFee = 150
@@ -84,16 +74,16 @@ function BookContent() {
 
     // Update URL when booking details change
     useEffect(() => {
-        if (selectedPropertyName && dateRange?.from && dateRange?.to) {
+        if (selectedPropertyName && checkIn && checkOut) {
             const params = new URLSearchParams({
                 property: selectedPropertyName,
-                checkIn: format(dateRange.from, "yyyy-MM-dd"),
-                checkOut: format(dateRange.to, "yyyy-MM-dd"),
+                checkIn: checkIn,
+                checkOut: checkOut,
                 guests: guestCount.toString()
             })
             router.replace(`/book?${params.toString()}`, { scroll: false })
         }
-    }, [selectedPropertyName, dateRange, guestCount, router])
+    }, [selectedPropertyName, checkIn, checkOut, guestCount, router])
 
     if (paymentStep === "confirmation") {
         return (
@@ -133,11 +123,11 @@ function BookContent() {
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-slate-600">Check-in</span>
-                                    <span className="font-semibold">{dateRange?.from ? format(dateRange.from, "MMM dd, yyyy") : "-"}</span>
+                                    <span className="font-semibold">{checkIn || "-"}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-slate-600">Check-out</span>
-                                    <span className="font-semibold">{dateRange?.to ? format(dateRange.to, "MMM dd, yyyy") : "-"}</span>
+                                    <span className="font-semibold">{checkOut || "-"}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-slate-600">Guests</span>
@@ -209,38 +199,27 @@ function BookContent() {
                                         variant="outline"
                                         className={cn(
                                             "w-full h-12 justify-start text-left font-normal bg-white border-slate-200",
-                                            !dateRange && "text-slate-500"
+                                            !checkIn && "text-slate-500"
                                         )}
                                     >
                                         <CalendarIcon className="mr-2 h-4 w-4" />
-                                        {dateRange?.from ? (
-                                            dateRange.to ? (
+                                        {checkIn ? (
+                                            checkOut ? (
                                                 <>
-                                                    {format(dateRange.from, "MMM dd")} - {format(dateRange.to, "MMM dd, yyyy")}
+                                                    {checkIn} - {checkOut}
                                                 </>
                                             ) : (
-                                                format(dateRange.from, "MMM dd, yyyy")
+                                                checkIn
                                             )
                                         ) : (
                                             <span>Select dates</span>
                                         )}
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0" align="start">
-                                    <Calendar
-                                        mode="range"
-                                        selected={dateRange}
-                                        onSelect={setDateRange}
-                                        numberOfMonths={2}
-                                        disabled={(date) => {
-                                            const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
-                                            const isBooked = property ? isDateUnavailable(date, property.id) : false
-                                            return isPast || isBooked
-                                        }}
-                                        modifiers={{ today: undefined }}
-                                        modifiersClassNames={{ today: "" }}
-                                        className="rounded-md border bg-white"
-                                    />
+                                <PopoverContent className="w-auto p-4" align="start">
+                                    <div className="min-w-[320px]">
+                                        <HostawayCalendar listingId={activeHostawayId} />
+                                    </div>
                                 </PopoverContent>
                             </Popover>
                         </div>
@@ -267,7 +246,7 @@ function BookContent() {
                             <span className="font-semibold">⚠</span> Please select a property to continue
                         </p>
                     )}
-                    {property && (!dateRange?.from || !dateRange?.to) && (
+                    {property && (!checkIn || !checkOut) && (
                         <p className="text-sm text-amber-600 mt-4 flex items-center gap-2">
                             <span className="font-semibold">⚠</span> Please select check-in and check-out dates
                         </p>
@@ -404,7 +383,7 @@ function BookContent() {
                                     type="submit"
                                     size="lg"
                                     className="w-full h-14 text-base font-semibold"
-                                    disabled={!property || !dateRange?.from || !dateRange?.to}
+                                    disabled={!property || !checkIn || !checkOut}
                                 >
                                     {paymentStep === "details" ? "Continue to Payment" : "Complete Booking"}
                                 </Button>
@@ -432,8 +411,8 @@ function BookContent() {
                                         <div className="flex items-center gap-2 text-sm text-slate-600">
                                             <CalendarIcon className="h-4 w-4" />
                                             <span>
-                                                {dateRange?.from && dateRange?.to ? (
-                                                    `${format(dateRange.from, "MMM dd")} - ${format(dateRange.to, "MMM dd")}`
+                                                {checkIn && checkOut ? (
+                                                    `${checkIn} - ${checkOut}`
                                                 ) : "Dates not selected"}
                                             </span>
                                         </div>

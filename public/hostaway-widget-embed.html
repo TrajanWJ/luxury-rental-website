@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+
+        /* Hide the default booking summary/button if we want to use our own */
+        .hostaway_booking_summary {
+            display: none !important;
+        }
+
+        /* Custom Clear Dates Button */
+        #clear-dates-btn {
+            display: none;
+            /* Hidden by default, shown via JS when dates selected */
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+        }
+
+        #clear-dates-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        #clear-dates-btn svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Container for Hostaway Widget -->
+    <div id="hostaway-container"></div>
+
+    <button id="clear-dates-btn" onclick="clearDates()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Clear Dates
+    </button>
+
+    <script>
+        // Communications with Parent Window
+        window.addEventListener('message', function(event) {
+            if (event.data === 'clear-dates') {
+                clearDates();
+            }
+        });
+
+        function clearDates() {
+            // Logic to clear the Hostaway widget dates
+            // This usually involves reloading the widget or triggering its internal clear method if available
+            // For this implementation, we'll notify the parent and reload logic
+            const btn = document.getElementById('clear-dates-btn');
+            btn.style.display = 'none';
+            
+            // Dispatch event to parent to handle state reset if needed
+            window.parent.postMessage({ type: 'dates-cleared' }, '*');
+            
+            // Reload logic or API call to Hostaway would go here
+            console.log("Dates cleared");
+            
+            // If using standard Hostaway widget, we might just reload the iframe or use their JS API
+            // window.location.reload(); // Simple brute force reset
+        }
+
+        // Show button when dates are selected (simulation or hook)
+        // In real integration, we listen to widget events
+        function showClearButton() {
+            const btn = document.getElementById('clear-dates-btn');
+            if(btn) btn.style.display = 'flex';
+        }
+        
+        // Expose to global scope for widget callbacks
+        window.showClearButton = showClearButton;
+    </script>
+</body>
+
+</html>

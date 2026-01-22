@@ -8,11 +8,11 @@ import { Search, Users, Bed, Bath, Calendar, Sparkles, Mountain, Waves, TreePine
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { PropertyModal } from "@/components/property-modal"
-import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { useBookingContext } from "@/hooks/use-booking-context"
+import HostawayCalendar from "@/components/hostaway-calendar"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
-import { DateRange } from "react-day-picker"
 
 const MapView = dynamic(() => import("@/components/map-view"), {
     ssr: false,
@@ -92,10 +92,13 @@ export default function MapPage() {
     const [activeMarker, setActiveMarker] = useState<Property | null>(null)
     const [modalProperty, setModalProperty] = useState<Property | null>(null)
     const [experienceMode, setExperienceMode] = useState<ExperienceMode>("all")
-    const [dateRange, setDateRange] = useState<DateRange | undefined>()
+    const globalContext = useBookingContext()
     const [showExperiences, setShowExperiences] = useState(false)
     const [activeExperience, setActiveExperience] = useState<Experience | null>(null)
     const [propertiesPanelCollapsed, setPropertiesPanelCollapsed] = useState(false)
+
+    const checkIn = globalContext.startDate
+    const checkOut = globalContext.endDate
 
     const filteredAndSortedProperties = useMemo(() => {
         let filtered = properties.filter(p =>
@@ -111,10 +114,10 @@ export default function MapPage() {
             filtered = filtered.filter(p => p.amenities.some(a => a.toLowerCase().includes("golf") || a.toLowerCase().includes("bowling") || a.toLowerCase().includes("theater")))
         }
 
-        if (dateRange?.from && dateRange?.to) {
+        if (checkIn && checkOut) {
             filtered.sort((a, b) => {
-                const aAvailable = checkAvailability(a.id, dateRange.from, dateRange.to)
-                const bAvailable = checkAvailability(b.id, dateRange.from, dateRange.to)
+                const aAvailable = checkAvailability(a.id, new Date(checkIn), new Date(checkOut))
+                const bAvailable = checkAvailability(b.id, new Date(checkIn), new Date(checkOut))
                 if (aAvailable && !bAvailable) return -1
                 if (!aAvailable && bAvailable) return 1
                 return 0
@@ -122,12 +125,12 @@ export default function MapPage() {
         }
 
         return filtered
-    }, [searchQuery, experienceMode, dateRange])
+    }, [searchQuery, experienceMode, checkIn, checkOut])
 
     const availableCount = useMemo(() => {
-        if (!dateRange?.from || !dateRange?.to) return filteredAndSortedProperties.length
-        return filteredAndSortedProperties.filter(p => checkAvailability(p.id, dateRange.from, dateRange.to)).length
-    }, [filteredAndSortedProperties, dateRange])
+        if (!checkIn || !checkOut) return filteredAndSortedProperties.length
+        return filteredAndSortedProperties.filter(p => checkAvailability(p.id, new Date(checkIn), new Date(checkOut))).length
+    }, [filteredAndSortedProperties, checkIn, checkOut])
 
     const experienceModes = [
         { id: "all" as const, label: "All", icon: Sparkles },
@@ -301,40 +304,36 @@ export default function MapPage() {
                                             variant="outline"
                                             className={cn(
                                                 "w-full h-12 justify-start text-left font-normal bg-white/10 border-white/20 text-white hover:bg-white/15 rounded-xl",
-                                                !dateRange && "text-white/60"
+                                                !checkIn && "text-white/60"
                                             )}
                                         >
                                             <Calendar className="mr-2 h-4 w-4" />
-                                            {dateRange?.from ? (
-                                                dateRange.to ? (
+                                            {checkIn ? (
+                                                checkOut ? (
                                                     <>
-                                                        {format(dateRange.from, "MMM dd")} - {format(dateRange.to, "MMM dd")}
+                                                        {checkIn} - {checkOut}
                                                     </>
                                                 ) : (
-                                                    format(dateRange.from, "MMM dd")
+                                                    checkIn
                                                 )
                                             ) : (
                                                 <span>Select dates</span>
                                             )}
-                                            {dateRange?.from && (
+                                            {checkIn && (
                                                 <X
                                                     className="ml-auto h-4 w-4"
                                                     onClick={(e) => {
                                                         e.stopPropagation()
-                                                        setDateRange(undefined)
+                                                            ; (window as any).clearContext();
                                                     }}
                                                 />
                                             )}
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0" align="start">
-                                        <CalendarComponent
-                                            mode="range"
-                                            selected={dateRange}
-                                            onSelect={setDateRange}
-                                            numberOfMonths={1}
-                                            disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                                        />
+                                    <PopoverContent className="w-auto p-4 bg-slate-900 border border-white/10 shadow-2xl rounded-2xl" align="start">
+                                        <div className="min-w-[320px]">
+                                            <HostawayCalendar listingId={activeMarker?.hostawayId || "466648"} />
+                                        </div>
                                     </PopoverContent>
                                 </Popover>
 
@@ -362,8 +361,8 @@ export default function MapPage() {
 
                             <div className="flex-1 overflow-y-auto p-6 space-y-4">
                                 {filteredAndSortedProperties.map((property) => {
-                                    const isAvailable = dateRange?.from && dateRange?.to
-                                        ? checkAvailability(property.id, dateRange.from, dateRange.to)
+                                    const isAvailable = checkIn && checkOut
+                                        ? checkAvailability(property.id, new Date(checkIn), new Date(checkOut))
                                         : true
 
                                     return (
@@ -456,7 +455,7 @@ export default function MapPage() {
                 <div className="flex-1 relative bg-slate-900">
                     <MapView
                         properties={filteredAndSortedProperties.filter(p =>
-                            !dateRange?.from || !dateRange?.to || checkAvailability(p.id, dateRange.from, dateRange.to)
+                            !checkIn || !checkOut || checkAvailability(p.id, new Date(checkIn), new Date(checkOut))
                         )}
                         activeMarker={activeMarker}
                         onMarkerClick={setActiveMarker}

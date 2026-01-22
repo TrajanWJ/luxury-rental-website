@@ -1,132 +1,130 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import Script from "next/script"
-import { Calendar } from "@/components/ui/calendar"
-import { Button } from "@/components/ui/button"
-import { isDateUnavailable } from "@/lib/data"
-import { AlertCircle } from "lucide-react"
+import { useBookingContext } from "@/hooks/use-booking-context"
+import { useMemo, useState, useEffect, useRef } from "react"
+import { Loader2 } from "lucide-react"
 
 interface HostawayCalendarProps {
-    listingId: string
-    baseUrl?: string
+    listingId: string | number
 }
 
-export default function HostawayCalendar({
-    listingId,
-    baseUrl = "https://wilson-premier.holidayfuture.com/"
-}: HostawayCalendarProps) {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const [useDemo, setUseDemo] = useState(false)
-    const [date, setDate] = useState<Date | undefined>(new Date())
+/**
+ * HostawayCalendar Component - Premium Glossy Implementation
+ * --------------------------------------------------------
+ * Latches saved dates on mount, prevents reloads, and provides a stunning
+ * glassmorphism loading experience that matches the site's premium theme.
+ */
+export default function HostawayCalendar({ listingId }: HostawayCalendarProps) {
+    const globalContext = useBookingContext()
 
-    const checkWidgetSuccess = () => {
-        // Only switch to demo if we haven't already
-        if (useDemo) return
+    // Stable state for simulation parameters
+    const [stableDates, setStableDates] = useState<{ start: string | null, end: string | null } | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const hasAttemptedLatch = useRef(false)
 
-        // Check if container has content injected by Hostaway
-        if (containerRef.current) {
-            const widgetDiv = containerRef.current.querySelector('#hostaway-calendar-widget')
-            // If the widget div is empty or doesn't have significant content (height?), assume failure
-            // Hostaway usually injects an iframe or substantial HTML
-            if (widgetDiv && widgetDiv.children.length === 0) {
-                console.log("Hostaway widget empty, switching to Demo mode")
-                setUseDemo(true)
-            }
-        }
-    }
-
-    const initWidget = () => {
-        if (typeof window !== 'undefined' && (window as any).hostawayCalendarWidget && containerRef.current) {
-            // Clear container in case of re-renders but keep the target div
-            containerRef.current.innerHTML = '<div id="hostaway-calendar-widget"></div>'
-
-            try {
-                (window as any).hostawayCalendarWidget({
-                    baseUrl: baseUrl,
-                    listingId: listingId,
-                    numberOfMonths: 2,
-                    openInNewTab: true,
-                    font: 'Inter, sans-serif',
-                    rounded: true,
-                    button: {
-                        action: 'checkout',
-                        text: 'Book Stay',
-                    },
-                    clearButtonText: 'Clear dates',
-                    color: {
-                        mainColor: '#2563eb', // blue-600
-                        frameColor: '#f1f5f9', // slate-100
-                        textColor: '#0f172a', // slate-900
-                    },
-                })
-            } catch (e) {
-                console.error("Hostaway widget init failed:", e)
-                setUseDemo(true)
-            }
-
-            // Check for success after a delay (give it time to fetch settings)
-            setTimeout(checkWidgetSuccess, 3000)
-        }
-    }
-
+    // Effect: Capture initial dates once per mount
     useEffect(() => {
-        // Global timeout: if nothing happens in 4 seconds, force demo
-        // This handles cases where the script loads but init fails silently or network blocks API
-        const safetyTimer = setTimeout(() => {
-            if (containerRef.current) {
-                const widgetDiv = containerRef.current.querySelector('#hostaway-calendar-widget')
-                if (!widgetDiv || widgetDiv.children.length === 0) {
-                    setUseDemo(true)
+        if (hasAttemptedLatch.current) return;
+
+        if (globalContext.startDate && globalContext.endDate) {
+            setStableDates({
+                start: globalContext.startDate,
+                end: globalContext.endDate
+            });
+            hasAttemptedLatch.current = true;
+        } else {
+            const timeout = setTimeout(() => {
+                if (!hasAttemptedLatch.current) {
+                    setStableDates({
+                        start: globalContext.startDate || null,
+                        end: globalContext.endDate || null
+                    });
+                    hasAttemptedLatch.current = true;
+                }
+            }, 50);
+            return () => clearTimeout(timeout);
+        }
+    }, [globalContext.startDate, globalContext.endDate, listingId]);
+
+    // (Reset logic handled by key={listingId} in parent)
+
+    // Snappy loading delays
+    useEffect(() => {
+        if (!stableDates) return;
+        const hasDates = !!(stableDates.start && stableDates.end);
+        // Optimized: 300ms (sim), 50ms (blank)
+        const delay = hasDates ? 300 : 50;
+
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, delay);
+
+        return () => clearTimeout(timer);
+    }, [stableDates]);
+
+    // State Sync Listener
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data?.type === 'hostaway-dates-cleared') {
+                if (typeof window !== 'undefined') {
+                    const emptyState = { startDate: null, endDate: null };
+                    (window as any).bookingContext = emptyState;
+                    localStorage.setItem('bookingContext', JSON.stringify(emptyState));
+                    window.dispatchEvent(new CustomEvent('bookingContextUpdated', { detail: emptyState }));
                 }
             }
-        }, 4000)
-
-        // Try to init if script is already cached/loaded
-        if (typeof window !== 'undefined' && (window as any).hostawayCalendarWidget) {
-            initWidget()
         }
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    }, []);
 
-        return () => clearTimeout(safetyTimer)
-    }, [listingId])
+    const embedUrl = useMemo(() => {
+        if (!stableDates) return "";
+        const start = stableDates.start || "";
+        const end = stableDates.end || ""
+        return `/hostaway-embed.html?listingId=${listingId}${start ? `&start=${start}` : ""}${end ? `&end=${end}` : ""}`
+    }, [listingId, stableDates]);
 
-    if (useDemo) {
+    if (!stableDates) {
         return (
-            <div className="border border-slate-200 rounded-3xl bg-white p-6 shadow-sm">
-                <div className="flex items-center gap-2 bg-amber-50 text-amber-700 px-4 py-3 rounded-xl mb-6 text-xs font-bold uppercase tracking-wide border border-amber-100">
-                    <AlertCircle className="h-4 w-4" />
-                    DEMO / Not Connected to Hostaway
-                </div>
-
-                <div className="flex flex-col items-center">
-                    <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        disabled={(d) => isDateUnavailable(d, listingId)}
-                        className="rounded-xl border border-slate-100 mb-6 bg-slate-50/50"
-                    />
-                    <Button
-                        disabled
-                        className="w-full bg-slate-900 text-white hover:bg-slate-800 rounded-xl h-12 font-semibold"
-                    >
-                        Check Availability (Demo)
-                    </Button>
-                </div>
+            <div className="w-[360px] h-[420px] bg-white flex items-center justify-center rounded-2xl shadow-xl">
+                <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
             </div>
-        )
+        );
     }
 
     return (
-        <>
-            <Script
-                src="https://d2q3n06xhbi0am.cloudfront.net/calendar.js"
-                onLoad={initWidget}
-                onError={() => setUseDemo(true)}
-            />
-            <div ref={containerRef} className="hostaway-calendar-container min-h-[400px]">
-                <div id="hostaway-calendar-widget"></div>
+        <div className="w-[360px] relative h-[420px] bg-white rounded-2xl overflow-hidden">
+            {/* Glossy Loading Overlay - Premium Design */}
+            <div
+                className={`absolute inset-0 z-20 bg-white/60 backdrop-blur-md flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${isLoading ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'}`}
+            >
+                {/* Circular Glass Container for Spinner */}
+                <div className="relative flex items-center justify-center">
+                    <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full scale-150 animate-pulse" />
+                    <div className="relative bg-white/80 backdrop-blur-xl p-6 rounded-full shadow-[0_8px_32px_rgba(37,99,235,0.15)] border border-white/50">
+                        <Loader2 className="h-10 w-10 text-blue-600 animate-spin" />
+                    </div>
+                </div>
+
+                {/* Text Styling following the Site Theme */}
+                <div className="mt-6 flex flex-col items-center gap-1">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600/80">
+                        Wilson Premier
+                    </span>
+                    <span className="text-[13px] font-medium text-slate-600">
+                        Syncing availability...
+                    </span>
+                </div>
             </div>
-        </>
+
+            <iframe
+                src={embedUrl}
+                className={`w-full h-full border-0 bg-white block transition-transform duration-700 ${isLoading ? 'scale-95 blur-sm' : 'scale-100 blur-0'}`}
+                title="Hostaway Calendar"
+                scrolling="no"
+                key={listingId}
+            />
+        </div>
     )
 }
