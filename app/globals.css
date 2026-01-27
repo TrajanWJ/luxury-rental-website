@@ -4,32 +4,61 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Deep blue primary with gold accents for luxury lakefront theme */
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.2 0.02 240);
+  /* Brand Colors from Style Guide */
+  --background: oklch(0.96 0.01 240);
+  /* Linen-ish for light mode background, using variable for consistency */
+  --foreground: oklch(0.2 0 0);
+  /* Charcoal */
+
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.02 240);
+  --card-foreground: oklch(0.2 0 0);
+
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.02 240);
-  --primary: oklch(0.35 0.12 240);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.65 0.15 85);
-  --secondary-foreground: oklch(0.2 0.02 240);
-  --muted: oklch(0.96 0.01 240);
-  --muted-foreground: oklch(0.55 0.02 240);
-  --accent: oklch(0.65 0.15 85);
-  --accent-foreground: oklch(0.2 0.02 240);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.9 0.01 240);
-  --input: oklch(0.9 0.01 240);
-  --ring: oklch(0.35 0.12 240);
-  --chart-1: oklch(0.35 0.12 240);
-  --chart-2: oklch(0.65 0.15 85);
-  --chart-3: oklch(0.55 0.08 200);
-  --chart-4: oklch(0.75 0.1 260);
-  --chart-5: oklch(0.45 0.1 220);
+  --popover-foreground: oklch(0.2 0 0);
+
+  /* Primary: Rust #9D5F36 */
+  --primary: oklch(0.48 0.14 55);
+  --primary-foreground: oklch(0.98 0.01 240);
+  /* Linen */
+
+  /* Secondary: Taupe - Refined to 'Greige' / Stone (No Yellow) */
+  /* Old: #C8B6A6 */
+  /* New: #9C9A96 */
+  --secondary: oklch(0.70 0.02 90);
+  --secondary-foreground: oklch(0.2 0 0);
+
+  /* Accent: Ruby #AD1D23 */
+  --accent: oklch(0.45 0.2 25);
+  --accent-foreground: oklch(0.98 0 0);
+
+  --muted: oklch(0.92 0.01 240);
+  /* Lighter Linen */
+  --muted-foreground: oklch(0.4 0 0);
+  /* Light Charcoal */
+
+  --destructive: oklch(0.45 0.2 25);
+  /* Ruby */
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.85 0.02 240);
+  --input: oklch(0.85 0.02 240);
+  --ring: oklch(0.48 0.14 55);
+  /* Rust */
+
   --radius: 0.75rem;
+
+  /* Custom Brand Variables */
+  --color-linen: #EBEBE8;
+  /* Cooler Linen */
+  --color-taupe: #9C9A96;
+  /* Stone Greige */
+  --color-rust: #9D5F36;
+  --color-charcoal: #2B2B2B;
+  --color-ruby: #AD1D23;
+  --color-navy: #202B54;
+  --color-forest: #337D58;
+
+  /* Sidebar defaults */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -41,30 +70,39 @@
 }
 
 .dark {
-  --background: oklch(0.15 0.02 240);
-  --foreground: oklch(0.99 0 0);
-  --card: oklch(0.18 0.02 240);
-  --card-foreground: oklch(0.99 0 0);
-  --popover: oklch(0.18 0.02 240);
-  --popover-foreground: oklch(0.99 0 0);
-  --primary: oklch(0.55 0.15 240);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.25 0.02 240);
-  --secondary-foreground: oklch(0.99 0 0);
-  --muted: oklch(0.25 0.02 240);
-  --muted-foreground: oklch(0.65 0.02 240);
-  --accent: oklch(0.65 0.15 85);
-  --accent-foreground: oklch(0.15 0.02 240);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.25 0.02 240);
-  --input: oklch(0.25 0.02 240);
-  --ring: oklch(0.55 0.15 240);
-  --chart-1: oklch(0.55 0.15 240);
-  --chart-2: oklch(0.65 0.15 85);
-  --chart-3: oklch(0.6 0.12 200);
-  --chart-4: oklch(0.75 0.1 260);
-  --chart-5: oklch(0.5 0.12 220);
+  /* Dark Mode: Charcoal Background */
+  --background: oklch(0.2 0 0);
+  /* Charcoal */
+  --foreground: oklch(0.96 0.01 240);
+  /* Linen */
+
+  --card: oklch(0.25 0 0);
+  --card-foreground: oklch(0.96 0.01 240);
+
+  --popover: oklch(0.25 0 0);
+  --popover-foreground: oklch(0.96 0.01 240);
+
+  /* Primary: Rust */
+  --primary: oklch(0.48 0.14 55);
+  --primary-foreground: oklch(0.96 0.01 240);
+
+  /* Secondary: Taupe */
+  --secondary: oklch(0.76 0.05 65);
+  --secondary-foreground: oklch(0.2 0 0);
+
+  --muted: oklch(0.3 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+
+  --accent: oklch(0.3 0 0);
+  --accent-foreground: oklch(0.96 0.01 240);
+
+  --destructive: oklch(0.45 0.2 25);
+  --destructive-foreground: oklch(0.96 0.01 240);
+
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.3 0 0);
+  --ring: oklch(0.48 0.14 55);
+
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -95,29 +133,30 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Brand Colors Extracted */
+  --color-brand-linen: var(--color-linen);
+  --color-brand-taupe: var(--color-taupe);
+  --color-brand-rust: var(--color-rust);
+  --color-brand-charcoal: var(--color-charcoal);
+  --color-brand-ruby: var(--color-ruby);
+  --color-brand-navy: var(--color-navy);
+  --color-brand-forest: var(--color-forest);
+
+  /* Fonts */
+  --font-serif: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -131,7 +170,8 @@
 /* Adding smooth scroll behavior */
 html {
   scroll-behavior: smooth;
-  font-size: 96%; /* Subtle zoom out effect */
+  font-size: 96%;
+  /* Subtle zoom out effect */
 }
 
 /* Remove today highlighting in calendar */

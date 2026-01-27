@@ -12,14 +12,16 @@ interface PropertyPanelProps {
     image: string
     position?: string
     matterportUrl?: string
+    videoUrl?: string
   }
   index: number
   total: number
   onClick: () => void
   on3DClick?: (e: React.MouseEvent) => void
+  onVideoClick?: (e: React.MouseEvent) => void
 }
 
-export function PropertyPanel({ property, index, total, onClick, on3DClick }: PropertyPanelProps) {
+export function PropertyPanel({ property, index, total, onClick, on3DClick, onVideoClick }: PropertyPanelProps) {
   const container = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -89,6 +91,18 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick }: Pr
             >
               Explore Property
             </Button>
+            {property.videoUrl && (
+              <Button
+                size="lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onVideoClick?.(e);
+                }}
+                className="bg-white text-blue-600 hover:bg-slate-50 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
+              >
+                Video Preview
+              </Button>
+            )}
             {property.matterportUrl && (
               <Button
                 size="lg"

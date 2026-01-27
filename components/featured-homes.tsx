@@ -54,17 +54,17 @@ export default function FeaturedHomes() {
 
   return (
     <>
-      <section ref={sectionRef} className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white overflow-hidden">
+      <section ref={sectionRef} className="py-16 md:py-24 bg-gradient-to-b from-[var(--color-brand-linen)] to-background overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
             <h2
-              className={`text-4xl md:text-5xl font-bold text-slate-900 mb-4 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`text-4xl md:text-5xl font-bold text-foreground mb-4 transition-all duration-1000 font-serif ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
             >
               Signature Lakefront Homes
             </h2>
             <p
-              className={`text-lg text-slate-600 max-w-2xl mx-auto transition-all duration-1000 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`text-lg text-muted-foreground/80 max-w-2xl mx-auto transition-all duration-1000 delay-100 font-sans ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
             >
               Discover our exclusive collection of luxury vacation homes at Smith Mountain Lake
@@ -72,30 +72,10 @@ export default function FeaturedHomes() {
           </div>
 
           <div className="relative">
-            {/* Desktop Navigation Buttons */}
-            <div className="hidden md:block">
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 rounded-full bg-white/90 backdrop-blur-sm border-slate-200 shadow-lg hover:bg-white hover:scale-110 transition-all"
-                onClick={() => scroll("left")}
-              >
-                <ChevronLeft className="h-6 w-6 text-slate-700" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 rounded-full bg-white/90 backdrop-blur-sm border-slate-200 shadow-lg hover:bg-white hover:scale-110 transition-all"
-                onClick={() => scroll("right")}
-              >
-                <ChevronRight className="h-6 w-6 text-slate-700" />
-              </Button>
-            </div>
-
             {/* Carousel Container */}
             <div
               ref={scrollContainerRef}
-              className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth pb-4"
+              className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth pb-12"
               style={{
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
@@ -117,6 +97,26 @@ export default function FeaturedHomes() {
                   />
                 </div>
               ))}
+            </div>
+
+            {/* Navigation Buttons - Centered and Downwards */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-4 z-10">
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border-white/10 shadow-lg text-foreground hover:scale-105 transition-all w-10 h-10"
+                onClick={() => scroll("left")}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border-white/10 shadow-lg text-foreground hover:scale-105 transition-all w-10 h-10"
+                onClick={() => scroll("right")}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>

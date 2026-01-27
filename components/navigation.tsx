@@ -102,7 +102,7 @@ export default function Navigation() {
           : "bg-transparent py-3"
           }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1920px] mx-auto px-6 md:px-12">
           <div className="flex items-center justify-between h-10 md:h-12">
             {/* Logo */}
             <motion.div
@@ -155,21 +155,21 @@ export default function Navigation() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl overflow-hidden py-2 border border-slate-100 ring-1 ring-black/5"
+                      className="absolute top-full left-0 mt-2 w-80 bg-card rounded-2xl shadow-2xl overflow-hidden py-2 border border-border ring-1 ring-black/5"
                     >
-                      <div className="px-4 py-2 border-b border-slate-100">
-                        <span className="text-xs font-semibold uppercase text-slate-400">Available Properties</span>
+                      <div className="px-4 py-2 border-b border-border">
+                        <span className="text-xs font-semibold uppercase text-muted-foreground">Available Properties</span>
                       </div>
                       <div className="max-h-[60vh] overflow-y-auto">
                         {properties.map((prop) => (
                           <Link key={prop.id} href={`/properties/${prop.name.toLowerCase().replace(/\s+/g, '-')}`} className="block">
-                            <div className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors">
-                              <div className="relative h-12 w-16 rounded-lg overflow-hidden shrink-0 bg-slate-200">
-                                <Image src={prop.image} alt={prop.name} fill className="object-cover" />
+                            <div className="flex items-center gap-3 px-4 py-3 hover:bg-secondary/10 transition-colors">
+                              <div className="relative h-12 w-16 rounded-lg overflow-hidden shrink-0 bg-secondary/20">
+                                <Image src={prop.image} alt={prop.name} fill className="object-cover sepia-[.15]" />
                               </div>
                               <div>
-                                <p className="font-semibold text-slate-900 text-sm">{prop.name}</p>
-                                <p className="text-xs text-slate-500">{prop.bedrooms} Bed • {prop.sleeps} Guests</p>
+                                <p className="font-semibold text-foreground text-sm font-serif">{prop.name}</p>
+                                <p className="text-xs text-muted-foreground">{prop.bedrooms} Bed • {prop.sleeps} Guests</p>
                               </div>
                             </div>
                           </Link>
@@ -187,7 +187,7 @@ export default function Navigation() {
               >
                 <Button
                   onClick={() => setBookingOpen(true)}
-                  className="bg-white text-primary hover:bg-secondary hover:text-secondary-foreground rounded-full px-6 py-4 text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20"
+                  className="bg-white text-primary hover:bg-secondary hover:text-white rounded-full px-6 py-4 text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20 border-0"
                 >
                   Book Now
                 </Button>
@@ -212,13 +212,13 @@ export default function Navigation() {
                 initial={{ opacity: 0, scale: 0.95, y: -20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                className="md:hidden absolute top-20 left-4 right-4 py-8 bg-slate-900/90 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl px-6 flex flex-col gap-6"
+                className="md:hidden absolute top-20 left-4 right-4 py-8 bg-[#2B2B2B]/95 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl px-6 flex flex-col gap-6"
               >
                 {navLinks.map((link) => (
                   <button
                     key={link.label}
                     onClick={() => scrollToSection(link.href)}
-                    className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-lg border-b border-white/5"
+                    className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-lg border-b border-white/5 font-serif"
                   >
                     {link.label}
                   </button>
@@ -228,7 +228,7 @@ export default function Navigation() {
                     setBookingOpen(true)
                     setMobileMenuOpen(false)
                   }}
-                  className="bg-secondary text-secondary-foreground w-full py-6 text-lg rounded-full"
+                  className="bg-primary text-primary-foreground w-full py-6 text-lg rounded-full"
                 >
                   Book Now
                 </Button>

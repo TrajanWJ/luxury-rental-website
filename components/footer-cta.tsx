@@ -69,12 +69,14 @@ export default function FooterCTA() {
               Book Your Stay
             </Button>
             <Button
-              onClick={scrollToContact}
+              asChild
               size="lg"
               variant="outline"
-              className="bg-white/5 backdrop-blur-sm text-white border-2 border-white hover:bg-white hover:text-primary text-lg px-8 py-6 rounded-full transition-transform hover:scale-105 active:scale-95"
+              className="bg-white/5 backdrop-blur-sm text-white border-2 border-white hover:bg-white hover:text-primary text-lg px-8 py-6 rounded-full transition-transform hover:scale-105 active:scale-95 cursor-pointer"
             >
-              Contact Our Team
+              <a href="mailto:angela@wilson-premier.com">
+                Contact Our Team
+              </a>
             </Button>
           </motion.div>
 
@@ -85,7 +87,8 @@ export default function FooterCTA() {
             transition={{ duration: 1, delay: 0.8 }}
             className="mt-16 pt-8 border-t border-white/20"
           >
-            <p className="text-white/80 mb-4 font-medium">Wilson Premier Properties - Smith Mountain Lake, Virginia</p>
+            <p className="text-white/80 mb-2 font-medium">Wilson Premier Properties - Smith Mountain Lake, Virginia</p>
+            <a href="mailto:angela@wilson-premier.com" className="text-white/80 hover:text-white mb-4 block transition-colors">angela@wilson-premier.com</a>
             <p className="text-white/60 text-sm">Luxury Lakefront Vacation Rentals & Experiences</p>
           </motion.div>
         </div>
