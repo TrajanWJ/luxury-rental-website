@@ -13,11 +13,13 @@ interface PropertyModalProps {
   property: Property
   onClose: () => void
   initialShow3D?: boolean
+  initialShowVideo?: boolean
 }
 
-export function PropertyModal({ property, onClose, initialShow3D = false }: PropertyModalProps) {
+export function PropertyModal({ property, onClose, initialShow3D = false, initialShowVideo = false }: PropertyModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [show3DView, setShow3DView] = useState(initialShow3D)
+  const [showVideoView, setShowVideoView] = useState(initialShowVideo)
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -43,16 +45,16 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
       onClick={onClose}
     >
       <div
-        className="relative bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300"
+        className="relative bg-white/98 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
+          className="absolute top-4 right-4 z-10 p-2 bg-black/5 hover:bg-black/10 backdrop-blur-sm rounded-full shadow-lg text-slate-700 transition-colors"
           aria-label="Close modal"
         >
-          <X className="h-5 w-5 text-slate-700" />
+          <X className="h-5 w-5" />
         </button>
 
         {/* Image Gallery */}
@@ -70,7 +72,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
               <Button
                 variant="outline"
                 size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 backdrop-blur-sm border-slate-200 shadow-lg hover:bg-white h-8 w-8"
+                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-sm border-slate-200 shadow-lg hover:bg-white h-8 w-8"
                 onClick={prevImage}
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -78,7 +80,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
               <Button
                 variant="outline"
                 size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 backdrop-blur-sm border-slate-200 shadow-lg hover:bg-white h-8 w-8"
+                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-sm border-slate-200 shadow-lg hover:bg-white h-8 w-8"
                 onClick={nextImage}
               >
                 <ChevronRight className="h-4 w-4" />
@@ -92,7 +94,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
                       className={cn(
-                        "rounded-full transition-all flex-shrink-0 bg-white/50 hover:bg-white/80",
+                        "rounded-full transition-all flex-shrink-0 bg-white/50 hover:bg-white/90",
                         index === currentImageIndex
                           ? property.images.length > 20
                             ? "w-2 h-2 md:w-2.5 md:h-2.5 bg-white"
@@ -116,7 +118,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
 
         {/* Content */}
         <div className="p-6 md:p-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-balance">{property.name}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4 text-balance font-serif">{property.name}</h2>
 
           {/* Property Stats */}
           <div className="flex flex-wrap gap-6 mb-6 pb-6 border-b border-slate-200">
@@ -146,7 +148,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
             <h3 className="text-lg font-semibold text-slate-900 mb-3">Featured Amenities</h3>
             <div className="flex flex-wrap gap-2">
               {property.amenities.map((amenity) => (
-                <span key={amenity} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
+                <span key={amenity} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
                   {amenity}
                 </span>
               ))}
@@ -157,7 +159,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               size="lg"
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-bold"
               onClick={() => {
                 window.dispatchEvent(new CustomEvent("open-booking", { detail: { propertyName: property.name } }))
                 onClose()
@@ -165,11 +167,21 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
             >
               Book This Home
             </Button>
+            {property.videoUrl && (
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-xl shadow-sm hover:shadow-md transition-all font-semibold"
+                onClick={() => setShowVideoView(true)}
+              >
+                Video Preview
+              </Button>
+            )}
             {property.matterportUrl && (
               <Button
                 size="lg"
                 variant="outline"
-                className="flex-1 bg-white text-blue-600 border-2 border-blue-600 hover:bg-blue-50 rounded-xl shadow-lg hover:shadow-xl transition-all font-bold"
+                className="flex-1 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-xl shadow-sm hover:shadow-md transition-all font-semibold"
                 onClick={() => setShow3DView(true)}
               >
                 3D View
@@ -179,7 +191,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl transition-all bg-transparent"
+                className="w-full border-2 border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all bg-transparent"
               >
                 View Full Details
               </Button>
@@ -206,6 +218,29 @@ export function PropertyModal({ property, onClose, initialShow3D = false }: Prop
               frameBorder="0"
               allowFullScreen
               allow="xr-spatial-tracking"
+            ></iframe>
+          </div>
+        </div>
+      )}
+
+      {/* Video View Modal Overlay */}
+      {showVideoView && property.videoUrl && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <button
+              onClick={() => setShowVideoView(false)}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-colors"
+              aria-label="Close video view"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <iframe
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${property.videoUrl.split('v=')[1]?.slice(0, 11)}?autoplay=1`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
             ></iframe>
           </div>
         </div>

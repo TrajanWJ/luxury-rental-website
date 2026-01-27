@@ -19,12 +19,13 @@ export default function Hero() {
       <motion.div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('https://wilson-premier.com/wp-content/uploads/2023/11/WP-crane-flying-over-water.jpg')",
+          backgroundImage: "url('/hero-sunset.jpg')",
           y,
           scale,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-slate-900/50 to-slate-900/20" />
+        {/* Updated Gradient: Charcoal/Navy mix for deep luxury feel */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#202B54]/90 via-[#2B2B2B]/60 to-[#2B2B2B]/30 mix-blend-multiply sepia-[.15]" />
       </motion.div>
 
       {/* Floating Modern Text - Top Right */}
@@ -34,7 +35,7 @@ export default function Hero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
         >
-          <span className="text-white/60 text-sm font-medium tracking-wide italic font-[family-name:var(--font-playfair)]">
+          <span className="text-white/70 text-sm font-medium tracking-wide italic font-serif">
             Luxury waterfront rentals on Smith Mountain Lake
           </span>
         </motion.div>
@@ -52,23 +53,23 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="space-y-6 max-w-xl relative text-center md:text-left"
+              className="space-y-6 max-w-xl relative text-left pt-[20vh] md:pt-0"
             >
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1] font-[family-name:var(--font-playfair)]"
+                className="text-3xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1] font-serif"
               >
                 Wilson Premier <br />
-                <span className="text-white">Properties</span>
+                <span className="text-white/95">Properties</span>
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-lg md:text-xl text-white/80 font-light leading-relaxed max-w-lg"
+                className="text-sm md:text-xl text-white/80 font-light leading-relaxed max-w-lg font-sans"
               >
                 Set your sights on a truly luxurious lake experience at any one of our Properties on the beautiful Smith Mountain Lake.
               </motion.p>
@@ -127,6 +128,6 @@ export default function Hero() {
           />
         </div>
       </motion.div>
-    </section>
+    </section >
   )
 }

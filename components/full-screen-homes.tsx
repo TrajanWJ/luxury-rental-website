@@ -11,6 +11,7 @@ export default function FullScreenHomes() {
   const { isDemoMode } = useDemo()
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
   const [startWith3D, setStartWith3D] = useState(false)
+  const [startWithVideo, setStartWithVideo] = useState(false)
   const containerRef = useRef<HTMLElement>(null)
 
   // Filter properties based on Demo Mode
@@ -22,11 +23,19 @@ export default function FullScreenHomes() {
 
   const handlePropertyClick = (property: Property) => {
     setStartWith3D(false)
+    setStartWithVideo(false)
     setSelectedProperty(property)
   }
 
   const handle3DClick = (property: Property) => {
     setStartWith3D(true)
+    setStartWithVideo(false)
+    setSelectedProperty(property)
+  }
+
+  const handleVideoClick = (property: Property) => {
+    setStartWithVideo(true)
+    setStartWith3D(false)
     setSelectedProperty(property)
   }
 
@@ -41,6 +50,7 @@ export default function FullScreenHomes() {
             total={displayProperties.length}
             onClick={() => handlePropertyClick(property)}
             on3DClick={() => handle3DClick(property)}
+            onVideoClick={() => handleVideoClick(property)}
           />
         ))}
       </section>
@@ -50,6 +60,7 @@ export default function FullScreenHomes() {
           property={selectedProperty}
           onClose={() => setSelectedProperty(null)}
           initialShow3D={startWith3D}
+          initialShowVideo={startWithVideo}
         />
       )}
     </>

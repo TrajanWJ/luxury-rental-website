@@ -134,28 +134,27 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+                        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
                     />
 
                     {/* Modal Container */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-6xl bg-white/95 backdrop-blur-3xl border border-white/60 rounded-3xl shadow-[0_32px_128px_-16px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col md:flex-row h-[90vh]"
+                        exit={{ opacity: 0, scale: 0.95, y: 0 }}
+                        className="relative w-full max-w-6xl bg-white/90 backdrop-blur-3xl border border-white/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh]"
                     >
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="absolute top-4 right-4 z-20 rounded-full bg-black/10 hover:bg-black/20 text-white md:text-slate-700 md:bg-white/50 md:hover:bg-white/80 transition-all backdrop-blur-sm"
+                            className="absolute top-4 right-4 z-20 rounded-full bg-black/5 hover:bg-black/10 text-slate-700 transition-all backdrop-blur-sm"
                             onClick={onClose}
                         >
                             <X className="h-5 w-5" />
                         </Button>
 
                         {/* LEFT PANEL: Visual Hero (Selected Property) */}
-                        {/* LEFT PANEL: Visual Carousel (Selected Property) */}
-                        <div className="w-full md:w-3/5 relative bg-slate-900 h-[40vh] md:h-full overflow-hidden group">
+                        <div className="w-full md:w-3/5 relative bg-slate-100 h-[40vh] md:h-full overflow-hidden group">
                             {selectedProperty ? (
                                 <>
                                     <div className="absolute inset-0">
@@ -172,12 +171,13 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                     src={currentImageSrc}
                                                     alt={selectedProperty.name}
                                                     fill
-                                                    className="object-cover opacity-90"
+                                                    className="object-cover opacity-100"
                                                     priority
                                                 />
                                             </motion.div>
                                         </AnimatePresence>
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/20 to-transparent opacity-80" />
+                                        {/* Gradient Overlay for Text Readability */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90" />
                                     </div>
 
                                     {/* Navigation Arrows */}
@@ -187,7 +187,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                 variant="ghost"
                                                 size="icon"
                                                 onClick={prevImage}
-                                                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                                                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20 border border-white/20"
                                             >
                                                 <ArrowRight className="h-6 w-6 rotate-180" />
                                             </Button>
@@ -195,7 +195,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                 variant="ghost"
                                                 size="icon"
                                                 onClick={nextImage}
-                                                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                                                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20 border border-white/20"
                                             >
                                                 <ArrowRight className="h-6 w-6" />
                                             </Button>
@@ -204,19 +204,19 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
 
                                     {/* Text Info */}
                                     <div className="absolute bottom-32 left-0 px-8 text-white w-full z-10 pointer-events-none">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/80 backdrop-blur-sm text-xs font-medium mb-3 shadow-lg shadow-blue-900/20">
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-medium mb-3 shadow-lg">
                                             <Star className="h-3 w-3 fill-white" /> Top Match
                                         </div>
-                                        <h2 className="text-3xl md:text-5xl font-bold mb-2 text-shadow-sm">{selectedProperty.name}</h2>
+                                        <h2 className="text-3xl md:text-5xl font-bold mb-2 text-shadow-sm font-serif">{selectedProperty.name}</h2>
                                         <p className="text-lg text-white/90 line-clamp-2 max-w-xl font-light">{selectedProperty.teaser || selectedProperty.description}</p>
 
                                         <div className="flex gap-6 mt-4">
                                             <div className="flex items-center gap-2">
-                                                <Users className="h-5 w-5 text-blue-400" />
+                                                <Users className="h-5 w-5 text-white/90" />
                                                 <span className="font-medium text-white/90">{selectedProperty.sleeps} Guests</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <Info className="h-5 w-5 text-blue-400" />
+                                                <Info className="h-5 w-5 text-white/90" />
                                                 <span className="font-medium text-white/90">{selectedProperty.bedrooms} Bedrooms</span>
                                             </div>
                                         </div>
@@ -230,7 +230,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                     key={index}
                                                     onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index); }}
                                                     className={cn(
-                                                        "rounded-full transition-all flex-shrink-0 bg-white/50 hover:bg-white/80",
+                                                        "rounded-full transition-all flex-shrink-0 bg-white/30 hover:bg-white/60",
                                                         index === currentImageIndex
                                                             ? (selectedProperty.images?.length || 0) > 20
                                                                 ? "w-2 h-2 md:w-2.5 md:h-2.5 bg-white"
@@ -258,7 +258,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                 router.push(`/properties/${selectedProperty.id}`);
                                             }}
                                             variant="outline"
-                                            className="flex-1 bg-white/10 border-white/40 text-white hover:bg-white/20 backdrop-blur-md border"
+                                            className="flex-1 bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-md border"
                                         >
                                             View Full Info
                                         </Button>
@@ -268,32 +268,32 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                 const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
                                                 window.open(url, '_blank');
                                             }}
-                                            className="flex-1 bg-blue-600/90 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/20 backdrop-blur-md border border-blue-400/30"
+                                            className="flex-1 bg-blue-600/90 hover:bg-blue-600 text-white shadow-lg shadow-blue-900/20 backdrop-blur-md font-semibold border border-blue-400/30"
                                         >
                                             Booking Page
                                         </Button>
                                     </div>
                                 </>
                             ) : (
-                                <div className="flex items-center justify-center h-full text-white/50">
+                                <div className="flex items-center justify-center h-full text-slate-400">
                                     No exact matches found.
                                 </div>
                             )}
                         </div>
 
                         {/* RIGHT PANEL: Intelligence & Composer */}
-                        <div className="w-full md:w-2/5 flex flex-col h-full bg-white/80 backdrop-blur-xl min-h-0 border-l border-slate-100">
+                        <div className="w-full md:w-2/5 flex flex-col h-full bg-white/60 backdrop-blur-2xl min-h-0 border-l border-white/40">
                             {/* Scrollable Content Area */}
-                            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 overscroll-contain">
+                            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent overscroll-contain">
                                 <div className="p-6 md:p-8">
-                                    <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                                    <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-slate-800">
                                         <CalendarIcon className="h-5 w-5 text-blue-600" />
                                         Availability & Options
                                     </h3>
 
                                     {/* 1. Functional Calendar */}
                                     {/* 1. Hostaway Calendar Widget */}
-                                    <div className="mb-6 rounded-2xl border border-slate-100 bg-white/50 backdrop-blur-sm overflow-hidden pb-4 flex flex-col items-center shadow-sm">
+                                    <div className="mb-6 rounded-2xl border border-slate-200 bg-white/50 backdrop-blur-sm overflow-hidden pb-4 flex flex-col items-center shadow-sm">
                                         {selectedProperty?.hostawayId ? (
                                             <HostawayCalendar key={selectedProperty.hostawayId} listingId={selectedProperty.hostawayId} />
                                         ) : (
@@ -305,13 +305,13 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                     </div>
 
                                     {/* 2. Guests Selection */}
-                                    <div className="mb-8 p-1 rounded-2xl bg-slate-50/50 border border-slate-100 shadow-sm">
-                                        <div className="flex items-center gap-4 bg-white/80 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="mb-8 p-1 rounded-2xl bg-white/50 border border-slate-200 shadow-sm">
+                                        <div className="flex items-center gap-4 bg-white/60 backdrop-blur-sm rounded-xl p-4">
                                             <div className="h-12 w-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm">
                                                 <Users className="h-5 w-5" />
                                             </div>
                                             <div className="flex-1">
-                                                <p className="text-sm font-semibold text-slate-900 tracking-tight">Number of Guests</p>
+                                                <p className="text-sm font-semibold text-slate-800 tracking-tight">Number of Guests</p>
                                                 <p className="text-[11px] text-slate-500 font-medium">Includes adults & children</p>
                                             </div>
                                             <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-200 p-1 shadow-sm">
@@ -321,7 +321,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                 >
                                                     -
                                                 </button>
-                                                <span className="text-sm font-semibold w-6 text-center">{guestCount}</span>
+                                                <span className="text-sm font-semibold w-6 text-center text-slate-800">{guestCount}</span>
                                                 <button
                                                     onClick={() => setGuestCount(Math.min(20, guestCount + 1))}
                                                     className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-600 transition-colors"
@@ -349,7 +349,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                             "flex gap-4 p-3 rounded-2xl transition-all duration-200 w-full text-left group border relative overflow-hidden",
                                                             selectedProperty?.id === prop.id
                                                                 ? "bg-blue-50/80 border-blue-200 shadow-sm ring-1 ring-blue-100"
-                                                                : "bg-white border-transparent hover:border-slate-200 hover:shadow-sm hover:bg-slate-50"
+                                                                : "bg-white/40 border-transparent hover:border-slate-200 hover:bg-white/60"
                                                         )}
                                                     >
                                                         <div className="relative h-20 w-24 rounded-xl overflow-hidden shrink-0 shadow-sm group-hover:shadow transition-all">
@@ -359,7 +359,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                             <div className="flex justify-between items-start">
                                                                 <h4 className={cn(
                                                                     "font-bold text-base transition-colors line-clamp-1",
-                                                                    selectedProperty?.id === prop.id ? "text-blue-700" : "text-slate-900 group-hover:text-blue-600"
+                                                                    selectedProperty?.id === prop.id ? "text-blue-700" : "text-slate-800 group-hover:text-blue-600"
                                                                 )}>{prop.name}</h4>
                                                                 {selectedProperty?.id === prop.id && (
                                                                     <div className="h-5 w-5 rounded-full bg-blue-600 flex items-center justify-center shadow-sm -mr-1 -mt-1">
@@ -382,12 +382,12 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                             </div>
 
                             {/* Sticky Footer - Always Visible */}
-                            <div className="p-6 border-t border-slate-100 bg-white shadow-lg">
+                            <div className="p-6 border-t border-slate-100 bg-white/80 backdrop-blur-xl shadow-lg">
                                 <div className="flex gap-3">
 
                                     <Button
                                         disabled={!selectedProperty}
-                                        className="flex-1 md:flex-[2] h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
+                                        className="flex-1 md:flex-[2] h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 font-bold disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
                                         onClick={() => {
                                             if (selectedProperty?.hostawayId) {
                                                 let url = `https://wilson-premier.holidayfuture.com/checkout/${selectedProperty.hostawayId}`;

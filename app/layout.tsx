@@ -1,14 +1,13 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google'
+import { Playfair_Display, Work_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { DemoProvider } from '@/components/demo-context'
 
 import Script from 'next/script'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair' });
+const workSans = Work_Sans({ subsets: ["latin"], variable: '--font-work-sans' });
 
 export const metadata: Metadata = {
   title: 'Luxury Rentals | Premium Home Experiences',
@@ -27,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased ${playfair.variable}`}>
+      <body className={`font-sans antialiased ${playfair.variable} ${workSans.variable}`}>
         <DemoProvider>
           {children}
         </DemoProvider>

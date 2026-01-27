@@ -70,8 +70,8 @@ export function HeroBookingWidget() {
         }
     }
 
-    // Refined Glass Card styles - More subtle and premium
-    const glassCardStyle = "bg-black/20 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl p-[18px]"
+    // Refined Glass Card styles - More subtle and premium (More transparent per user request)
+    const glassCardStyle = "bg-black/10 backdrop-blur-md border border-white/10 shadow-2xl rounded-3xl p-[18px]"
     const pillInputStyle = "h-[50px] bg-white/5 border border-white/10 text-white placeholder:text-white/50 rounded-2xl px-[14px] transition-all hover:bg-white/10 focus-visible:bg-white/10 focus-visible:border-white/30 text-sm md:text-base outline-none ring-0 w-full flex items-center"
     const labelStyle = "text-[11px] font-semibold uppercase tracking-[0.15em] text-white/60 ml-1 mb-1.5 block"
 
@@ -93,7 +93,7 @@ export function HeroBookingWidget() {
                                 </div>
                                 <ChevronDown className="h-4 w-4 opacity-40 shrink-0" />
                             </SelectTrigger>
-                            <SelectContent className="rounded-xl border border-white/10 shadow-2xl bg-slate-900/95 backdrop-blur-xl text-white max-h-[300px]">
+                            <SelectContent className="rounded-xl border border-white/10 shadow-2xl bg-[#2B2B2B]/95 backdrop-blur-xl text-white max-h-[300px]">
                                 <SelectItem value="all" className="py-2.5 px-4 focus:bg-white/10 cursor-pointer font-medium text-sm">Any Residence</SelectItem>
                                 {displayProperties.map(p => (
                                     <SelectItem key={p.id} value={p.name} className="py-2.5 px-4 focus:bg-white/10 cursor-pointer text-sm">
@@ -137,7 +137,7 @@ export function HeroBookingWidget() {
                                     )}
                                 </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0 bg-white/90 backdrop-blur-2xl border border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-2xl overflow-hidden flex justify-center" align="center" sideOffset={8}>
+                            <PopoverContent className="w-auto p-0 bg-[#2B2B2B]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden flex justify-center" align="center" sideOffset={8}>
                                 <HostawayCalendar listingId={activeHostawayId} />
                             </PopoverContent>
                         </Popover>
@@ -167,7 +167,7 @@ export function HeroBookingWidget() {
                         <Button
                             type="submit"
                             size="lg"
-                            className="w-full h-[50px] rounded-2xl bg-white text-black hover:bg-white/90 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 flex items-center justify-center px-0"
+                            className="w-full h-[50px] rounded-2xl bg-[#202B54] text-white hover:bg-[#1a2344] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 flex items-center justify-center px-0 font-bold border border-white/10"
                         >
                             <Search className="h-4.5 w-4.5" />
                         </Button>

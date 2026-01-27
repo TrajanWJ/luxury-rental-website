@@ -9,7 +9,7 @@ export function MapBookingWidget() {
     const router = useRouter()
 
     // Matching styles with HeroBookingWidget for consistency
-    const glassCardStyle = "bg-black/20 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl p-[18px]"
+    const glassCardStyle = "bg-black/10 backdrop-blur-md border border-white/10 shadow-2xl rounded-3xl p-[18px]"
     const labelStyle = "text-[11px] font-semibold uppercase tracking-[0.15em] text-white/60 ml-1 mb-1.5 block text-center whitespace-nowrap"
 
     return (
