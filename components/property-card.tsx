@@ -28,6 +28,11 @@ export function PropertyCard({ property, onClick, on3DClick }: PropertyCardProps
           className="object-cover transition-transform duration-700 group-hover:scale-105 sepia-[.15] brightness-[1.02] contrast-[1.05]"
         />
 
+        {/* Sunset Filter for Milan Manor House */}
+        {property.name === "Milan Manor House" && (
+          <div className="absolute inset-0 bg-[#FFD700]/10 mix-blend-overlay pointer-events-none z-[5]" />
+        )}
+
         {/* 3D View Button Overlay */}
         {property.matterportUrl && (
           <div className="absolute top-4 right-4 z-20">

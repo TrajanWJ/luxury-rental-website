@@ -66,6 +66,11 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
             className="object-cover"
           />
 
+          {/* Sunset Filter for Milan Manor House */}
+          {property.name === "Milan Manor House" && (
+            <div className="absolute inset-0 bg-[#FFD700]/10 mix-blend-overlay pointer-events-none z-[5]" />
+          )}
+
           {/* Gallery Navigation */}
           {property.images.length > 1 && (
             <>
@@ -123,19 +128,19 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
           {/* Property Stats */}
           <div className="flex flex-wrap gap-6 mb-6 pb-6 border-b border-slate-200">
             <div className="flex items-center gap-2 text-slate-700">
-              <Users className="h-5 w-5 text-blue-600" />
+              <Users className="h-5 w-5 text-primary" />
               <span className="font-semibold">Sleeps {property.sleeps}</span>
             </div>
             <div className="flex items-center gap-2 text-slate-700">
-              <Bed className="h-5 w-5 text-blue-600" />
+              <Bed className="h-5 w-5 text-primary" />
               <span className="font-semibold">{property.bedrooms} Bedrooms</span>
             </div>
             <div className="flex items-center gap-2 text-slate-700">
-              <Bath className="h-5 w-5 text-blue-600" />
+              <Bath className="h-5 w-5 text-primary" />
               <span className="font-semibold">{property.bathrooms} Baths</span>
             </div>
             <div className="flex items-center gap-2 text-slate-700">
-              <Anchor className="h-5 w-5 text-blue-600" />
+              <Anchor className="h-5 w-5 text-primary" />
               <span className="font-semibold">Private Dock</span>
             </div>
           </div>
@@ -159,7 +164,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               size="lg"
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-bold"
+              className="flex-1 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-bold"
               onClick={() => {
                 window.dispatchEvent(new CustomEvent("open-booking", { detail: { propertyName: property.name } }))
                 onClose()

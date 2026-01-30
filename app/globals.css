@@ -4,59 +4,50 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand Colors from Style Guide */
-  --background: oklch(0.96 0.01 240);
-  /* Linen-ish for light mode background, using variable for consistency */
-  --foreground: oklch(0.2 0 0);
-  /* Charcoal */
+  /* New Theme Palette: c3b6ab, 463930, 7d7065, ebe0d4, 9c8f84 */
+  --background: oklch(0.91 0.02 85);
+  /* ebe0d4 (Linen) */
+  --foreground: oklch(0.32 0.02 55);
+  /* 463930 (Deep Brown) */
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0 0);
+  --card: oklch(0.98 0.01 85);
+  --card-foreground: oklch(0.32 0.02 55);
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0 0);
+  --popover: oklch(0.98 0.01 85);
+  --popover-foreground: oklch(0.32 0.02 55);
 
-  /* Primary: Rust #9D5F36 */
-  --primary: oklch(0.48 0.14 55);
-  --primary-foreground: oklch(0.98 0.01 240);
-  /* Linen */
+  /* Primary: 7d7065 */
+  --primary: oklch(0.53 0.02 65);
+  --primary-foreground: oklch(0.98 0.01 85);
 
-  /* Secondary: Taupe - Refined to 'Greige' / Stone (No Yellow) */
-  /* Old: #C8B6A6 */
-  /* New: #9C9A96 */
-  --secondary: oklch(0.70 0.02 90);
-  --secondary-foreground: oklch(0.2 0 0);
+  /* Secondary: c3b6ab */
+  --secondary: oklch(0.77 0.02 75);
+  --secondary-foreground: oklch(0.32 0.02 55);
 
-  /* Accent: Ruby #AD1D23 */
-  --accent: oklch(0.45 0.2 25);
-  --accent-foreground: oklch(0.98 0 0);
+  /* Accent: 9c8f84 */
+  --accent: oklch(0.66 0.02 75);
+  --accent-foreground: oklch(0.98 0.01 85);
 
-  --muted: oklch(0.92 0.01 240);
-  /* Lighter Linen */
-  --muted-foreground: oklch(0.4 0 0);
-  /* Light Charcoal */
+  --muted: oklch(0.85 0.01 85);
+  --muted-foreground: oklch(0.5 0.01 65);
 
   --destructive: oklch(0.45 0.2 25);
-  /* Ruby */
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.85 0.02 240);
-  --input: oklch(0.85 0.02 240);
-  --ring: oklch(0.48 0.14 55);
-  /* Rust */
+  --border: oklch(0.85 0.02 85);
+  --input: oklch(0.85 0.02 85);
+  --ring: oklch(0.53 0.02 65);
 
   --radius: 0.75rem;
 
   /* Custom Brand Variables */
-  --color-linen: #EBEBE8;
-  /* Cooler Linen */
-  --color-taupe: #9C9A96;
-  /* Stone Greige */
-  --color-rust: #9D5F36;
+  --color-linen: #ebe0d4;
+  --color-taupe: #c3b6ab;
+  --color-brown-deep: #463930;
+  --color-brown-mid: #7d7065;
+  --color-brown-warm: #9c8f84;
   --color-charcoal: #2B2B2B;
-  --color-ruby: #AD1D23;
   --color-navy: #202B54;
-  --color-forest: #337D58;
 
   /* Sidebar defaults */
   --sidebar: oklch(0.985 0 0);
@@ -141,11 +132,11 @@
   /* Brand Colors Extracted */
   --color-brand-linen: var(--color-linen);
   --color-brand-taupe: var(--color-taupe);
-  --color-brand-rust: var(--color-rust);
+  --color-brand-brown-deep: var(--color-brown-deep);
+  --color-brand-brown-mid: var(--color-brown-mid);
+  --color-brand-brown-warm: var(--color-brown-warm);
   --color-brand-charcoal: var(--color-charcoal);
-  --color-brand-ruby: var(--color-ruby);
   --color-brand-navy: var(--color-navy);
-  --color-brand-forest: var(--color-forest);
 
   /* Fonts */
   --font-serif: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;

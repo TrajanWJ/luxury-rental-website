@@ -43,6 +43,11 @@ export default function PropertyPage({ params }: { params: Promise<{ slug: strin
                     className="object-cover"
                     priority
                 />
+
+                {/* Sunset Filter for Milan Manor House */}
+                {property.name === "Milan Manor House" && (
+                    <div className="absolute inset-0 bg-[#FFD700]/10 mix-blend-overlay pointer-events-none z-[5]" />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/20 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 pb-24 pt-32 bg-gradient-to-t from-slate-950 to-transparent">
                     <div className="container mx-auto px-6 md:px-12">
@@ -148,6 +153,12 @@ export default function PropertyPage({ params }: { params: Promise<{ slug: strin
                                             fill
                                             className="object-cover transition-transform duration-700 group-hover:scale-110"
                                         />
+
+                                        {/* Sunset Filter for Milan Manor House */}
+                                        {property.name === "Milan Manor House" && (
+                                            <div className="absolute inset-0 bg-[#FFD700]/10 mix-blend-overlay pointer-events-none z-[5]" />
+                                        )}
+
                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                                     </div>
                                 ))}

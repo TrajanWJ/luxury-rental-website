@@ -268,7 +268,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                 const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
                                                 window.open(url, '_blank');
                                             }}
-                                            className="flex-1 bg-blue-600/90 hover:bg-blue-600 text-white shadow-lg shadow-blue-900/20 backdrop-blur-md font-semibold border border-blue-400/30"
+                                            className="flex-1 bg-primary/90 hover:bg-primary text-white shadow-lg backdrop-blur-md font-semibold border border-white/20"
                                         >
                                             Booking Page
                                         </Button>
@@ -287,7 +287,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                             <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent overscroll-contain">
                                 <div className="p-6 md:p-8">
                                     <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-slate-800">
-                                        <CalendarIcon className="h-5 w-5 text-blue-600" />
+                                        <CalendarIcon className="h-5 w-5 text-primary" />
                                         Availability & Options
                                     </h3>
 
@@ -307,7 +307,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                     {/* 2. Guests Selection */}
                                     <div className="mb-8 p-1 rounded-2xl bg-white/50 border border-slate-200 shadow-sm">
                                         <div className="flex items-center gap-4 bg-white/60 backdrop-blur-sm rounded-xl p-4">
-                                            <div className="h-12 w-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm">
+                                            <div className="h-12 w-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-primary shadow-sm">
                                                 <Users className="h-5 w-5" />
                                             </div>
                                             <div className="flex-1">
@@ -359,10 +359,10 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                             <div className="flex justify-between items-start">
                                                                 <h4 className={cn(
                                                                     "font-bold text-base transition-colors line-clamp-1",
-                                                                    selectedProperty?.id === prop.id ? "text-blue-700" : "text-slate-800 group-hover:text-blue-600"
+                                                                    selectedProperty?.id === prop.id ? "text-primary font-bold" : "text-slate-800 group-hover:text-primary"
                                                                 )}>{prop.name}</h4>
                                                                 {selectedProperty?.id === prop.id && (
-                                                                    <div className="h-5 w-5 rounded-full bg-blue-600 flex items-center justify-center shadow-sm -mr-1 -mt-1">
+                                                                    <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center shadow-sm -mr-1 -mt-1">
                                                                         <Check className="h-3 w-3 text-white" />
                                                                     </div>
                                                                 )}
@@ -387,7 +387,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
 
                                     <Button
                                         disabled={!selectedProperty}
-                                        className="flex-1 md:flex-[2] h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 font-bold disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
+                                        className="flex-1 md:flex-[2] h-12 rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg font-bold disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
                                         onClick={() => {
                                             if (selectedProperty?.hostawayId) {
                                                 let url = `https://wilson-premier.holidayfuture.com/checkout/${selectedProperty.hostawayId}`;

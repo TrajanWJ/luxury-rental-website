@@ -22,7 +22,7 @@ export default function FooterCTA() {
       <section
         id="contact"
         ref={ref}
-        className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-br from-primary via-blue-900 to-slate-950"
+        className="relative py-24 md:py-32 overflow-hidden bg-background border-t border-black/5"
       >
         <motion.div
           initial={{ scale: 1.1, opacity: 0 }}
@@ -41,7 +41,7 @@ export default function FooterCTA() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold text-white mb-6"
+            className="text-4xl md:text-6xl font-bold text-foreground mb-6"
           >
             Ready for Your Lakefront Escape?
           </motion.h2>
@@ -50,7 +50,7 @@ export default function FooterCTA() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto"
+            className="text-xl md:text-2xl text-foreground/90 mb-10 max-w-3xl mx-auto"
           >
             Book your luxury retreat at Smith Mountain Lake today and create memories that will last a lifetime
           </motion.p>
@@ -72,7 +72,7 @@ export default function FooterCTA() {
               asChild
               size="lg"
               variant="outline"
-              className="bg-white/5 backdrop-blur-sm text-white border-2 border-white hover:bg-white hover:text-primary text-lg px-8 py-6 rounded-full transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+              className="bg-black/5 backdrop-blur-sm text-foreground border-2 border-foreground/20 hover:bg-black/10 text-lg px-8 py-6 rounded-full transition-transform hover:scale-105 active:scale-95 cursor-pointer"
             >
               <a href="mailto:angela@wilson-premier.com">
                 Contact Our Team
@@ -85,11 +85,11 @@ export default function FooterCTA() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.8 }}
-            className="mt-16 pt-8 border-t border-white/20"
+            className="mt-16 pt-8 border-t border-black/10"
           >
-            <p className="text-white/80 mb-2 font-medium">Wilson Premier Properties - Smith Mountain Lake, Virginia</p>
-            <a href="mailto:angela@wilson-premier.com" className="text-white/80 hover:text-white mb-4 block transition-colors">angela@wilson-premier.com</a>
-            <p className="text-white/60 text-sm">Luxury Lakefront Vacation Rentals & Experiences</p>
+            <p className="text-foreground/80 mb-2 font-medium">Wilson Premier Properties - Smith Mountain Lake, Virginia</p>
+            <a href="mailto:angela@wilson-premier.com" className="text-foreground/80 hover:text-foreground mb-4 block transition-colors">angela@wilson-premier.com</a>
+            <p className="text-foreground/60 text-sm">Luxury Lakefront Vacation Rentals & Experiences</p>
           </motion.div>
         </div>
       </section>

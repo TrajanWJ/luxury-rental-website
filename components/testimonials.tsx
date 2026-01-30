@@ -57,14 +57,14 @@ export default function Testimonials() {
   }
 
   return (
-    <section ref={ref} className="py-16 md:py-24 bg-slate-950 overflow-hidden border-t border-white/5">
+    <section ref={ref} className="py-16 md:py-24 bg-background overflow-hidden border-t border-black/5">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="text-3xl md:text-4xl font-bold text-white mb-4"
+            className="text-3xl md:text-4xl font-bold text-foreground mb-4"
           >
             What Our Guests Say
           </motion.h2>
@@ -83,14 +83,14 @@ export default function Testimonials() {
                 variants={itemVariants}
                 className="flex-shrink-0 w-[85vw] md:w-[400px] snap-center"
               >
-                <div className="bg-slate-900/50 rounded-2xl p-8 h-full border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-2">
+                <div className="bg-white/10 rounded-2xl p-8 h-full border border-black/5 hover:border-black/10 transition-all duration-300 hover:-translate-y-2 shadow-sm">
                   <div className="flex gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-secondary text-secondary" />
+                      <Star key={i} className="h-5 w-5 fill-primary text-primary" />
                     ))}
                   </div>
-                  <p className="text-slate-300 mb-4 leading-relaxed text-lg italic">"{testimonial.quote}"</p>
-                  <p className="text-white font-semibold">— {testimonial.author}</p>
+                  <p className="text-foreground/80 mb-4 leading-relaxed text-lg italic">"{testimonial.quote}"</p>
+                  <p className="text-foreground font-semibold">— {testimonial.author}</p>
                 </div>
               </motion.div>
             ))}

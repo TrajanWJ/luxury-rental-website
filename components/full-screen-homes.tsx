@@ -41,7 +41,7 @@ export default function FullScreenHomes() {
 
   return (
     <>
-      <section id="homes" ref={containerRef} className="relative bg-slate-950">
+      <section id="homes" ref={containerRef} className="relative bg-background">
         {displayProperties.map((property, index) => (
           <PropertyPanel
             key={property.id}

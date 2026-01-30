@@ -24,18 +24,19 @@ export default function Hero() {
           scale,
         }}
       >
-        {/* Updated Gradient: Charcoal/Navy mix for deep luxury feel */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#202B54]/90 via-[#2B2B2B]/60 to-[#2B2B2B]/30 mix-blend-multiply sepia-[.15]" />
+        {/* Updated Gradient: Deep Espresso/Brown for new theme */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#463930]/90 via-[#463930]/60 to-[#463930]/30 mix-blend-multiply sepia-[.15]" />
       </motion.div>
 
       {/* Floating Modern Text - Top Right */}
-      <div className="absolute top-[15%] right-[5%] z-20 hidden lg:block">
+      <div className="absolute top-[18%] right-[5%] z-20 hidden lg:block">
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
+          className="bg-black/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
         >
-          <span className="text-white/70 text-sm font-medium tracking-wide italic font-serif">
+          <span className="text-white text-sm font-medium tracking-[0.2em] italic font-serif">
             Luxury waterfront rentals on Smith Mountain Lake
           </span>
         </motion.div>

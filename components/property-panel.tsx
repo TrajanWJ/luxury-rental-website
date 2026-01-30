@@ -57,6 +57,11 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-slate-900/10" />
+
+          {/* Sunset Filter for Milan Manor House */}
+          {property.name === "Milan Manor House" && (
+            <div className="absolute inset-0 bg-[#FFD700]/10 mix-blend-overlay pointer-events-none z-[5]" />
+          )}
         </motion.div>
 
         {/* Content Overlay */}
@@ -98,7 +103,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
                   e.stopPropagation();
                   onVideoClick?.(e);
                 }}
-                className="bg-white text-blue-600 hover:bg-slate-50 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
+                className="bg-white text-primary hover:bg-white/90 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
               >
                 Video Preview
               </Button>
@@ -110,7 +115,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
                   e.stopPropagation();
                   on3DClick?.(e);
                 }}
-                className="bg-white text-blue-600 hover:bg-slate-50 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
+                className="bg-white text-primary hover:bg-white/90 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
               >
                 3D View
               </Button>

@@ -52,6 +52,6 @@ export const activities = [
     { name: "Kayaking", image: "/outdoor-patio-fire-pit-lake.jpg" },
     { name: "Golfing", image: "/rustic-dining-room-wooden-beams.jpg" },
     { name: "Wine Tasting", image: "/luxury-lakefront-estate-sunset-view.jpg" },
-    { name: "Hiking", image: "/images/lakeview/lakeview-exterior.jpg" },
-    { name: "Jet Skiing", image: "/images/lakeview/lakeview-exterior.jpg" },
+    { name: "Hiking", image: "/backcove-estate-primary.jpg" },
+    { name: "Jet Skiing", image: "/infinity-pool-overlooking-lake.jpg" },
 ]
