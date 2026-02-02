@@ -3,12 +3,15 @@
 import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 import { experiences, Experience } from "@/lib/experiences"
-import { ArrowRight, ChevronRight, ChevronLeft, X, Globe, MapPin, Clock, Phone } from "lucide-react"
+import { ArrowRight, ChevronRight, ChevronLeft, X, Globe, MapPin, Clock, Phone, Check } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+
+import { useConcierge } from "./concierge-context"
 
 export default function Experiences() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null)
+  const { openContactModal } = useConcierge()
 
   // Map the new data structure to match what the UI expects
   const mappedExperiences = experiences.map(exp => ({
@@ -31,6 +34,15 @@ export default function Experiences() {
       const timeout = setTimeout(initializeScroll, 100)
       return () => clearTimeout(timeout)
     }
+  }, [])
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedExperience(null)
+    }
+    window.addEventListener("keydown", handleEsc)
+    return () => window.removeEventListener("keydown", handleEsc)
   }, [])
 
   const handleScroll = () => {
@@ -102,7 +114,7 @@ export default function Experiences() {
               <div
                 key={`${index}-${exp.title}`}
                 onClick={() => setSelectedExperience(exp)}
-                className="min-w-[85vw] md:min-w-[400px] lg:min-w-[450px] snap-center group cursor-pointer block p-4 brand-card-premium bg-white/50 backdrop-blur-sm"
+                className="min-w-[85vw] md:min-w-[400px] lg:min-w-[450px] snap-center group cursor-pointer block p-4 brand-card-premium bg-white/50 backdrop-blur-sm shadow-sm"
               >
                 <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[var(--color-brand-taupe)] mb-6">
                   {exp ? (
@@ -115,7 +127,7 @@ export default function Experiences() {
                   ) : (
                     <div className="w-full h-full bg-gray-200" />
                   )}
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
 
                   <div className="absolute top-4 left-4">
                     <span className="bg-[#ECE9E7]/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#2B2B2B] rounded-full">
@@ -157,86 +169,98 @@ export default function Experiences() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-4xl bg-[#ebe0d4] rounded-2xl md:rounded-[32px] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+              className="relative w-full max-w-4xl bg-[#ECE9E7] rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90dvh]"
             >
               <button
                 onClick={() => setSelectedExperience(null)}
-                className="absolute top-4 right-4 z-10 h-10 w-10 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-md flex items-center justify-center text-white transition-colors"
+                className="absolute top-6 right-6 z-20 h-10 w-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md flex items-center justify-center text-[#2B2B2B] transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
 
               {/* Left Side: Image */}
-              <div className="relative w-full md:w-1/2 aspect-video md:aspect-auto">
+              <div className="relative w-full md:w-5/12 aspect-[4/3] md:aspect-auto">
                 <Image
                   src={selectedExperience.imageUrl || "/images/placeholder.jpg"}
                   alt={selectedExperience.name}
                   fill
                   className="object-cover"
                 />
-                <div className="absolute top-4 left-4">
-                  <span className="bg-[#463930] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
+                <div className="absolute top-6 left-6">
+                  <span className="bg-[#463930] text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
                     {selectedExperience.type}
                   </span>
                 </div>
               </div>
 
               {/* Right Side: Content */}
-              <div className="w-full md:w-1/2 p-6 md:p-12 overflow-y-auto bg-[#ebe0d4]">
-                <div className="space-y-6">
+              <div className="w-full md:w-7/12 p-8 md:p-14 overflow-y-auto bg-[#ECE9E7]">
+                <div className="space-y-8">
                   <div>
-                    <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#463930] leading-tight">
+                    <h2 className="text-3xl md:text-5xl font-serif font-medium text-[#2B2B2B] leading-tight">
                       {selectedExperience.name}
                     </h2>
-                    <p className="text-[#7d7065] text-lg font-light mt-4 leading-relaxed">
+                    <p className="text-[#2B2B2B]/70 text-base md:text-lg font-light mt-6 leading-relaxed">
                       {selectedExperience.description}
                     </p>
                   </div>
 
-                  <div className="space-y-4 pt-6 border-t border-[#463930]/10">
+                  <div className="space-y-6">
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#BCA28A]">Experience Highlights</h4>
+                    <ul className="space-y-4">
+                      {selectedExperience.details.split('. ').map((point, i) => point.trim() && (
+                        <li key={i} className="flex gap-4 text-sm font-light text-[#2B2B2B]/80 leading-relaxed">
+                          <Check className="h-4 w-4 text-[#9D5F36] shrink-0 mt-0.5" />
+                          <span>{point.endsWith('.') ? point : `${point}.`}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t border-[#BCA28A]/20">
                     {selectedExperience.address && (
-                      <div className="flex items-start gap-4 text-[#463930]">
-                        <MapPin className="h-5 w-5 mt-0.5 shrink-0 opacity-60" />
+                      <div className="flex items-start gap-4">
+                        <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-[#BCA28A]" />
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wider mb-1 opacity-40">Location</p>
-                          <p className="text-sm font-medium">{selectedExperience.address}</p>
+                          <p className="text-[9px] font-bold uppercase tracking-wider mb-1 text-[#BCA28A]">Location</p>
+                          <p className="text-xs font-medium text-[#2B2B2B] leading-snug">{selectedExperience.address}</p>
                         </div>
                       </div>
                     )}
 
                     {selectedExperience.hours && (
-                      <div className="flex items-start gap-4 text-[#463930]">
-                        <Clock className="h-5 w-5 mt-0.5 shrink-0 opacity-60" />
+                      <div className="flex items-start gap-4">
+                        <Clock className="h-4 w-4 mt-0.5 shrink-0 text-[#BCA28A]" />
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wider mb-1 opacity-40">Hours</p>
-                          <p className="text-sm font-medium">{selectedExperience.hours}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {selectedExperience.phone && (
-                      <div className="flex items-start gap-4 text-[#463930]">
-                        <Phone className="h-5 w-5 mt-0.5 shrink-0 opacity-60" />
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-wider mb-1 opacity-40">Contact</p>
-                          <p className="text-sm font-medium">{selectedExperience.phone}</p>
+                          <p className="text-[9px] font-bold uppercase tracking-wider mb-1 text-[#BCA28A]">Hours</p>
+                          <p className="text-xs font-medium text-[#2B2B2B] leading-snug">{selectedExperience.hours}</p>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  {/* Call to Action */}
-                  <div className="pt-8">
+                  {/* Actions */}
+                  <div className="pt-8 flex flex-col gap-4">
                     <a
                       href={selectedExperience.website || "https://smith-mountain-lake.com/things-to-do/"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-3 bg-[#463930] text-[#ebe0d4] px-10 py-5 rounded-2xl font-bold text-base hover:bg-[#2B2B2B] transition-all group w-full shadow-lg hover:shadow-xl hover:-translate-y-1"
+                      className="inline-flex items-center justify-center gap-3 bg-[#463930] text-[#ECE9E7] px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-[#2B2B2B] transition-all group w-full shadow-lg"
                     >
-                      <Globe className="h-5 w-5" />
+                      <Globe className="h-4 w-4" />
                       Explore Now
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                     </a>
+
+                    <button
+                      onClick={() => {
+                        setSelectedExperience(null)
+                        setTimeout(() => openContactModal(selectedExperience.name), 300)
+                      }}
+                      className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#BCA28A] hover:text-[#9D5F36] transition-colors py-2"
+                    >
+                      Contact Concierge about this experience
+                    </button>
                   </div>
                 </div>
               </div>

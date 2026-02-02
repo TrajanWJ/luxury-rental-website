@@ -9,10 +9,12 @@ import { properties } from "@/lib/data"
 import Link from "next/link"
 import Image from "next/image"
 import { DemoToggle } from "./demo-toggle"
+import { useConcierge } from "./concierge-context"
 
 export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light" }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [bookingOpen, setBookingOpen] = useState(false)
+  const { openContactModal } = useConcierge()
   const [scrolled, setScrolled] = useState(false)
   const [hoveringProperties, setHoveringProperties] = useState(false)
 
@@ -142,7 +144,13 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index + 0.3 }}
-                  onClick={() => scrollToSection(link.href)}
+                  onClick={() => {
+                    if (link.label === "Contact") {
+                      openContactModal()
+                    } else {
+                      scrollToSection(link.href)
+                    }
+                  }}
                   className={`transition-all duration-300 font-medium text-sm md:text-base ${textMuted} ${textHover} hover:scale-105 drop-shadow-sm`}
                 >
                   {link.label}
@@ -258,7 +266,14 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                 {navLinks.map((link) => (
                   <button
                     key={link.label}
-                    onClick={() => scrollToSection(link.href)}
+                    onClick={() => {
+                      if (link.label === "Contact") {
+                        setMobileMenuOpen(false)
+                        openContactModal()
+                      } else {
+                        scrollToSection(link.href)
+                      }
+                    }}
                     className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-lg border-b border-white/5 font-serif"
                   >
                     {link.label}

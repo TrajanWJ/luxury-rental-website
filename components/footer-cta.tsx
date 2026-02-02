@@ -3,6 +3,7 @@
 import { useRef, useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { useConcierge } from "./concierge-context"
 import { AdvancedBookingPopup } from "./advanced-booking-popup"
 
 const COLORS = {
@@ -14,6 +15,7 @@ const COLORS = {
 
 export default function FooterCTA() {
   const [bookingOpen, setBookingOpen] = useState(false)
+  const { openContactModal } = useConcierge()
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -65,12 +67,12 @@ export default function FooterCTA() {
               Book Your Stay
             </Button>
 
-            <a
-              href="mailto:angela@wilson-premier.com"
+            <button
+              onClick={() => openContactModal()}
               className="text-[#ECE9E7]/60 hover:text-[#ECE9E7] text-sm uppercase tracking-widest border-b border-transparent hover:border-[#ECE9E7] pb-1 transition-all duration-300"
             >
               Contact Concierge
-            </a>
+            </button>
           </div>
 
           {/* Footer Minimal Info */}

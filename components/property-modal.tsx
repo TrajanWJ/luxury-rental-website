@@ -6,6 +6,7 @@ import Link from "next/link"
 import { X, ChevronLeft, ChevronRight, Users, Bed, Bath, Anchor } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useConcierge } from "./concierge-context"
 
 import { Property } from "@/lib/data"
 
@@ -20,6 +21,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [show3DView, setShow3DView] = useState(initialShow3D)
   const [showVideoView, setShowVideoView] = useState(initialShowVideo)
+  const { openContactModal } = useConcierge()
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -201,6 +203,18 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
                 View Full Details
               </Button>
             </Link>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-slate-100 text-center">
+            <button
+              onClick={() => {
+                onClose()
+                setTimeout(() => openContactModal(property.name), 300)
+              }}
+              className="text-xs font-bold uppercase tracking-[0.2em] text-[#BCA28A] hover:text-[#9D5F36] transition-colors"
+            >
+              Contact Concierge about this home
+            </button>
           </div>
         </div>
       </div>
