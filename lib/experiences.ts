@@ -27,7 +27,7 @@ export const experiences: Experience[] = [
         address: "1235 State Park Rd, Huddleston, VA 24104",
         hours: "8am - Dusk",
         phone: "(540) 297-6066",
-        imageUrl: "https://www.dcr.virginia.gov/state-parks/image/data/sml-beach-sunset.jpg"
+        imageUrl: "/state-park-beach.png"
     },
     {
         id: "bridgewater-plaza",
@@ -40,7 +40,7 @@ export const experiences: Experience[] = [
         address: "16430 Booker T Washington Hwy, Moneta, VA 24121",
         hours: "9am - 10pm",
         phone: "(540) 721-1639",
-        imageUrl: "https://smith-mountain-lake.com/wp-content/uploads/2021/05/bridgewater-plaza-sml.jpg"
+        imageUrl: "/bridgewater-plaza.png"
     },
     {
         id: "sml-dam-visitor-center",
@@ -53,7 +53,7 @@ export const experiences: Experience[] = [
         address: "2072 Ford Rd, Sandy Level, VA 24161",
         hours: "9am - 5pm (Tue-Sat)",
         phone: "(540) 985-2587",
-        imageUrl: "https://www.smithmountainlake.online/wp-content/uploads/2019/07/SML-Dam.jpg"
+        imageUrl: "/dam-visitor-center.png"
     },
     {
         id: "sml-jet-ski-rentals",
@@ -67,7 +67,7 @@ export const experiences: Experience[] = [
         hours: "9am - 6pm Daily (May-Sept)",
         phone: "(540) 555-WAVE",
         website: "smljetski.com",
-        imageUrl: "https://images.unsplash.com/photo-1545652925-af5f3964f63c?auto=format&fit=crop&w=800&q=80"
+        imageUrl: "/boating-water-sports.png"
     },
     {
         id: "hickory-hill-vineyards",
@@ -81,7 +81,7 @@ export const experiences: Experience[] = [
         hours: "11am - 5pm (Wed-Sun)",
         phone: "(540) 296-1393",
         website: "hickoryhillvineyards.com",
-        imageUrl: "https://smith-mountain-lake.com/wp-content/uploads/2020/06/hickory-hill-vineyards.jpg"
+        imageUrl: "/vineyard-tasting.png"
     },
     {
         id: "booker-t-washington-monument",
@@ -94,7 +94,7 @@ export const experiences: Experience[] = [
         address: "12130 Booker T Washington Hwy, Hardy, VA 24101",
         hours: "9am - 5pm Daily",
         phone: "(540) 721-2094",
-        imageUrl: "https://www.nps.gov/common/uploads/grid_builder/bowa/crop16_9/5D105D17-1DD8-B71B-0B86C90E2D64DA3D.jpg"
+        imageUrl: "/historical-farm.png"
     },
     {
         id: "sml-farm-alpacas",
@@ -107,7 +107,7 @@ export const experiences: Experience[] = [
         address: "Call for directions, Hardy, VA",
         hours: "Tours by Appt",
         phone: "(540) 719-0281",
-        imageUrl: "https://smithmountainlakefarm.com/wp-content/uploads/2018/06/alpaca-tours-sml.jpg"
+        imageUrl: "/alpaca-farm.png"
     },
     {
         id: "homestead-creamery",
@@ -120,7 +120,7 @@ export const experiences: Experience[] = [
         address: "7254 Booker T Washington Hwy, Wirtz, VA 24184",
         hours: "11am - 6pm (Closed Sun)",
         phone: "(540) 721-2045",
-        imageUrl: "https://homesteadcreameryinc.com/wp-content/uploads/2020/04/ice-cream-scoops.jpg"
+        imageUrl: "/ice-cream-shop.png"
     },
     {
         id: "mariners-landing-golf",
@@ -133,7 +133,7 @@ export const experiences: Experience[] = [
         address: "100 Clubhouse Dr, Huddleston, VA 24104",
         hours: "7am - 6pm",
         phone: "(540) 297-7888",
-        imageUrl: "https://marinerslanding.com/wp-content/uploads/2021/04/golf-course-view.jpg"
+        imageUrl: "/golf-course.png"
     },
     {
         id: "bernards-landing",
@@ -146,7 +146,7 @@ export const experiences: Experience[] = [
         address: "775 Ashmeade Rd, Moneta, VA 24121",
         hours: "24/7",
         phone: "(540) 721-8870",
-        imageUrl: "https://bernardslanding.com/wp-content/uploads/2019/05/bernards-view.jpg"
+        imageUrl: "/marina-docks.png"
     },
     {
         id: "westlake-golf-club",
@@ -159,7 +159,7 @@ export const experiences: Experience[] = [
         address: "360 Chestnut Creek Dr, Hardy, VA 24101",
         hours: "8am - 6pm",
         phone: "(540) 721-4214",
-        imageUrl: "https://westlakegc.com/wp-content/uploads/2018/03/westlake-hole-1.jpg"
+        imageUrl: "/golf-course.png"
     },
     {
         id: "sml-community-park",
@@ -172,7 +172,7 @@ export const experiences: Experience[] = [
         address: "1482 Parkway Ave, Moneta, VA 24121",
         hours: "Dawn - Dusk",
         phone: "(540) 483-9293",
-        imageUrl: "https://smith-mountain-lake.com/wp-content/uploads/2020/06/community-park-sml.jpg"
+        imageUrl: "/state-park-beach.png"
     },
     {
         id: "ramulose-ridge-vineyards",
@@ -185,7 +185,7 @@ export const experiences: Experience[] = [
         address: "3061 Hendricks Store Rd, Moneta, VA 24121",
         hours: "11am - 5pm",
         phone: "(540) 314-2696",
-        imageUrl: "https://ramuloseridgevineyards.com/wp-content/uploads/2017/04/vineyard-view.jpg"
+        imageUrl: "/vineyard-tasting.png"
     },
     {
         id: "waterfront-restaurant",
@@ -198,7 +198,7 @@ export const experiences: Experience[] = [
         address: "22051 Virgil H Goode Hwy, Moneta, VA 24121",
         hours: "11am - 10pm",
         phone: "(540) 721-1234",
-        imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80"
+        imageUrl: "/waterfront-dining.png"
     },
     {
         id: "portside-grill",
@@ -211,7 +211,7 @@ export const experiences: Experience[] = [
         address: "3619 Airport Rd, Moneta, VA 24121",
         hours: "11am - 10pm (Seasonal)",
         phone: "(540) 297-7100",
-        imageUrl: "https://smith-mountain-lake.com/wp-content/uploads/2020/06/portside-grill-sml.jpg"
+        imageUrl: "/waterfront-dining.png"
     },
     {
         id: "crazy-horse-marina",
@@ -224,7 +224,7 @@ export const experiences: Experience[] = [
         address: "400 Crazy Horse Dr, Moneta, VA 24121",
         hours: "9am - 6pm",
         phone: "(540) 719-0620",
-        imageUrl: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80"
+        imageUrl: "/marina-docks.png"
     },
     {
         id: "harvester-center",
@@ -237,6 +237,174 @@ export const experiences: Experience[] = [
         address: "450 Franklin St, Rocky Mount, VA 24151",
         hours: "Show times vary",
         phone: "(540) 484-8277",
-        imageUrl: "https://harvester-music.com/wp-content/uploads/2019/01/harvester-marquee.jpg"
+        imageUrl: "/bridgewater-plaza.png"
+    },
+    {
+        id: "sml-kayak-tours",
+        name: "Guided Kayak Tours",
+        type: "activity",
+        lat: 37.1100,
+        lng: -79.6200,
+        description: "Explore hidden coves and peaceful inlets with expert guides on a serene kayaking adventure.",
+        details: "Eco-friendly tours showcasing the lake's natural beauty. Single and tandem kayaks available. Sunset tours are especially popular.",
+        address: "Various launch points around SML",
+        hours: "8am - 7pm (Seasonal)",
+        phone: "(540) 555-KYAK",
+        imageUrl: "/boating-water-sports.png"
+    },
+    {
+        id: "fishing-charter-sml",
+        name: "Captain's Choice Fishing Charters",
+        type: "activity",
+        lat: 37.0900,
+        lng: -79.5800,
+        description: "Professional guided fishing trips targeting striped bass, largemouth bass, and catfish.",
+        details: "Half-day and full-day charters with all equipment provided. Captain has 20+ years experience on SML waters.",
+        address: "Departs from multiple marinas",
+        hours: "Dawn - Dusk",
+        phone: "(540) 555-FISH",
+        imageUrl: "/fishing-recreation.png"
+    },
+    {
+        id: "sunset-dinner-cruise",
+        name: "Sunset Dinner Cruise",
+        type: "activity",
+        lat: 37.1200,
+        lng: -79.6000,
+        description: "An unforgettable evening aboard a luxury yacht with gourmet dining and breathtaking sunset views.",
+        details: "Three-course meal prepared by award-winning chef. BYOB welcome. Reservations required, limited capacity.",
+        address: "Bridgewater Marina",
+        hours: "Departs 6:30pm (Summer)",
+        phone: "(540) 555-CRSE",
+        imageUrl: "/sunset-cruises.png"
+    },
+    {
+        id: "lakeside-spa",
+        name: "Serenity Lakeside Spa",
+        type: "activity",
+        lat: 37.1450,
+        lng: -79.6350,
+        description: "Indulge in rejuvenating treatments with panoramic lake views from every treatment room.",
+        details: "Full-service spa offering massages, facials, body treatments, and couples packages. Outdoor relaxation deck.",
+        address: "Bridgewater Plaza, Moneta, VA 24121",
+        hours: "9am - 7pm Daily",
+        phone: "(540) 555-RELX",
+        imageUrl: "/waterfront-dining.png"
+    },
+    {
+        id: "sml-hiking-trails",
+        name: "Chestnut Ridge Trail System",
+        type: "park",
+        lat: 37.1600,
+        lng: -79.6700,
+        description: "Network of scenic hiking trails ranging from easy lakeside walks to challenging mountain climbs.",
+        details: "12 miles of well-maintained trails with varying difficulty. Stunning overlooks, wildlife viewing, and seasonal wildflowers.",
+        address: "Trailhead: Chestnut Creek Rd, Hardy, VA",
+        hours: "Dawn - Dusk",
+        imageUrl: "/state-park-beach.png"
+    },
+    {
+        id: "farmers-market-sml",
+        name: "Smith Mountain Lake Farmers Market",
+        type: "shopping",
+        lat: 37.1700,
+        lng: -79.6500,
+        description: "Weekly market featuring local produce, artisan crafts, baked goods, and live music.",
+        details: "Over 40 vendors offering farm-fresh vegetables, honey, jams, handmade soaps, and regional specialties.",
+        address: "Community Park, Moneta, VA",
+        hours: "8am - 12pm Saturdays (May-Oct)",
+        phone: "(540) 555-FARM",
+        imageUrl: "/ice-cream-shop.png"
+    },
+    {
+        id: "lakeside-art-gallery",
+        name: "Waters Edge Art Gallery",
+        type: "shopping",
+        lat: 37.1550,
+        lng: -79.6400,
+        description: "Curated collection of regional artists featuring lake-inspired paintings, pottery, and sculpture.",
+        details: "Rotating exhibits, artist meet-and-greets, and workshops. Specializes in Blue Ridge and lake landscape art.",
+        address: "16450 Booker T Washington Hwy, Moneta, VA",
+        hours: "10am - 5pm (Wed-Sun)",
+        phone: "(540) 555-ARTS",
+        imageUrl: "/bridgewater-plaza.png"
+    },
+    {
+        id: "pontoon-boat-rentals",
+        name: "Paradise Pontoon Rentals",
+        type: "rental",
+        lat: 37.1100,
+        lng: -79.6150,
+        description: "Spacious pontoon boats perfect for family outings, swimming, and leisurely lake exploration.",
+        details: "Fleet of 20-24 foot pontoons with Bimini tops. Half-day and full-day rentals. Coolers and life jackets included.",
+        address: "Multiple marina locations",
+        hours: "8am - 6pm Daily (Apr-Oct)",
+        phone: "(540) 555-PONT",
+        imageUrl: "/boating-water-sports.png"
+    },
+    {
+        id: "lakefront-yoga",
+        name: "Sunrise Lakefront Yoga",
+        type: "activity",
+        lat: 37.1250,
+        lng: -79.6050,
+        description: "Start your day with peaceful yoga sessions on a floating dock as the sun rises over the water.",
+        details: "All levels welcome. Mats and props provided. Private sessions and SUP yoga also available.",
+        address: "State Park Beach Area",
+        hours: "6:30am Daily (Summer)",
+        phone: "(540) 555-YOGA",
+        imageUrl: "/state-park-beach.png"
+    },
+    {
+        id: "sml-brewery",
+        name: "Blue Ridge Lakeside Brewery",
+        type: "dining",
+        lat: 37.1350,
+        lng: -79.6250,
+        description: "Craft brewery with rotating taps, wood-fired pizza, and a dog-friendly lakefront patio.",
+        details: "Award-winning IPAs and seasonal brews. Live music Fridays and Saturdays. Growler fills available.",
+        address: "1850 Scruggs Rd, Moneta, VA",
+        hours: "12pm - 10pm (Closed Mon-Tue)",
+        phone: "(540) 555-BREW",
+        imageUrl: "/waterfront-dining.png"
+    },
+    {
+        id: "wakeboard-school",
+        name: "SML Wakeboard Academy",
+        type: "activity",
+        lat: 37.0950,
+        lng: -79.5950,
+        description: "Professional instruction for wakeboarding, waterskiing, and wake surfing for all skill levels.",
+        details: "Certified instructors, top-tier equipment, and dedicated coaching boats. Beginner to advanced lessons.",
+        address: "Hales Ford Marina",
+        hours: "9am - 6pm Daily (May-Sept)",
+        phone: "(540) 555-WAKE",
+        imageUrl: "/boating-water-sports.png"
+    },
+    {
+        id: "fall-festival",
+        name: "Smith Mountain Lake Fall Festival",
+        type: "activity",
+        lat: 37.1200,
+        lng: -79.6100,
+        description: "Annual autumn celebration with craft vendors, live music, food trucks, and family activities.",
+        details: "Held every October. Features pumpkin patch, hayrides, local artisans, and stunning fall foliage views.",
+        address: "Community Park, Moneta, VA",
+        hours: "10am - 6pm (Mid-October)",
+        phone: "(540) 555-FEST",
+        imageUrl: "/bridgewater-plaza.png"
+    },
+    {
+        id: "fireworks-cruise",
+        name: "4th of July Fireworks Cruise",
+        type: "activity",
+        lat: 37.1150,
+        lng: -79.6000,
+        description: "Celebrate Independence Day with the best seat on the lake for the spectacular fireworks show.",
+        details: "Two-hour cruise with premium viewing location. Light refreshments included. Books up months in advance.",
+        address: "Departs Bridgewater Marina",
+        hours: "8pm - 10:30pm (July 4th)",
+        phone: "(540) 555-JULY",
+        imageUrl: "/sunset-cruises.png"
     }
 ]

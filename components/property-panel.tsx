@@ -141,20 +141,20 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
             className="flex items-center gap-4 md:gap-8 text-white/90"
           >
             {/* Quick Stats Bar */}
-            <div className="flex items-center gap-6 md:gap-8 bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 shadow-lg">
+            <div className="flex items-center gap-4 md:gap-6 bg-white/10 backdrop-blur-md px-5 py-2.5 md:px-5 md:py-2 rounded-full border border-white/20 shadow-lg">
               <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 opacity-80" />
-                <span className="text-sm md:text-base font-medium">{property.sleeps} Guests</span>
+                <Users className="h-5 w-5 md:h-4 md:w-4 opacity-80" />
+                <span className="text-base md:text-sm font-medium">{property.sleeps} Guests</span>
               </div>
               <div className="w-px h-4 bg-white/20" />
               <div className="flex items-center gap-2">
-                <BedDouble className="h-5 w-5 opacity-80" />
-                <span className="text-sm md:text-base font-medium">{property.bedrooms} Beds</span>
+                <BedDouble className="h-5 w-5 md:h-4 md:w-4 opacity-80" />
+                <span className="text-base md:text-sm font-medium">{property.bedrooms} Beds</span>
               </div>
               <div className="w-px h-4 bg-white/20" />
               <div className="flex items-center gap-2">
-                <Bath className="h-5 w-5 opacity-80" />
-                <span className="text-sm md:text-base font-medium">{property.bathrooms} Baths</span>
+                <Bath className="h-5 w-5 md:h-4 md:w-4 opacity-80" />
+                <span className="text-base md:text-sm font-medium">{property.bathrooms} Baths</span>
               </div>
             </div>
 

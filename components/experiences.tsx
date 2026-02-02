@@ -2,18 +2,19 @@
 
 import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
-import { experiences } from "@/lib/experiences-data"
-import { ArrowRight, ChevronRight, ChevronLeft } from "lucide-react"
+import { experiences, Experience } from "@/lib/experiences"
+import { ArrowRight, ChevronRight, ChevronLeft, X, Globe, MapPin, Clock, Phone } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Experiences() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null)
 
   // Map the new data structure to match what the UI expects
   const mappedExperiences = experiences.map(exp => ({
-    title: exp.title,
-    type: exp.type,
-    image: exp.image || "/images/placeholder.jpg",
-    description: exp.description
+    ...exp,
+    title: exp.name,
+    image: exp.imageUrl || "/images/placeholder.jpg",
   }))
 
   // Create a tripled list for seamless infinite scrolling
@@ -59,23 +60,22 @@ export default function Experiences() {
   }
 
   return (
-    <section id="experiences" className="py-24 md:py-32 bg-[#ECE9E7] text-[#2B2B2B] overflow-hidden border-t border-[#2B2B2B]/5">
-      <div className="container mx-auto px-6 md:px-12">
-
-        {/* Header with Controls */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-xl">
-            <span className="text-[#BCA28A] text-xs font-bold uppercase tracking-[0.25em] mb-4 block">
-              Curated Lifestyle
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium leading-[1.1] tracking-tight text-[#2B2B2B]">
-              Life on the Water
+    <section id="experiences" className="py-24 bg-depth-taupe-subtle border-y border-[var(--color-brand-taupe)]/10 overflow-hidden">
+      <div className="container mx-auto px-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <span className="brand-overline">Curated Discovery</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-medium text-[var(--color-brand-charcoal)] mb-4 brand-section-heading-accent">
+              Unforgettable Experiences
             </h2>
+            <p className="text-lg text-[var(--color-brand-charcoal)]/70 font-light leading-relaxed mt-6">
+              From adrenaline-pumping water sports to serene vineyard tastings, discover the very best of Smith Mountain Lake.
+            </p>
           </div>
         </div>
 
         {/* Horizontal Infinite Carousel */}
-        <div className="relative group">
+        <div className="relative group mt-12">
           {/* Navigation Buttons - Visible on all screens, liquid glass style */}
           <button
             onClick={() => scroll("left")}
@@ -99,14 +99,12 @@ export default function Experiences() {
             className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0"
           >
             {extendedExperiences.map((exp, index) => (
-              <a
+              <div
                 key={`${index}-${exp.title}`}
-                href="https://smith-mountain-lake.com/things-to-do/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-w-[85vw] md:min-w-[400px] lg:min-w-[450px] snap-center group cursor-pointer block"
+                onClick={() => setSelectedExperience(exp)}
+                className="min-w-[85vw] md:min-w-[400px] lg:min-w-[450px] snap-center group cursor-pointer block p-4 brand-card-premium bg-white/50 backdrop-blur-sm"
               >
-                <div className="relative aspect-[3/4] overflow-hidden bg-[#BCA28A] mb-8">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[var(--color-brand-taupe)] mb-6">
                   {exp ? (
                     <Image
                       src={exp.image}
@@ -119,29 +117,133 @@ export default function Experiences() {
                   )}
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
 
-                  <div className="absolute top-6 left-6">
-                    <span className="bg-[#ECE9E7]/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#2B2B2B]">
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-[#ECE9E7]/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#2B2B2B] rounded-full">
                       {exp.type}
                     </span>
                   </div>
                 </div>
 
-                <div className="space-y-4 pr-8">
-                  <h3 className="text-2xl font-serif font-medium text-[#2B2B2B] group-hover:text-[#9D5F36] transition-colors">
+                <div className="space-y-3 px-2">
+                  <h3 className="text-xl font-serif font-medium text-[var(--color-brand-charcoal)] group-hover:text-[var(--color-brand-rust)] transition-colors">
                     {exp.title}
                   </h3>
-                  <p className="text-[#2B2B2B]/70 text-base leading-relaxed font-light line-clamp-2">
+                  <p className="text-[var(--color-brand-charcoal)]/70 text-sm leading-relaxed font-light line-clamp-2">
                     {exp.description}
                   </p>
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#2B2B2B] group-hover:translate-x-2 transition-transform duration-300">
-                    Explore Now <ArrowRight className="h-3 w-3" />
+                  <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-charcoal)] group-hover:text-[var(--color-brand-rust)] group-hover:translate-x-2 transition-all duration-300">
+                    Learn More <ArrowRight className="h-3 w-3" />
                   </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Experience Details Popup */}
+      <AnimatePresence>
+        {selectedExperience && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedExperience(null)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-md"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-4xl bg-[#ebe0d4] rounded-2xl md:rounded-[32px] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+            >
+              <button
+                onClick={() => setSelectedExperience(null)}
+                className="absolute top-4 right-4 z-10 h-10 w-10 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-md flex items-center justify-center text-white transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              {/* Left Side: Image */}
+              <div className="relative w-full md:w-1/2 aspect-video md:aspect-auto">
+                <Image
+                  src={selectedExperience.imageUrl || "/images/placeholder.jpg"}
+                  alt={selectedExperience.name}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-[#463930] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
+                    {selectedExperience.type}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Side: Content */}
+              <div className="w-full md:w-1/2 p-6 md:p-12 overflow-y-auto bg-[#ebe0d4]">
+                <div className="space-y-6">
+                  <div>
+                    <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#463930] leading-tight">
+                      {selectedExperience.name}
+                    </h2>
+                    <p className="text-[#7d7065] text-lg font-light mt-4 leading-relaxed">
+                      {selectedExperience.description}
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 pt-6 border-t border-[#463930]/10">
+                    {selectedExperience.address && (
+                      <div className="flex items-start gap-4 text-[#463930]">
+                        <MapPin className="h-5 w-5 mt-0.5 shrink-0 opacity-60" />
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wider mb-1 opacity-40">Location</p>
+                          <p className="text-sm font-medium">{selectedExperience.address}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedExperience.hours && (
+                      <div className="flex items-start gap-4 text-[#463930]">
+                        <Clock className="h-5 w-5 mt-0.5 shrink-0 opacity-60" />
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wider mb-1 opacity-40">Hours</p>
+                          <p className="text-sm font-medium">{selectedExperience.hours}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedExperience.phone && (
+                      <div className="flex items-start gap-4 text-[#463930]">
+                        <Phone className="h-5 w-5 mt-0.5 shrink-0 opacity-60" />
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wider mb-1 opacity-40">Contact</p>
+                          <p className="text-sm font-medium">{selectedExperience.phone}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Call to Action */}
+                  <div className="pt-8">
+                    <a
+                      href={selectedExperience.website || "https://smith-mountain-lake.com/things-to-do/"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-3 bg-[#463930] text-[#ebe0d4] px-10 py-5 rounded-2xl font-bold text-base hover:bg-[#2B2B2B] transition-all group w-full shadow-lg hover:shadow-xl hover:-translate-y-1"
+                    >
+                      <Globe className="h-5 w-5" />
+                      Explore Now
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

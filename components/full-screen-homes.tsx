@@ -41,7 +41,12 @@ export default function FullScreenHomes() {
 
   return (
     <>
-      <section id="homes" ref={containerRef} className="relative bg-background">
+      <section id="homes" ref={containerRef} className="relative bg-depth-linen border-t border-[var(--color-brand-taupe)]/20 py-16">
+        <div className="container mx-auto px-6 mb-12 text-center">
+          <span className="brand-overline">Exclusive Residences</span>
+          <h2 className="text-4xl md:text-5xl font-serif font-medium text-[var(--color-brand-charcoal)] mb-4">Featured Lakefront Homes</h2>
+          <div className="h-0.5 w-12 bg-[var(--color-brand-rust)] mx-auto"></div>
+        </div>
         {displayProperties.map((property, index) => (
           <PropertyPanel
             key={property.id}

@@ -223,3 +223,42 @@ select:focus {
 .bg-band-taupe {
   background: linear-gradient(135deg, #BCA28A 0%, #ECE9E7 100%);
 }
+
+/* Global Section Accents */
+.brand-overline {
+  @apply text-xs font-bold uppercase tracking-[0.25em] mb-4 block font-serif text-[var(--color-brand-taupe)];
+}
+
+.brand-divider-horizontal {
+  @apply h-px w-full bg-gradient-to-r from-transparent via-[var(--color-brand-taupe)]/40 to-transparent my-12;
+}
+
+.brand-section-heading-accent {
+  @apply relative inline-block;
+}
+
+.brand-section-heading-accent::after {
+  content: '';
+  @apply absolute -bottom-2 left-0 h-0.5 w-12 bg-[var(--color-brand-rust)];
+}
+
+.brand-card-premium {
+  @apply border border-[var(--color-brand-taupe)]/30 rounded-2xl transition-all duration-300;
+}
+
+.brand-card-premium:hover {
+  @apply border-[var(--color-brand-rust)]/50 shadow-[0_8px_32px_rgba(157, 95, 54, 0.08)];
+}
+
+/* Background Depth Bands */
+.bg-depth-linen {
+  @apply bg-[var(--color-brand-linen)];
+  background-image: linear-gradient(to bottom, transparent, rgba(188, 162, 138, 0.05));
+}
+
+.bg-depth-taupe-subtle {
+  background-color: #f3f0ee;
+  /* Very lightened taupe for banding */
+  border-top: 1px solid rgba(188, 162, 138, 0.1);
+  border-bottom: 1px solid rgba(188, 162, 138, 0.1);
+}

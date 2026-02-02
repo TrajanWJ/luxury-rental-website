@@ -34,32 +34,26 @@ export default function Testimonials() {
   }
 
   return (
-    <section
-      className="py-32 md:py-40 bg-[#ebe0d4] text-[#1C1C1C] overflow-hidden border-t border-[#1C1C1C]/5 relative"
-    >
-      <div className="container mx-auto px-6 md:px-12">
-
-        {/* Header with Controls */}
-        <div className="flex justify-between items-end mb-20">
-          <div className="max-w-md">
-            <span className="text-[#A4907C] text-xs font-bold uppercase tracking-[0.25em] mb-4 block">
-              Guest Book
-            </span>
-            <h2 className="text-4xl md:text-5xl font-serif font-medium text-[#1C1C1C] leading-tight">
+    <section id="testimonials" className="py-24 bg-[var(--color-brand-linen)] border-t border-[var(--color-brand-taupe)]/20 relative overflow-hidden">
+      <div className="container mx-auto px-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <span className="brand-overline">Guest Book</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-medium text-[var(--color-brand-charcoal)] mb-4 brand-section-heading-accent">
               Stories from the Lake
             </h2>
           </div>
 
-          <div className="flex gap-4 hidden md:flex">
+          <div className="flex gap-4">
             <button
               onClick={() => scroll("left")}
-              className="h-12 w-12 rounded-full border border-[#1C1C1C]/10 flex items-center justify-center hover:bg-[#1C1C1C] hover:text-[#ebe0d4] transition-all duration-300"
+              className="h-12 w-12 rounded-full border border-[var(--color-brand-charcoal)]/10 flex items-center justify-center hover:bg-[var(--color-brand-charcoal)] hover:text-[var(--color-brand-linen)] transition-all duration-300"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={() => scroll("right")}
-              className="h-12 w-12 rounded-full border border-[#1C1C1C]/10 flex items-center justify-center hover:bg-[#1C1C1C] hover:text-[#ebe0d4] transition-all duration-300"
+              className="h-12 w-12 rounded-full border border-[var(--color-brand-charcoal)]/10 flex items-center justify-center hover:bg-[var(--color-brand-charcoal)] hover:text-[var(--color-brand-linen)] transition-all duration-300"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -69,24 +63,24 @@ export default function Testimonials() {
         {/* Carousel */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0"
+          className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0 mt-16"
         >
           {testimonials.map((item, index) => (
             <div
               key={index}
-              className="min-w-[85vw] md:min-w-[600px] snap-center bg-white p-12 md:p-16 rounded-none flex flex-col justify-between border border-[#1C1C1C]/5 shadow-sm"
+              className="min-w-[85vw] md:min-w-[600px] snap-center bg-white p-10 md:p-14 brand-card-premium flex flex-col justify-between"
             >
-              <Quote className="h-8 w-8 text-[#A4907C] mb-8 opacity-50" />
+              <Quote className="h-8 w-8 text-[var(--color-brand-rust)] mb-8 opacity-40 shrink-0" />
 
-              <blockquote className="text-2xl md:text-3xl font-serif font-regular leading-[1.4] text-[#1C1C1C] mb-12">
+              <blockquote className="text-xl md:text-2xl font-serif font-light leading-relaxed text-[var(--color-brand-charcoal)] mb-10">
                 "{item.quote}"
               </blockquote>
 
-              <div>
-                <cite className="not-italic text-sm font-bold uppercase tracking-[0.15em] block text-[#1C1C1C] mb-2">
+              <div className="border-t border-[var(--color-brand-taupe)]/10 pt-6">
+                <cite className="not-italic text-sm font-bold uppercase tracking-[0.2em] block text-[var(--color-brand-charcoal)] mb-2">
                   {item.author}
                 </cite>
-                <span className="text-[#8C8984] text-xs uppercase tracking-widest">
+                <span className="text-[var(--color-brand-taupe)] text-[10px] font-bold uppercase tracking-[0.15em]">
                   {item.location}
                 </span>
               </div>
