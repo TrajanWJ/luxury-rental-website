@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main ARC34 Menu -->
+    <menuitem id="menu_arc34_main" name="ARC34 Inventory" sequence="10"/>
+    
+    <!-- General ARC34 Inventory Menu Items -->
+    <menuitem id="menu_arc34_products" name="Products" parent="menu_arc34_main" sequence="10"/>
+    <menuitem id="menu_arc34_stock" name="Stock Operations" parent="menu_arc34_main" sequence="20"/>
+    <menuitem id="menu_arc34_purchase" name="Purchase Orders" parent="menu_arc34_main" sequence="30"/>
+    <menuitem id="menu_arc34_reporting" name="ARC34 Reporting" parent="menu_arc34_main" sequence="40"/>
+    
+    <!-- Workflows Submenu -->
+    <menuitem id="menu_arc34_workflows" name="Workflows" parent="menu_arc34_main" sequence="50"/>
+    
+    <!-- Falcon Submenu under Workflows -->
+    <menuitem id="menu_arc34_falcon_workflow" name="Falcon Server Workflow" parent="menu_arc34_workflows" sequence="10"/>
+    
+    <!-- Falcon-specific menu items -->
+    <menuitem id="menu_arc34_received_servers" name="Received Servers" parent="menu_arc34_falcon_workflow" sequence="10"
+              action="action_arc34_received_servers"/>
+    <menuitem id="menu_arc34_falcon_parts" name="Falcon Parts" parent="menu_arc34_falcon_workflow" sequence="20"
+              action="action_arc34_falcon_parts"/>
+    <menuitem id="menu_arc34_falcon_servers" name="Falcon Servers" parent="menu_arc34_falcon_workflow" sequence="30"
+              action="action_arc34_falcon_servers"/>
+    
+    <!-- Future workflow placeholders -->
+    <menuitem id="menu_arc34_repair_workflow" name="Repair Workflow" parent="menu_arc34_workflows" sequence="20" invisible="1"/>
+    <menuitem id="menu_arc34_rma_workflow" name="RMA Workflow" parent="menu_arc34_workflows" sequence="30" invisible="1"/>
+    
+    <!-- Actions -->
+    <record id="action_arc34_received_servers" model="ir.actions.act_window">
+        <field name="name">Received Servers</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('arc34_received_server', '=', True)]</field>
+        <field name="context">{'default_arc34_received_server': True}</field>
+    </record>
+    
+    <record id="action_arc34_falcon_parts" model="ir.actions.act_window">
+        <field name="name">Falcon Parts</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('falcon_part', '=', True)]</field>
+        <field name="context">{'default_falcon_part': True}</field>
+    </record>
+    
+    <record id="action_arc34_falcon_servers" model="ir.actions.act_window">
+        <field name="name">Falcon Servers</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('falcon_server_build', '=', True)]</field>
+        <field name="context">{'default_falcon_server_build': True}</field>
+    </record>
+    
+    <!-- Enhanced Product Views -->
+    <record id="action_arc34_products" model="ir.actions.act_window">
+        <field name="name">ARC34 Products</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <!-- Enhanced Stock Views -->
+    <record id="action_arc34_stock_moves" model="ir.actions.act_window">
+        <field name="name">ARC34 Stock Moves</field>
+        <field name="res_model">stock.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <!-- Enhanced Purchase Views -->
+    <record id="action_arc34_purchase_orders" model="ir.actions.act_window">
+        <field name="name">ARC34 Purchase Orders</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <!-- Reporting Actions -->
+    <record id="action_arc34_contract_utilization" model="ir.actions.act_window">
+        <field name="name">Contract Utilization</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('contract_number', '!=', False)]</field>
+    </record>
+    
+    <record id="action_arc34_dcaa_report" model="ir.actions.act_window">
+        <field name="name">DCAA Reports</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('direct_cost', '=', True)]</field>
+    </record>
+</odoo>

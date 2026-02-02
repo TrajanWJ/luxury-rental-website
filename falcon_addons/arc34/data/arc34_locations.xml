@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ARC34 Warehouse and Locations -->
+    <record id="arc34_warehouse" model="stock.warehouse">
+        <field name="name">ARC34 Warehouse</field>
+        <field name="code">ARC34</field>
+        <field name="partner_id" ref="base.main_partner"/>
+    </record>
+    
+    <!-- Falcon-specific Locations -->
+    <record id="location_falcon_parts" model="stock.location">
+        <field name="name">Falcon Parts Storage</field>
+        <field name="usage">internal</field>
+        <field name="location_id" ref="stock.stock_location_stock"/>
+        <field name="company_id" eval="False"/>
+        <field name="scrap_location">False</field>
+    </record>
+    
+    <record id="location_falcon_build" model="stock.location">
+        <field name="name">Falcon Build Area</field>
+        <field name="usage">internal</field>
+        <field name="location_id" ref="stock.stock_location_stock"/>
+        <field name="company_id" eval="False"/>
+        <field name="scrap_location">False</field>
+    </record>
+    
+    <record id="location_ashburn_dc" model="stock.location">
+        <field name="name">Ashburn DC</field>
+        <field name="usage">internal</field>
+        <field name="location_id" ref="stock.stock_location_stock"/>
+        <field name="company_id" eval="False"/>
+        <field name="scrap_location">False</field>
+    </record>
+    
+    <!-- Update default warehouse locations to use ARC34 warehouse -->
+    <record id="stock.warehouse0" model="stock.warehouse">
+        <field name="name">ARC34 Main Warehouse</field>
+        <field name="code">ARC34</field>
+    </record>
+    
+    <!-- Falcon Picking Types -->
+    <record id="picking_type_falcon_receive" model="stock.picking.type">
+        <field name="name">Falcon Receive</field>
+        <field name="code">incoming</field>
+        <field name="sequence_code">FALCON-RCV</field>
+        <field name="warehouse_id" ref="arc34_warehouse"/>
+        <field name="default_location_src_id" ref="stock.stock_location_suppliers"/>
+        <field name="default_location_dest_id" ref="location_falcon_parts"/>
+    </record>
+    
+    <record id="picking_type_falcon_build" model="stock.picking.type">
+        <field name="name">Falcon Build</field>
+        <field name="code">outgoing</field>
+        <field name="sequence_code">FALCON-BLD</field>
+        <field name="warehouse_id" ref="arc34_warehouse"/>
+        <field name="default_location_src_id" ref="location_falcon_build"/>
+        <field name="default_location_dest_id" ref="stock.stock_location_customers"/>
+    </record>
+    
+    <record id="picking_type_falcon_move" model="stock.picking.type">
+        <field name="name">Falcon Internal Move</field>
+        <field name="code">internal</field>
+        <field name="sequence_code">FALCON-MOV</field>
+        <field name="warehouse_id" ref="arc34_warehouse"/>
+        <field name="default_location_src_id" ref="location_falcon_parts"/>
+        <field name="default_location_dest_id" ref="location_falcon_build"/>
+    </record>
+</odoo>

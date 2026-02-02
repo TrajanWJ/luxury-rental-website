@@ -1,0 +1,5 @@
+"Name","Can be Purchased","Product Type","Tracking","Cost","Internal Reference","Vendor / Name","Vendor / Product Code","Vendor / Product Name","Vendor / Minimum Quantity","Vendor / Delivery Lead Time","Routes"
+"40mm Dust Cover","TRUE","Storable Product","No Tracking","1.22","Gardtec SC40-P15/45","Digi-Key","1997-1078-ND","40mm Dust cover/Filters","2","4","Buy,Receive in 2 steps"
+"45PPI Foam Filter","TRUE","Storable Product","No Tracking","1.52","Gardtec SC40-M45/5","Digi-Key","1997-1101-ND","45PPI Foam Filter","2","4","Buy,Receive in 2 steps"
+"Fan power","TRUE","Storable Product","No Tracking","0.0","","","","","","",""
+"Bronte power","TRUE","Storable Product","No Tracking","12.25","","","","","1","",""

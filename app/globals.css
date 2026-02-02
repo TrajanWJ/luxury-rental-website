@@ -4,50 +4,51 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* New Theme Palette: c3b6ab, 463930, 7d7065, ebe0d4, 9c8f84 */
-  --background: oklch(0.91 0.02 85);
-  /* ebe0d4 (Linen) */
-  --foreground: oklch(0.32 0.02 55);
-  /* 463930 (Deep Brown) */
+  /* WPP Brand Palette - Primary Colors */
+  --background: #ECE9E7;
+  /* Linen */
+  --foreground: #2B2B2B;
+  /* Charcoal */
 
-  --card: oklch(0.98 0.01 85);
-  --card-foreground: oklch(0.32 0.02 55);
+  --card: #ECE9E7;
+  --card-foreground: #2B2B2B;
 
-  --popover: oklch(0.98 0.01 85);
-  --popover-foreground: oklch(0.32 0.02 55);
+  --popover: #ECE9E7;
+  --popover-foreground: #2B2B2B;
 
-  /* Primary: 7d7065 */
-  --primary: oklch(0.53 0.02 65);
-  --primary-foreground: oklch(0.98 0.01 85);
+  /* Primary: Rust */
+  --primary: #9D5F36;
+  --primary-foreground: #ECE9E7;
 
-  /* Secondary: c3b6ab */
-  --secondary: oklch(0.77 0.02 75);
-  --secondary-foreground: oklch(0.32 0.02 55);
+  /* Secondary: Taupe */
+  --secondary: #BCA28A;
+  --secondary-foreground: #2B2B2B;
 
-  /* Accent: 9c8f84 */
-  --accent: oklch(0.66 0.02 75);
-  --accent-foreground: oklch(0.98 0.01 85);
+  /* Accent: Rust (for consistency) */
+  --accent: #9D5F36;
+  --accent-foreground: #ECE9E7;
 
-  --muted: oklch(0.85 0.01 85);
-  --muted-foreground: oklch(0.5 0.01 65);
+  --muted: #BCA28A;
+  --muted-foreground: #2B2B2B;
 
-  --destructive: oklch(0.45 0.2 25);
-  --destructive-foreground: oklch(0.98 0 0);
+  --destructive: #AD1D23;
+  /* Ruby */
+  --destructive-foreground: #ECE9E7;
 
-  --border: oklch(0.85 0.02 85);
-  --input: oklch(0.85 0.02 85);
-  --ring: oklch(0.53 0.02 65);
+  --border: #BCA28A;
+  --input: #ECE9E7;
+  --ring: #9D5F36;
 
   --radius: 0.75rem;
 
-  /* Custom Brand Variables */
-  --color-linen: #ebe0d4;
-  --color-taupe: #c3b6ab;
-  --color-brown-deep: #463930;
-  --color-brown-mid: #7d7065;
-  --color-brown-warm: #9c8f84;
+  /* WPP Brand Color Tokens */
+  --color-linen: #ECE9E7;
+  --color-taupe: #BCA28A;
+  --color-rust: #9D5F36;
   --color-charcoal: #2B2B2B;
+  --color-ruby: #AD1D23;
   --color-navy: #202B54;
+  --color-forest: #337D58;
 
   /* Sidebar defaults */
   --sidebar: oklch(0.985 0 0);
@@ -129,18 +130,18 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Brand Colors Extracted */
+  /* WPP Brand Colors */
   --color-brand-linen: var(--color-linen);
   --color-brand-taupe: var(--color-taupe);
-  --color-brand-brown-deep: var(--color-brown-deep);
-  --color-brand-brown-mid: var(--color-brown-mid);
-  --color-brand-brown-warm: var(--color-brown-warm);
+  --color-brand-rust: var(--color-rust);
   --color-brand-charcoal: var(--color-charcoal);
+  --color-brand-ruby: var(--color-ruby);
   --color-brand-navy: var(--color-navy);
+  --color-brand-forest: var(--color-forest);
 
-  /* Fonts */
-  --font-serif: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-sans: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* Fonts - WPP Brand Typography */
+  --font-serif: "Plantin MT Pro", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 @layer base {
@@ -174,4 +175,51 @@ html {
 
 .rdp-day_today:not(.rdp-day_selected):hover {
   background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Enhanced Micro-Interactions */
+a {
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-rust);
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(157, 95, 54, 0.15);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Focus States */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-rust);
+  box-shadow: 0 0 0 3px rgba(157, 95, 54, 0.1);
+}
+
+/* Section Separator */
+.section-separator {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-taupe), transparent);
+  opacity: 0.3;
+}
+
+/* Subtle Background Bands */
+.bg-band-linen {
+  background: linear-gradient(135deg, #ECE9E7 0%, #ffffff 100%);
+}
+
+.bg-band-taupe {
+  background: linear-gradient(135deg, #BCA28A 0%, #ECE9E7 100%);
 }

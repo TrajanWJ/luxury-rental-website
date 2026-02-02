@@ -1,0 +1,12 @@
+--- Sheet: Three Window_Covert ---
+Row 0: ('General Information', None, None, None, None, None, 'Purchase', None, None, None, None, 'Inventory', None)
+Row 1: ('Product Name', 'Purchase', 'Product Type', 'Track Inventory', 'Cost', 'Reference', 'Vendor', 'Vendor Product Code', 'Vendor Product Name', 'Quantity', 'Lead Time', 'Routes', 'Routes')
+Row 2: ('40mm Dust Cover', True, 'Goods', True, 1.22, 'Gardtec SC40-P15/45', 'Digi-Key', '1997-1078-ND', '40mm Dust cover/Filters', 2, 4, 'Buy', 'Arc34: Receive in 2 steps')
+Row 3: ('45PPI Foam Filter', True, 'Goods', True, 1.52, 'Gardtec SC40-M45/5', 'Digi-Key', '1997-1101-ND', '45PPI Foam Filter', 2, 4, 'Buy', 'Arc34: Receive in 2 steps')
+Row 4: (None, None, None, None, None, None, None, None, None, None, None, None, None)
+--- Sheet: Cables ---
+Row 0: ('Cable Name', 'Connector A', 'Cable length / type', 'Connector B', 'Quantity', 'Price', None)
+Row 1: ('Fan power', 'Fan', None, '1510492206 (Molex)', None, None, None)
+Row 2: ('Bronte power', 'POE board', None, 'HR10A-7P-4P73 (Hirose)', 1, 12.25, None)
+Row 3: (None, None, None, None, None, None, None)
+Row 4: (None, None, None, None, None, None, None)

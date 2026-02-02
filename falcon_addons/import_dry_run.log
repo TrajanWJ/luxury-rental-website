@@ -1,0 +1,8 @@
+INFO: Loaded 4 rows from /mnt/extra-addons/products_import_ready.csv
+INFO: Connected to Odoo DB: trajan45 as User ID: 2
+INFO: --- STARTING DRY RUN SIMULATION ---
+ERROR: Row 1 Failed: <Fault 2: "Object stock.location.route doesn't exist">
+ERROR: Row 2 Failed: <Fault 2: "Object stock.location.route doesn't exist">
+INFO: [DRY RUN] Would CREATE Product: Fan power with vals: {'name': 'Fan power', 'default_code': '', 'standard_price': 0.0, 'type': 'product', 'tracking': 'none', 'purchase_ok': True}
+INFO: [DRY RUN] Would CREATE Product: Bronte power with vals: {'name': 'Bronte power', 'default_code': '', 'standard_price': 12.25, 'type': 'product', 'tracking': 'none', 'purchase_ok': True}
+INFO: Import Processing Complete.

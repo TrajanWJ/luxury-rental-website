@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Falcon Receive Wizard Views -->
+    
+    <!-- Menu item for Falcon Receive Wizard -->
+    <menuitem id="menu_falcon_receive_wizard" name="Receive Server" parent="menu_arc34_received_servers" 
+              action="action_falcon_receive_wizard" sequence="10"/>
+    
+    <!-- Add button to Received Servers view -->
+    <record id="view_stock_picking_tree_arc34_received" model="ir.ui.view">
+        <field name="name">stock.picking.tree.arc34.received</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="view_arc34_received_servers_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="action_create_falcon_extraction" type="object" string="Create Extraction" 
+                            attrs="{'invisible': [('arc34_received_server', '=', False)]}"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Update Received Servers Action to use custom tree view -->
+    <record id="action_arc34_received_servers" model="ir.actions.act_window">
+        <field name="view_mode">tree,form</field>
+        <field name="views">[(ref('view_stock_picking_tree_arc34_received'), 'tree'), (ref('view_stock_picking_form_arc34'), 'form')]</field>
+    </record>
+</odoo>

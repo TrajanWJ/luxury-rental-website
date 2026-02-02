@@ -54,21 +54,44 @@ export default function FeaturedHomes() {
 
   return (
     <>
-      <section ref={sectionRef} className="py-16 md:py-24 bg-gradient-to-b from-[var(--color-brand-linen)] to-background overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 md:mb-16">
+      <section ref={sectionRef} className="py-20 md:py-32 bg-gradient-to-b from-[#ECE9E7] to-white overflow-hidden border-t border-[#BCA28A]/20">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="text-center mb-16 md:mb-20 max-w-4xl mx-auto">
+            <span className="text-[#BCA28A] text-xs font-bold uppercase tracking-[0.25em] mb-4 block font-serif">
+              Reunion Homes & Lakeside Townhomes
+            </span>
             <h2
-              className={`text-4xl md:text-5xl font-bold text-foreground mb-4 transition-all duration-1000 font-serif ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-[#2B2B2B] mb-6 leading-tight tracking-tight transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
             >
               Signature Lakefront Homes
             </h2>
             <p
-              className={`text-lg text-muted-foreground/80 max-w-2xl mx-auto transition-all duration-1000 delay-100 font-sans ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`text-lg md:text-xl text-[#2B2B2B]/70 max-w-2xl mx-auto mb-8 leading-relaxed font-light transition-all duration-1000 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
             >
-              Discover our exclusive collection of luxury vacation homes at Smith Mountain Lake
+              Luxuriously appointed residences designed to meet every need with elegant accommodations, serene surroundings, and details that delight. Each home brings families together for memories that last a lifetime.
             </p>
+
+            {/* Benefits List */}
+            <div className={`flex flex-wrap justify-center gap-6 md:gap-8 text-sm transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+              <div className="flex items-center gap-2 text-[#2B2B2B]/80">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#9D5F36]"></div>
+                <span className="font-medium">Private Docks & Boat Slips</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#2B2B2B]/80">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#9D5F36]"></div>
+                <span className="font-medium">Gourmet Kitchens</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#2B2B2B]/80">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#9D5F36]"></div>
+                <span className="font-medium">Concierge-Level Service</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#2B2B2B]/80">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#9D5F36]"></div>
+                <span className="font-medium">Thoughtful Amenities</span>
+              </div>
+            </div>
           </div>
 
           <div className="relative">

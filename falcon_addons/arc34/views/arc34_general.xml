@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Enhanced Product Form View -->
+    <record id="view_product_product_form_arc34" model="ir.ui.view">
+        <field name="name">product.product.form.arc34</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add ARC34 fields to product form -->
+            <xpath expr="//page[@name='general']" position="inside">
+                <group name="arc34_group" string="ARC34 Information">
+                    <field name="arc34_ipn" readonly="1"/>
+                    <field name="arc34_revision"/>
+                    <field name="arc34_part_number"/>
+                    <field name="govcon_category"/>
+                    <field name="contract_number"/>
+                    <field name="contract_line_item"/>
+                    <field name="manufacturer"/>
+                    <field name="model_number"/>
+                    <field name="serial_number_required"/>
+                </group>
+                
+                <group name="falcon_group" string="Falcon Information">
+                    <field name="falcon_part" readonly="1"/>
+                    <field name="falcon_component_type"/>
+                </group>
+            </xpath>
+            
+            <!-- Add ARC34 fields to product list view -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="arc34_ipn"/>
+                <field name="govcon_category"/>
+                <field name="falcon_part"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Enhanced Stock Picking Form View -->
+    <record id="view_stock_picking_form_arc34" model="ir.ui.view">
+        <field name="name">stock.picking.form.arc34</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <!-- Add ARC34 fields to picking form -->
+            <xpath expr="//page[@name='picking']" position="inside">
+                <group name="arc34_picking_group" string="ARC34 Information">
+                    <field name="contract_number"/>
+                    <field name="contract_line_item"/>
+                    <field name="contract_po_reference"/>
+                    <field name="arc34_received_server"/>
+                    <field name="arc34_extraction_progress" widget="progressbar"/>
+                    <field name="falcon_server_build"/>
+                    <field name="falcon_source_server"/>
+                    <field name="arc34_location_type"/>
+                    <field name="delivery_method"/>
+                </group>
+            </xpath>
+            
+            <!-- Add ARC34 fields to picking list view -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="arc34_received_server"/>
+                <field name="falcon_server_build"/>
+                <field name="contract_number"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Enhanced Account Move Form View -->
+    <record id="view_account_move_form_arc34" model="ir.ui.view">
+        <field name="name">account.move.form.arc34</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add ARC34 fields to invoice form -->
+            <xpath expr="//page[@name='other_info']" position="inside">
+                <group name="arc34_invoice_group" string="ARC34 Contract Information">
+                    <field name="contract_number"/>
+                    <field name="contract_line_item"/>
+                    <field name="contract_po_reference"/>
+                    <field name="arc34_invoice_type"/>
+                    <field name="cost_center"/>
+                    <field name="project_code"/>
+                    <field name="work_order"/>
+                    <field name="direct_cost"/>
+                    <field name="overhead_rate"/>
+                    <field name="fee_rate"/>
+                </group>
+            </xpath>
+            
+            <!-- Add ARC34 fields to invoice list view -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="contract_number"/>
+                <field name="arc34_invoice_type"/>
+                <field name="cost_center"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Enhanced Stock Move Form View -->
+    <record id="view_stock_move_form_arc34" model="ir.ui.view">
+        <field name="name">stock.move.form.arc34</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form2"/>
+        <field name="arch" type="xml">
+            <!-- Add ARC34 fields to stock move form -->
+            <xpath expr="//page[@name='other']" position="inside">
+                <group name="arc34_move_group" string="ARC34 Information">
+                    <field name="picking_id.contract_number"/>
+                    <field name="picking_id.contract_line_item"/>
+                    <field name="product_id.arc34_ipn"/>
+                    <field name="product_id.govcon_category"/>
+                    <field name="product_id.falcon_part"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Enhanced Purchase Order Form View -->
+    <record id="view_purchase_order_form_arc34" model="ir.ui.view">
+        <field name="name">purchase.order.form.arc34</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add ARC34 fields to PO form -->
+            <xpath expr="//page[@name='other']" position="inside">
+                <group name="arc34_po_group" string="ARC34 Contract Information">
+                    <field name="partner_ref"/>
+                    <field name="origin"/>
+                    <field name="notes"/>
+                </group>
+            </xpath>
+            
+            <!-- Add ARC34 fields to PO line -->
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                <field name="product_id.arc34_ipn"/>
+                <field name="product_id.govcon_category"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Custom Views for ARC34 -->
+    <record id="view_arc34_received_servers_tree" model="ir.ui.view">
+        <field name="name">arc34.received.servers.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <tree string="Received Servers">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="scheduled_date"/>
+                <field name="arc34_extraction_progress" widget="progressbar"/>
+                <field name="contract_number"/>
+                <field name="contract_line_item"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_arc34_falcon_parts_tree" model="ir.ui.view">
+        <field name="name">arc34.falcon.parts.tree</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <tree string="Falcon Parts">
+                <field name="name"/>
+                <field name="arc34_ipn"/>
+                <field name="falcon_component_type"/>
+                <field name="list_price"/>
+                <field name="qty_available"/>
+                <field name="virtual_available"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_arc34_falcon_servers_tree" model="ir.ui.view">
+        <field name="name">arc34.falcon.servers.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <tree string="Falcon Servers">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="scheduled_date"/>
+                <field name="falcon_source_server"/>
+                <field name="contract_number"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

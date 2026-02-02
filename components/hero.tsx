@@ -3,132 +3,103 @@
 import { motion, useScroll, useTransform } from "framer-motion"
 import { HeroBookingWidget } from "./hero-booking-widget"
 import { MapBookingWidget } from "./map-booking-widget"
-import { cn } from "@/lib/utils"
 
 export default function Hero() {
   const { scrollY } = useScroll()
 
-  // Smoother parallax effect
-  const y = useTransform(scrollY, [0, 800], [0, 400])
-  const opacity = useTransform(scrollY, [0, 400], [1, 0])
-  const scale = useTransform(scrollY, [0, 400], [1, 1.1])
+  // Subtle Parallax
+  const y = useTransform(scrollY, [0, 800], [0, 200])
 
   return (
-    <section className="relative min-h-screen flex items-start overflow-hidden">
-      {/* Background with Motion Parallax */}
+    <section className="relative min-h-[110vh] flex items-center overflow-hidden bg-[#2B2B2B]">
+      {/* Background Image - Full Bleed */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: "url('/hero-sunset.jpg')",
           y,
-          scale,
         }}
       >
-        {/* Updated Gradient: Deep Espresso/Brown for new theme */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#463930]/90 via-[#463930]/60 to-[#463930]/30 mix-blend-multiply sepia-[.15]" />
+        {/* Editorial Grade Overlay: Charcoal Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2B2B2B]/40 via-transparent to-[#2B2B2B]/90" />
+        <div className="absolute inset-0 bg-[#2B2B2B]/20 mix-blend-multiply" />
       </motion.div>
 
-      {/* Floating Modern Text - Top Right */}
-      <div className="absolute top-[18%] right-[5%] z-20 hidden lg:block">
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="bg-black/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
-        >
-          <span className="text-white text-sm font-medium tracking-[0.2em] italic font-serif">
-            Luxury waterfront rentals on Smith Mountain Lake
-          </span>
-        </motion.div>
-      </div>
+      {/* Content */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-center container mx-auto px-6 md:px-12 pt-0 md:pt-20">
 
-      {/* Content Container - Constrained and Centered */}
-      <div className="relative z-10 w-full min-h-screen flex flex-col pointer-events-none">
-        <div className="w-full max-w-[1920px] mx-auto px-4 md:pl-[7%] pr-[10px] md:pr-12 flex-1 flex flex-col justify-center pb-[10vh]">
+        <div className="max-w-4xl space-y-12">
 
-          {/* Content Group - Visually Connected */}
-          <div className="max-w-5xl w-full pointer-events-auto space-y-[8vh] lg:space-y-[10vh]">
-
-            {/* Typography Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="space-y-6 max-w-xl relative text-left pt-[20vh] md:pt-0"
-            >
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-3xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1] font-serif"
-              >
-                Wilson Premier <br />
-                <span className="text-white/95">Properties</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-sm md:text-xl text-white/80 font-light leading-relaxed max-w-lg font-sans"
-              >
-                Set your sights on a truly luxurious lake experience at any one of our Properties on the beautiful Smith Mountain Lake.
-              </motion.p>
-            </motion.div>
-
-            {/* Widgets Row - Stack on mobile to prevent squishing */}
-            <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-[5%] w-full relative">
-
-              {/* Quick Booking Widget */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="w-full md:flex-1 min-w-0 flex"
-              >
-                <HeroBookingWidget />
-              </motion.div>
-
-              {/* Map Widget */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="w-full md:w-auto md:shrink-0 flex"
-              >
-                <MapBookingWidget />
-              </motion.div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        style={{ opacity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
-      >
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 whitespace-nowrap">
-          Discover Residences
-        </span>
-        <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center p-1">
           <motion.div
-            animate={{
-              y: [0, 12, 0],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="w-1.5 h-1.5 bg-white/60 rounded-full"
-          />
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="overflow-hidden mb-6">
+              <motion.div
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center gap-4 text-[#BCA28A]"
+              >
+                <div className="h-px w-12 bg-current opacity-50" />
+                <span className="text-xs font-bold uppercase tracking-[0.25em]">
+                  Smith Mountain Lake
+                </span>
+              </motion.div>
+            </div>
+
+            <h1 className="text-5xl md:text-8xl lg:text-9xl font-serif font-regular tracking-tight text-[#ECE9E7] leading-[0.9]">
+              Wilson <br />
+              <span className="italic">Premier</span>
+            </h1>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5, delay: 0.6 }}
+            className="text-[#ECE9E7]/80 text-lg md:text-xl font-light max-w-lg leading-relaxed ml-2 md:ml-24 border-l border-[#ECE9E7]/20 pl-6 mb-4"
+          >
+            A collection of exquisite lakefront residences curated for those who seek silence, space, and water.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5, delay: 0.8 }}
+            className="text-[#BCA28A]/90 text-base md:text-lg font-light max-w-lg leading-relaxed ml-2 md:ml-24 pl-6"
+          >
+            From luxurious reunion homes to our five-star resort, every detail has been thoughtfully considered to create an extraordinary lake experience.
+          </motion.p>
+
+          {/* Widgets - Minimal Integration */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="pt-12 md:max-w-3xl"
+          >
+            {/* We wrap the existing widgets but apply new CSS filters to them via parent if needed, 
+                    or rely on their internal transparency */}
+            <div className="flex flex-col md:flex-row gap-6 items-start">
+              <div className="w-full md:flex-1">
+                <HeroBookingWidget />
+              </div>
+            </div>
+          </motion.div>
+
         </div>
-      </motion.div>
-    </section >
+      </div>
+
+      {/* Scroll indicator - Minimal Text */}
+      <div className="absolute bottom-12 left-6 md:left-12 flex items-center gap-4">
+        <span className="text-[#ECE9E7]/40 text-[10px] font-bold uppercase tracking-[0.2em]">
+          Scroll
+        </span>
+        <div className="h-px w-12 bg-[#ECE9E7]/20" />
+      </div>
+
+    </section>
   )
 }

@@ -1,93 +1,146 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { activities } from "@/lib/experiences-data"
+import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
+import { experiences } from "@/lib/experiences-data"
+import { ArrowRight, ChevronRight, ChevronLeft } from "lucide-react"
 
 export default function Experiences() {
-  const scrollToContact = () => {
-    const contactSection = document.querySelector("#contact")
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" })
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  // Map the new data structure to match what the UI expects
+  const mappedExperiences = experiences.map(exp => ({
+    title: exp.title,
+    type: exp.type,
+    image: exp.image || "/images/placeholder.jpg",
+    description: exp.description
+  }))
+
+  // Create a tripled list for seamless infinite scrolling
+  const extendedExperiences = [...mappedExperiences, ...mappedExperiences, ...mappedExperiences]
+
+  // Initialize scroll position to the middle set
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current
+      const initializeScroll = () => {
+        const w = container.scrollWidth
+        container.scrollLeft = w / 3
+      }
+      const timeout = setTimeout(initializeScroll, 100)
+      return () => clearTimeout(timeout)
+    }
+  }, [])
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current
+      const scrollLeft = container.scrollLeft
+      const scrollWidth = container.scrollWidth
+      const oneSetWidth = scrollWidth / 3
+
+      // If we've scrolled into the first set (too far left), jump to the middle set
+      if (scrollLeft < 10) {
+        container.scrollLeft = oneSetWidth + scrollLeft
+      }
+      // If we've scrolled into the third set (too far right), jump to the middle set
+      else if (scrollLeft >= oneSetWidth * 2) {
+        container.scrollLeft = scrollLeft - oneSetWidth
+      }
+    }
+  }
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const { current } = scrollContainerRef
+      const scrollAmount = direction === "left" ? -450 : 450
+      current.scrollBy({ left: scrollAmount, behavior: "smooth" })
     }
   }
 
   return (
-    <section id="experiences" className="py-24 md:py-32 bg-[#ebe0d4] overflow-hidden">
-      <div className="container mx-auto px-4 mb-20">
-        <h3 className="text-sm font-bold uppercase tracking-[0.4em] text-[#7d7065] border-l-2 border-[#463930] pl-6 mb-6">
-          Discover Local Favorites
-        </h3>
-        <p className="max-w-xl text-xl text-[#463930]/80 font-medium leading-relaxed ml-6">
-          Immerse yourself in the authentic lifestyle of Smith Mountain Lake. From adrenaline-pumping water sports to serene sunset cruises, we've curated the ultimate collection of local experiences for your stay.
-        </p>
-      </div>
+    <section id="experiences" className="py-24 md:py-32 bg-[#ECE9E7] text-[#2B2B2B] overflow-hidden border-t border-[#2B2B2B]/5">
+      <div className="container mx-auto px-6 md:px-12">
 
-      <div className="space-y-12">
-        {[
-          { dir: -1, speed: 50, offset: 0 },
-          { dir: 1, speed: 60, offset: -1000 },
-          { dir: -1, speed: 45, offset: -500 }
-        ].map((rail, rowIndex) => (
-          <div key={rowIndex} className="relative py-8 bg-[#e4dccc] border-y border-[#d5cbbd]">
-            <motion.div
-              className="flex gap-12 whitespace-nowrap px-12"
-              initial={{ x: rail.offset }}
-              animate={{ x: rail.dir === -1 ? [rail.offset, rail.offset - 2000] : [rail.offset - 2000, rail.offset] }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: rail.speed,
-                  ease: "linear",
-                },
-              }}
-            >
-              {[...activities, ...activities, ...activities, ...activities, ...activities].map((act, i) => (
-                <div
-                  key={`${act.name}-${rowIndex}-${i}`}
-                  className="relative group/card flex-shrink-0"
-                >
-                  {/* CLEAN BORDER ONLY ON HOVER */}
-                  <div className="absolute inset-0 rounded-[2rem] border-2 border-[#463930] scale-95 opacity-0 group-hover/card:scale-105 group-hover/card:opacity-100 transition-all duration-500 z-0" />
+        {/* Header with Controls */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+          <div className="max-w-xl">
+            <span className="text-[#BCA28A] text-xs font-bold uppercase tracking-[0.25em] mb-4 block">
+              Curated Lifestyle
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium leading-[1.1] tracking-tight text-[#2B2B2B]">
+              Life on the Water
+            </h2>
+          </div>
+        </div>
 
-                  {/* MAIN CARD WITH STRONG SHADOW */}
-                  <div className="relative z-10 h-80 w-[440px] rounded-[1.8rem] overflow-hidden shadow-[0_15px_40px_-10px_rgba(70,57,48,0.3)] group-hover/card:shadow-[0_40px_80px_-15px_rgba(70,57,48,0.5)] transition-all duration-700 bg-[#463930]">
+        {/* Horizontal Infinite Carousel */}
+        <div className="relative group">
+          {/* Navigation Buttons - Visible on all screens, liquid glass style */}
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-2 md:-left-4 lg:-left-12 top-[40%] -translate-y-1/2 z-20 h-12 w-12 md:h-14 md:w-14 rounded-full bg-white/30 backdrop-blur-xl border border-white/30 flex items-center justify-center text-[#1C1C1C] hover:bg-white/50 transition-all duration-300 shadow-[0_8px_32px_rgba(31,38,135,0.15)]"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-2 md:-right-4 lg:-right-12 top-[40%] -translate-y-1/2 z-20 h-12 w-12 md:h-14 md:w-14 rounded-full bg-white/30 backdrop-blur-xl border border-white/30 flex items-center justify-center text-[#1C1C1C] hover:bg-white/50 transition-all duration-300 shadow-[0_8px_32px_rgba(31,38,135,0.15)]"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          <div
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0"
+          >
+            {extendedExperiences.map((exp, index) => (
+              <a
+                key={`${index}-${exp.title}`}
+                href="https://smith-mountain-lake.com/things-to-do/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-w-[85vw] md:min-w-[400px] lg:min-w-[450px] snap-center group cursor-pointer block"
+              >
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#BCA28A] mb-8">
+                  {exp ? (
                     <Image
-                      src={act.image}
-                      alt={act.name}
+                      src={exp.image}
+                      alt={exp.title}
                       fill
-                      className="object-cover transition-transform duration-1000 group-hover/card:scale-110 opacity-90 group-hover/card:opacity-100"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200" />
+                  )}
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
 
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#463930] via-[#463930]/20 to-transparent" />
-
-                    <div className="absolute bottom-8 left-8 z-10">
-                      <span className="text-[#c3b6ab] text-[10px] font-bold uppercase tracking-[0.2em] mb-3 block">
-                        Wilson Premier
-                      </span>
-                      <h4 className="text-[#ebe0d4] font-bold text-3xl tracking-tight">
-                        {act.name}
-                      </h4>
-                      <div className="h-1 w-0 bg-[#c3b6ab] group-hover/card:w-full transition-all duration-700 mt-3" />
-                    </div>
+                  <div className="absolute top-6 left-6">
+                    <span className="bg-[#ECE9E7]/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#2B2B2B]">
+                      {exp.type}
+                    </span>
                   </div>
                 </div>
-              ))}
-            </motion.div>
-          </div>
-        ))}
-      </div>
 
-      <div className="container mx-auto px-4 mt-24 text-center">
-        <Button
-          onClick={scrollToContact}
-          className="bg-[#463930] text-[#ebe0d4] hover:bg-[#7d7065] rounded-full px-16 py-10 text-xl font-medium tracking-tight transition-all shadow-xl hover:shadow-[#463930]/30 active:scale-95"
-        >
-          Design Your Itinerary
-        </Button>
+                <div className="space-y-4 pr-8">
+                  <h3 className="text-2xl font-serif font-medium text-[#2B2B2B] group-hover:text-[#9D5F36] transition-colors">
+                    {exp.title}
+                  </h3>
+                  <p className="text-[#2B2B2B]/70 text-base leading-relaxed font-light line-clamp-2">
+                    {exp.description}
+                  </p>
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#2B2B2B] group-hover:translate-x-2 transition-transform duration-300">
+                    Explore Now <ArrowRight className="h-3 w-3" />
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )

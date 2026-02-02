@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Demo Data for ARC34 Module -->
+    
+    <!-- Demo Vendors -->
+    <record id="demo_vendor_supermicro" model="res.partner">
+        <field name="name">Supermicro Inc.</field>
+        <field name="is_company">True</field>
+        <field name="supplier">True</field>
+        <field name="email">sales@supermicro.com</field>
+        <field name="phone">+1-408-503-8000</field>
+        <field name="street">47370 Westinghouse Drive</field>
+        <field name="city">Fremont</field>
+        <field name="state_id" ref="base.state_us_6"/>
+        <field name="country_id" ref="base.us"/>
+        <field name="zip">94539</field>
+    </record>
+    
+    <record id="demo_vendor_cots" model="res.partner">
+        <field name="name">COTS Supplier</field>
+        <field name="is_company">True</field>
+        <field name="supplier">True</field>
+        <field name="email">sales@cots.com</field>
+        <field name="phone">+1-800-555-1234</field>
+    </record>
+    
+    <!-- Demo Customers -->
+    <record id="demo_customer_gov" model="res.partner">
+        <field name="name">Government Agency</field>
+        <field name="is_company">True</field>
+        <field name="customer">True</field>
+        <field name="email">procurement@gov.gov</field>
+        <field name="phone">+1-202-555-0123</field>
+    </record>
+    
+    <!-- Demo Products -->
+    <record id="demo_product_cpu_xeon" model="product.product">
+        <field name="name">Intel Xeon Gold 6248R</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_cpu"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">cpu</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">CPU-XEON-6248R</field>
+        <field name="list_price">2500.0</field>
+        <field name="standard_price">2000.0</field>
+        <field name="manufacturer">Intel</field>
+        <field name="model_number">6248R</field>
+    </record>
+    
+    <record id="demo_product_ram_32gb" model="product.product">
+        <field name="name">32GB DDR4 ECC RAM</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_ram"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">ram</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">RAM-DDR4-32GB</field>
+        <field name="list_price">200.0</field>
+        <field name="standard_price">150.0</field>
+        <field name="manufacturer">Samsung</field>
+        <field name="model_number">M393A4K40EB3-CWE</field>
+    </record>
+    
+    <record id="demo_product_ssd_1tb" model="product.product">
+        <field name="name">1TB NVMe SSD</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_storage"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">ssd</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">SSD-NVME-1TB</field>
+        <field name="list_price">300.0</field>
+        <field name="standard_price">250.0</field>
+        <field name="manufacturer">Samsung</field>
+        <field name="model_number">PM9A3</field>
+    </record>
+    
+    <record id="demo_product_psu_1200w" model="product.product">
+        <field name="name">1200W Redundant PSU</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_power"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">psu</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">PSU-1200W-RED</field>
+        <field name="list_price">500.0</field>
+        <field name="standard_price">400.0</field>
+        <field name="manufacturer">Delta</field>
+        <field name="model_number">DPS-1200AB-12</field>
+    </record>
+    
+    <!-- Demo COTS Product -->
+    <record id="demo_product_cots_switch" model="product.product">
+        <field name="name">Network Switch - COTS</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_category_cots"/>
+        <field name="govcon_category">cots</field>
+        <field name="arc34_part_number">SWITCH-COTS-24P</field>
+        <field name="list_price">1000.0</field>
+        <field name="standard_price">800.0</field>
+        <field name="manufacturer">Cisco</field>
+        <field name="model_number">SG350X-24</field>
+    </record>
+    
+    <!-- Demo Falcon Server Build -->
+    <record id="demo_falcon_server" model="product.product">
+        <field name="name">Falcon Server Build</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_category_falcon_builds"/>
+        <field name="falcon_part">False</field>
+        <field name="govcon_category">falcon_build</field>
+        <field name="arc34_part_number">FALCON-SERVER-001</field>
+        <field name="list_price">5000.0</field>
+        <field name="standard_price">4000.0</field>
+        <field name="description">Custom Falcon server build with enterprise components</field>
+    </record>
+    
+    <!-- Demo Purchase Order -->
+    <record id="demo_po_supermicro" model="purchase.order">
+        <field name="name">PO001</field>
+        <field name="partner_id" ref="demo_vendor_supermicro"/>
+        <field name="date_order">2024-01-15</field>
+        <field name="origin">Contract ARC34-2024-001</field>
+        <field name="notes">Supermicro server components for Falcon project</field>
+    </record>
+    
+    <!-- Demo Invoice -->
+    <record id="demo_invoice_gov" model="account.move">
+        <field name="name">INV001</field>
+        <field name="move_type">out_invoice</field>
+        <field name="partner_id" ref="demo_customer_gov"/>
+        <field name="invoice_date">2024-01-20</field>
+        <field name="contract_number">ARC34-2024-001</field>
+        <field name="contract_line_item">L001</field>
+        <field name="cost_center">CC-001</field>
+        <field name="project_code">PRJ-FALCON-001</field>
+        <field name="work_order">WO-001</field>
+        <field name="direct_cost">True</field>
+        <field name="overhead_rate">15.0</field>
+        <field name="fee_rate">10.0</field>
+    </record>
+</odoo>

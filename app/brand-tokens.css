@@ -1,0 +1,16 @@
+:root {
+    /* Primary Palette */
+    --color-linen: #ECE9E7;
+    --color-taupe: #BCA28A;
+    --color-rust: #9D5F36;
+    --color-charcoal: #2B2B2B;
+
+    /* Secondary Palette */
+    --color-ruby: #AD1D23;
+    --color-navy: #202B54;
+    --color-forest: #337D58;
+
+    /* Typography */
+    --font-heading: "Plantin MT Pro", serif;
+    --font-body: "Work Sans", sans-serif;
+}

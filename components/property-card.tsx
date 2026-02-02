@@ -29,9 +29,7 @@ export function PropertyCard({ property, onClick, on3DClick }: PropertyCardProps
         />
 
         {/* Sunset Filter for Milan Manor House */}
-        {property.name === "Milan Manor House" && (
-          <div className="absolute inset-0 bg-[#FFD700]/10 mix-blend-overlay pointer-events-none z-[5]" />
-        )}
+
 
         {/* 3D View Button Overlay */}
         {property.matterportUrl && (

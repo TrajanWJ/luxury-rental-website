@@ -1,0 +1,63 @@
+{
+    "colors": {
+        "linen": {
+            "hex": "#ECE9E7",
+            "role": "background",
+            "usage": "Calm and inviting light grey used for design elements and as a warm background alternative to stark white."
+        },
+        "taupe": {
+            "hex": "#BCA28A",
+            "role": "accent",
+            "usage": "Warm earthy shade used as part of the main brand color, suitable for backgrounds and accent elements."
+        },
+        "rust": {
+            "hex": "#9D5F36",
+            "role": "accent",
+            "usage": "Warm earthy shade used as part of the main brand color, ideal for backgrounds and accent elements."
+        },
+        "charcoal": {
+            "hex": "#2B2B2B",
+            "role": "text_primary",
+            "usage": "Dark grey used to add a touch of class and exclusivity; primary text color."
+        },
+        "ruby": {
+            "hex": "#AD1D23",
+            "role": "accent_secondary",
+            "usage": "Rich accent color used sparingly."
+        },
+        "navy": {
+            "hex": "#202B54",
+            "role": "accent_secondary",
+            "usage": "Deep, classic blue accent used sparingly."
+        },
+        "forest": {
+            "hex": "#337D58",
+            "role": "accent_secondary",
+            "usage": "Rich green accent used selectively."
+        }
+    },
+    "typography": {
+        "heading_family": "Plantin MT Pro",
+        "body_family": "Work Sans",
+        "notes": "Plantin MT Pro for headings, subheadings and accents. Work Sans for body text, captions and general UI."
+    },
+    "logo": {
+        "clear_space_logo": "height of wordmark",
+        "clear_space_icon": "half height of icon",
+        "approved_color_pairs": [
+            "Charcoal on white",
+            "Charcoal on linen",
+            "Charcoal on taupe",
+            "Taupe on white",
+            "Linen on rust",
+            "Linen on charcoal",
+            "Rust on white",
+            "White on ruby",
+            "Ruby on white",
+            "White on navy",
+            "Navy on white",
+            "White on forest",
+            "Forest on white"
+        ]
+    }
+}

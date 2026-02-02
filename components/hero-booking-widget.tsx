@@ -86,7 +86,7 @@ export function HeroBookingWidget() {
                             Property
                         </Label>
                         <Select value={location} onValueChange={setLocation}>
-                            <SelectTrigger className={cn(pillInputStyle, "flex items-center justify-between text-left")}>
+                            <SelectTrigger className={cn(pillInputStyle, "!h-[42px] md:!h-[50px] flex items-center justify-between text-left")}>
                                 <div className="flex items-center gap-2 md:gap-3 overflow-hidden">
                                     <Home className="h-3.5 w-3.5 md:h-4 md:w-4 opacity-50 shrink-0" />
                                     <span className="truncate font-medium">{location && location !== "all" ? location : "Residence"}</span>

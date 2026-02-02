@@ -142,7 +142,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 0 }}
-                        className="relative w-full max-w-6xl bg-white/90 backdrop-blur-3xl border border-white/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh]"
+                        className="relative w-full max-w-6xl bg-white/90 backdrop-blur-3xl border border-white/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90dvh] md:h-[90vh]"
                     >
                         <Button
                             variant="ghost"
@@ -154,7 +154,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         </Button>
 
                         {/* LEFT PANEL: Visual Hero (Selected Property) */}
-                        <div className="w-full md:w-3/5 relative bg-slate-100 h-[40vh] md:h-full overflow-hidden group">
+                        <div className="w-full md:w-3/5 relative bg-slate-100 shrink-0 h-auto aspect-[4/3] md:aspect-auto md:h-full overflow-hidden group">
                             {selectedProperty ? (
                                 <>
                                     <div className="absolute inset-0">
@@ -203,28 +203,28 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                     )}
 
                                     {/* Text Info */}
-                                    <div className="absolute bottom-32 left-0 px-8 text-white w-full z-10 pointer-events-none">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-medium mb-3 shadow-lg">
+                                    <div className="absolute bottom-4 left-0 px-6 md:bottom-32 md:px-8 text-white w-full z-10 pointer-events-none">
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-medium mb-2 md:mb-3 shadow-lg">
                                             <Star className="h-3 w-3 fill-white" /> Top Match
                                         </div>
-                                        <h2 className="text-3xl md:text-5xl font-bold mb-2 text-shadow-sm font-serif">{selectedProperty.name}</h2>
-                                        <p className="text-lg text-white/90 line-clamp-2 max-w-xl font-light">{selectedProperty.teaser || selectedProperty.description}</p>
+                                        <h2 className="text-2xl md:text-5xl font-bold mb-1 md:mb-2 text-shadow-sm font-serif">{selectedProperty.name}</h2>
+                                        <p className="text-sm md:text-lg text-white/90 line-clamp-2 max-w-xl font-light hidden md:block">{selectedProperty.teaser || selectedProperty.description}</p>
 
-                                        <div className="flex gap-6 mt-4">
-                                            <div className="flex items-center gap-2">
-                                                <Users className="h-5 w-5 text-white/90" />
-                                                <span className="font-medium text-white/90">{selectedProperty.sleeps} Guests</span>
+                                        <div className="flex gap-4 md:gap-6 mt-2 md:mt-4">
+                                            <div className="flex items-center gap-1.5 md:gap-2">
+                                                <Users className="h-4 w-4 md:h-5 md:w-5 text-white/90" />
+                                                <span className="text-xs md:text-base font-medium text-white/90">{selectedProperty.sleeps} Guests</span>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                                <Info className="h-5 w-5 text-white/90" />
-                                                <span className="font-medium text-white/90">{selectedProperty.bedrooms} Bedrooms</span>
+                                            <div className="flex items-center gap-1.5 md:gap-2">
+                                                <Info className="h-4 w-4 md:h-5 md:w-5 text-white/90" />
+                                                <span className="text-xs md:text-base font-medium text-white/90">{selectedProperty.bedrooms} Bedrooms</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Link to Property Modal Dots Style */}
-                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-[200px] px-4 z-20">
-                                        <div className="flex gap-1.5 overflow-x-auto pb-2 justify-start md:justify-center scrollbar-hide mask-linear-fade">
+                                    {/* Link to Property Modal Dots Style - Positioned lower on mobile */}
+                                    <div className="hidden md:block absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-[200px] px-4 z-20">
+                                        <div className="flex gap-1.5 overflow-x-auto pb-2 justify-center scrollbar-hide mask-linear-fade">
                                             {selectedProperty.images?.map((_, index) => (
                                                 <button
                                                     key={index}
@@ -249,8 +249,8 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                         </div>
                                     </div>
 
-                                    {/* New Action Buttons */}
-                                    <div className="absolute bottom-20 left-8 right-8 z-30 flex gap-3">
+                                    {/* New Action Buttons - Desktop Only */}
+                                    <div className="hidden md:flex absolute bottom-20 left-8 right-8 z-30 gap-3">
                                         <Button
                                             onClick={(e) => {
                                                 e.stopPropagation();
@@ -284,7 +284,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         {/* RIGHT PANEL: Intelligence & Composer */}
                         <div className="w-full md:w-2/5 flex flex-col h-full bg-white/60 backdrop-blur-2xl min-h-0 border-l border-white/40">
                             {/* Scrollable Content Area */}
-                            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent overscroll-contain">
+                            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent overscroll-contain pb-32 md:pb-0">
                                 <div className="p-6 md:p-8">
                                     <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-slate-800">
                                         <CalendarIcon className="h-5 w-5 text-primary" />

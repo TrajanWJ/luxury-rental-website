@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Falcon Workflow Views -->
+    
+    <!-- Falcon Receive Wizard Form -->
+    <record id="view_falcon_receive_wizard_form" model="ir.ui.view">
+        <field name="name">arc34.falcon.receive.wizard.form</field>
+        <field name="model">arc34.falcon.receive.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Receive Falcon Server">
+                <sheet>
+                    <group name="server_info" string="Server Information">
+                        <field name="server_name"/>
+                        <field name="server_serial"/>
+                        <field name="server_model"/>
+                        <field name="vendor_id"/>
+                        <field name="po_reference"/>
+                    </group>
+                    
+                    <group name="contract_info" string="Contract Information">
+                        <field name="contract_number"/>
+                        <field name="contract_line_item"/>
+                    </group>
+                    
+                    <group name="components" string="Component Specifications">
+                        <group>
+                            <field name="cpu_count"/>
+                            <field name="cpu_model"/>
+                        </group>
+                        <group>
+                            <field name="ram_gb"/>
+                        </group>
+                        <group>
+                            <field name="ssd_count"/>
+                            <field name="ssd_capacity_gb"/>
+                        </group>
+                        <group>
+                            <field name="psu_count"/>
+                        </group>
+                    </group>
+                    
+                    <group name="location" string="Location">
+                        <field name="location_id"/>
+                    </group>
+                </sheet>
+                
+                <footer>
+                    <button string="Receive Server" type="object" name="action_receive_server" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Falcon Receive Wizard Action -->
+    <record id="action_falcon_receive_wizard" model="ir.actions.act_window">
+        <field name="name">Receive Falcon Server</field>
+        <field name="res_model">arc34.falcon.receive.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_falcon_receive_wizard_form"/>
+    </record>
+    
+    <!-- Falcon Dashboard View -->
+    <record id="view_falcon_dashboard" model="ir.ui.view">
+        <field name="name">arc34.falcon.dashboard</field>
+        <field name="model">ir.ui.menu</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <h4><field name="name"/></h4>
+                                <div class="oe_kanban_footer">
+                                    <div class="oe_kanban_footer_left">
+                                        <field name="state"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <!-- Falcon Dashboard Action -->
+    <record id="action_falcon_dashboard" model="ir.actions.act_window">
+        <field name="name">Falcon Dashboard</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">['|', ('arc34_received_server', '=', True), ('falcon_server_build', '=', True)]</field>
+    </record>
+    
+    <!-- Falcon Workflow Tree View -->
+    <record id="view_falcon_workflow_tree" model="ir.ui.view">
+        <field name="name">arc34.falcon.workflow.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <tree string="Falcon Workflow">
+                <field name="name"/>
+                <field name="picking_type_id"/>
+                <field name="arc34_received_server"/>
+                <field name="falcon_server_build"/>
+                <field name="arc34_extraction_progress" widget="progressbar"/>
+                <field name="falcon_source_server"/>
+                <field name="partner_id"/>
+                <field name="scheduled_date"/>
+                <field name="contract_number"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Falcon Workflow Form View -->
+    <record id="view_falcon_workflow_form" model="ir.ui.view">
+        <field name="name">arc34.falcon.workflow.form</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <form string="Falcon Workflow">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="picking_type_id"/>
+                        <field name="partner_id"/>
+                        <field name="scheduled_date"/>
+                    </group>
+                    
+                    <group string="ARC34 Information">
+                        <field name="arc34_received_server"/>
+                        <field name="falcon_server_build"/>
+                        <field name="arc34_extraction_progress" widget="progressbar"/>
+                        <field name="falcon_source_server"/>
+                        <field name="contract_number"/>
+                        <field name="contract_line_item"/>
+                        <field name="arc34_location_type"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Operations">
+                            <field name="move_ids_without_package"/>
+                        </page>
+                        <page string="Moves">
+                            <field name="move_ids"/>
+                        </page>
+                        <page string="Tracking">
+                            <field name="tracking"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_create_falcon_extraction" type="object" string="Create Extraction" attrs="{'invisible': [('arc34_received_server', '=', False)]}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Falcon Workflow Action -->
+    <record id="action_falcon_workflow" model="ir.actions.act_window">
+        <field name="name">Falcon Workflow</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">['|', ('arc34_received_server', '=', True), ('falcon_server_build', '=', True)]</field>
+    </record>
+    
+    <!-- Falcon Parts Kanban View -->
+    <record id="view_falcon_parts_kanban" model="ir.ui.view">
+        <field name="name">arc34.falcon.parts.kanban</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="arc34_ipn"/>
+                <field name="falcon_component_type"/>
+                <field name="qty_available"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <strong><field name="name"/></strong>
+                                <div>IPN: <field name="arc34_ipn"/></div>
+                                <div>Type: <field name="falcon_component_type"/></div>
+                                <div>Available: <field name="qty_available"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <!-- Falcon Parts Action -->
+    <record id="action_falcon_parts" model="ir.actions.act_window">
+        <field name="name">Falcon Parts</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('falcon_part', '=', True)]</field>
+    </record>
+</odoo>

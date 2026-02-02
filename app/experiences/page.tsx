@@ -1,111 +1,141 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { motion } from "framer-motion"
+import { useRef } from "react"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import Navigation from "@/components/navigation"
 import FooterCTA from "@/components/footer-cta"
-import { Button } from "@/components/ui/button"
+import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 import { experiences } from "@/lib/experiences-data"
 
-export default function ExperiencesPage() {
-    const [selectedCategory, setSelectedCategory] = useState("all")
+const COLORS = {
+    linen: "#EAE8E4",  // Main background
+    charcoal: "#1C1C1C", // Primary text
+    stone: "#8C8984",    // Secondary text
+    brass: "#A4907C",    // Accents
+}
 
-    const filteredExperiences = useMemo(() => {
-        return experiences.filter(exp => {
-            return selectedCategory === "all" || exp.type === selectedCategory
-        })
-    }, [selectedCategory])
+// Editorial Experience Component
+function EditorialExperience({ item, index }: { item: any, index: number }) {
+    const containerRef = useRef(null)
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    })
+
+    const y = useTransform(scrollYProgress, [0, 1], [100, -100])
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0])
+    const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1])
+
+    const isEven = index % 2 === 0
 
     return (
-        <main className="min-h-screen bg-slate-950 text-white selection:bg-blue-500/30 font-sans">
-            <Navigation />
+        <section
+            ref={containerRef}
+            className={`min-h-[85vh] flex items-center justify-center py-24 relative overflow-hidden`}
+        >
+            <div className={`container mx-auto px-6 md:px-12 flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-12 md:gap-24 items-center`}>
 
-            {/* Minimal Header */}
-            <div className="pt-32 pb-12 container mx-auto px-6 text-center">
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight"
-                >
-                    Curated Lake <span className="text-primary">Experiences</span>
-                </motion.h1>
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed"
-                >
-                    Discover the finest dining, vibrant activities, and hidden local secrets recommended for your stay at Smith Mountain Lake.
-                </motion.p>
-
-                {/* Filter Tabs */}
+                {/* Text Side */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="flex justify-center gap-4 mt-12"
+                    style={{ opacity }}
+                    className="flex-1 space-y-8 z-10"
                 >
-                    {["all", "activity", "event"].map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setSelectedCategory(cat)}
-                            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 capitalize ${selectedCategory === cat
-                                ? "bg-white text-slate-950 shadow-lg scale-105"
-                                : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
-                                }`}
-                        >
-                            {cat === "all" ? "All Experiences" : cat + "s"}
-                        </button>
-                    ))}
+                    <div className="flex items-center gap-4">
+                        <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: COLORS.brass }}>
+                            0{index + 1}
+                        </span>
+                        <div className="h-px w-12 bg-current opacity-20" style={{ color: COLORS.charcoal }} />
+                        <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: COLORS.stone }}>
+                            {item.type}
+                        </span>
+                    </div>
+
+                    <h2
+                        className="text-5xl md:text-7xl font-serif font-medium leading-[0.95]"
+                        style={{ color: COLORS.charcoal }}
+                    >
+                        {item.title}
+                    </h2>
+
+                    <p
+                        className="text-lg md:text-xl font-light leading-relaxed max-w-md"
+                        style={{ color: COLORS.stone }}
+                    >
+                        {item.description}
+                    </p>
+
+                    <motion.div
+                        whileHover={{ x: 10 }}
+                        className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest cursor-pointer group"
+                        style={{ color: COLORS.charcoal }}
+                    >
+                        Explore
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </motion.div>
                 </motion.div>
-            </div>
 
-            {/* Grid */}
-            <div className="container mx-auto px-6 pb-24">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredExperiences.map((exp, index) => {
-                        const Icon = exp.icon
-                        return (
-                            <motion.div
-                                key={exp.title}
-                                layout
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.4, delay: index * 0.1 }}
-                                className="group relative bg-slate-900/50 rounded-3xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/20"
-                            >
-                                <div className="relative h-64 overflow-hidden">
-                                    <motion.div
-                                        className="absolute inset-0 bg-cover bg-center"
-                                        style={{ backgroundImage: `url('${exp.image}')` }}
-                                        whileHover={{ scale: 1.1 }}
-                                        transition={{ duration: 0.7 }}
-                                    >
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                                    </motion.div>
-                                    <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
-                                        <span className="text-xs font-medium text-white/90 capitalize">{exp.type}</span>
-                                    </div>
-                                </div>
-
-                                <div className="p-8 relative">
-                                    <div className="absolute -top-8 left-8 p-4 bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-xl">
-                                        <Icon className="h-6 w-6 text-primary" />
-                                    </div>
-
-                                    <h3 className="text-2xl font-bold text-white mb-3 mt-4">{exp.title}</h3>
-                                    <p className="text-slate-400 leading-relaxed mb-6">
-                                        {exp.description}
-                                    </p>
-
-                                    <Button variant="ghost" className="p-0 h-auto text-primary hover:text-primary/80 hover:bg-transparent group-hover:translate-x-1 transition-transform">
-                                        Learn more <span className="ml-2">→</span>
-                                    </Button>
-                                </div>
-                            </motion.div>
-                        )
-                    })}
+                {/* Image Side */}
+                <div className="flex-1 relative aspect-[3/4] md:aspect-[4/5] w-full max-w-xl">
+                    <div className="absolute inset-0 overflow-hidden">
+                        <motion.div
+                            style={{ scale, y }}
+                            className="w-full h-[120%] relative -top-[10%]"
+                        >
+                            <Image
+                                src={item.image}
+                                alt={item.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        </motion.div>
+                    </div>
                 </div>
+            </div>
+        </section>
+    )
+}
+
+export default function ExperiencesPage() {
+    return (
+        <main style={{ backgroundColor: COLORS.linen }} className="min-h-screen font-sans selection:bg-stone-300 selection:text-black">
+            <Navigation theme="light" />
+
+            {/* Editorial Hero */}
+            <section className="min-h-screen flex items-center pt-32 pb-20 relative px-6 md:px-12 overflow-hidden">
+                <div className="container mx-auto relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                        className="max-w-4xl"
+                    >
+                        <span className="block text-xs md:text-sm font-bold tracking-[0.25em] mb-8 uppercase" style={{ color: COLORS.brass }}>
+                            Curated Collection
+                        </span>
+                        <h1
+                            className="text-6xl md:text-9xl font-serif font-regular tracking-tight leading-[0.9] mb-12"
+                            style={{ color: COLORS.charcoal }}
+                        >
+                            Life on <br />
+                            <span className="italic">the Water</span>
+                        </h1>
+                        <p className="text-xl md:text-2xl font-light max-w-xl leading-relaxed" style={{ color: COLORS.stone }}>
+                            A slower pace. A deeper breath. We’ve curated the lake’s finest moments, so you can simply arrive and belong.
+                        </p>
+                    </motion.div>
+                </div>
+
+                {/* Subtle Grain/Texture Overlay */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+            </section>
+
+            {/* List of Experiences */}
+            <div className="pb-32">
+                {experiences.map((experience, index) => (
+                    <EditorialExperience key={index} item={experience} index={index} />
+                ))}
             </div>
 
             <FooterCTA />

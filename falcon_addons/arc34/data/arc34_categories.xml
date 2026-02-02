@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Govcon Categories -->
+    <record id="arc34_category_cots" model="product.category">
+        <field name="name">COTS</field>
+        <field name="code">COTS</field>
+    </record>
+    
+    <record id="arc34_category_server_parts" model="product.category">
+        <field name="name">Server Parts</field>
+        <field name="code">SRV-PART</field>
+    </record>
+    
+    <record id="arc34_category_assemblies" model="product.category">
+        <field name="name">Assemblies</field>
+        <field name="code">ASM</field>
+    </record>
+    
+    <record id="arc34_category_falcon_builds" model="product.category">
+        <field name="name">Falcon Builds</field>
+        <field name="code">FALCON</field>
+    </record>
+    
+    <!-- Falcon Component Types -->
+    <record id="arc34_component_cpu" model="product.category">
+        <field name="name">CPU Components</field>
+        <field name="code">CPU</field>
+        <field name="parent_id" ref="arc34_category_server_parts"/>
+    </record>
+    
+    <record id="arc34_component_ram" model="product.category">
+        <field name="name">RAM Components</field>
+        <field name="code">RAM</field>
+        <field name="parent_id" ref="arc34_category_server_parts"/>
+    </record>
+    
+    <record id="arc34_component_storage" model="product.category">
+        <field name="name">Storage Components</field>
+        <field name="code">STORAGE</field>
+        <field name="parent_id" ref="arc34_category_server_parts"/>
+    </record>
+    
+    <record id="arc34_component_power" model="product.category">
+        <field name="name">Power Components</field>
+        <field name="code">POWER</field>
+        <field name="parent_id" ref="arc34_category_server_parts"/>
+    </record>
+    
+    <!-- Default Products -->
+    <record id="arc34_product_cpu_default" model="product.product">
+        <field name="name">CPU - Default</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_cpu"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">cpu</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">CPU-DEFAULT</field>
+        <field name="list_price">0.0</field>
+        <field name="standard_price">0.0</field>
+    </record>
+    
+    <record id="arc34_product_ram_default" model="product.product">
+        <field name="name">RAM - Default</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_ram"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">ram</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">RAM-DEFAULT</field>
+        <field name="list_price">0.0</field>
+        <field name="standard_price">0.0</field>
+    </record>
+    
+    <record id="arc34_product_ssd_default" model="product.product">
+        <field name="name">SSD - Default</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_storage"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">ssd</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">SSD-DEFAULT</field>
+        <field name="list_price">0.0</field>
+        <field name="standard_price">0.0</field>
+    </record>
+    
+    <record id="arc34_product_psu_default" model="product.product">
+        <field name="name">PSU - Default</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="arc34_component_power"/>
+        <field name="falcon_part">True</field>
+        <field name="falcon_component_type">psu</field>
+        <field name="govcon_category">server_part</field>
+        <field name="arc34_part_number">PSU-DEFAULT</field>
+        <field name="list_price">0.0</field>
+        <field name="standard_price">0.0</field>
+    </record>
+</odoo>

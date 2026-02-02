@@ -10,8 +10,20 @@ export default function HomePage() {
     <main className="min-h-screen">
       <Navigation />
       <Hero />
+
+      {/* Section Separator */}
+      <div className="section-separator"></div>
+
       <FullScreenHomes />
+
+      {/* Section Separator */}
+      <div className="section-separator"></div>
+
       <Experiences />
+
+      {/* Section Separator */}
+      <div className="section-separator"></div>
+
       <Testimonials />
       <FooterCTA />
     </main>

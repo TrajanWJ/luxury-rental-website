@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_arc34_product_product,arc34.product.product,model_product_product,,1,1,1,1
+access_arc34_stock_picking,arc34.stock.picking,model_stock_picking,,1,1,1,1
+access_arc34_account_move,arc34.account.move,model_account_move,,1,1,1,1
+access_arc34_falcon_receive_wizard,arc34.falcon.receive.wizard,model_arc34_falcon_receive_wizard,,1,1,1,1

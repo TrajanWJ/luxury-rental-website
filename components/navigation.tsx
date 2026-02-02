@@ -10,11 +10,25 @@ import Link from "next/link"
 import Image from "next/image"
 import { DemoToggle } from "./demo-toggle"
 
-export default function Navigation() {
+export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light" }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [bookingOpen, setBookingOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [hoveringProperties, setHoveringProperties] = useState(false)
+
+  // Theme-based styles
+  const isDark = theme === "dark"
+  const textColor = isDark ? "text-white" : "text-[#2B2B2B]"
+  const textHover = isDark ? "hover:text-white" : "hover:text-black"
+  const textMuted = isDark ? "text-white/90" : "text-[#2B2B2B]/80"
+
+  const scrollBg = isDark
+    ? "bg-white/5 backdrop-blur-xl border-b border-white/10 py-1.5"
+    : "bg-[#ECE9E7]/80 backdrop-blur-xl border-b border-[#2B2B2B]/5 py-1.5"
+
+  const buttonClass = isDark
+    ? "bg-white text-primary hover:bg-secondary hover:text-white"
+    : "bg-[#2B2B2B] text-[#ECE9E7] hover:bg-[#9D5F36]"
 
   const [searchParams, setSearchParams] = useState({
     location: "",
@@ -66,7 +80,7 @@ export default function Navigation() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Experiences", href: "#experiences" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "/contact" },
     { label: "Map", href: "/map" },
   ]
 
@@ -98,7 +112,7 @@ export default function Navigation() {
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-          ? "bg-white/5 backdrop-blur-xl border-b border-white/10 py-1.5"
+          ? scrollBg
           : "bg-transparent py-3"
           }`}
       >
@@ -113,7 +127,7 @@ export default function Navigation() {
             >
               <h1
                 onDoubleClick={() => window.dispatchEvent(new CustomEvent('toggle-dev-tools'))}
-                className="text-lg md:text-xl font-bold text-white drop-shadow-md tracking-tight cursor-pointer select-none"
+                className={`text-lg md:text-xl font-bold drop-shadow-md tracking-tight cursor-pointer select-none ${textColor}`}
               >
                 Wilson Premier Properties
               </h1>
@@ -129,7 +143,7 @@ export default function Navigation() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index + 0.3 }}
                   onClick={() => scrollToSection(link.href)}
-                  className="transition-all duration-300 font-medium text-sm md:text-base text-white/90 hover:text-white hover:scale-105 drop-shadow-sm"
+                  className={`transition-all duration-300 font-medium text-sm md:text-base ${textMuted} ${textHover} hover:scale-105 drop-shadow-sm`}
                 >
                   {link.label}
                 </motion.button>
@@ -143,7 +157,7 @@ export default function Navigation() {
               >
                 <button
                   onClick={() => scrollToSection("#homes")}
-                  className="flex items-center gap-1 font-medium text-sm md:text-base text-white/90 hover:text-white transition-colors py-2"
+                  className={`flex items-center gap-1 font-medium text-sm md:text-base ${textMuted} ${textHover} transition-colors py-2`}
                 >
                   Properties <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
                 </button>
@@ -187,22 +201,49 @@ export default function Navigation() {
               >
                 <Button
                   onClick={() => setBookingOpen(true)}
-                  className="bg-white text-primary hover:bg-secondary hover:text-white rounded-full px-6 py-4 text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20 border-0"
+                  className={`${buttonClass} rounded-full px-6 py-4 text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20 border-0`}
                 >
                   Book Now
                 </Button>
               </motion.div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="md:hidden p-2 text-white"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </motion.button>
+            {/* Mobile Menu Button and Map Button */}
+            <div className="md:hidden flex items-center gap-3">
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onClick={() => scrollToSection("/map")}
+                className={`p-2 ${textColor} hover:scale-110 transition-transform`}
+                aria-label="View Map"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-6 w-6"
+                >
+                  <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+                  <line x1="9" y1="3" x2="9" y2="18" />
+                  <line x1="15" y1="6" x2="15" y2="21" />
+                </svg>
+              </motion.button>
+
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className={`p-2 ${textColor}`}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </motion.button>
+            </div>
           </div>
 
           {/* Mobile Menu */}

@@ -1,0 +1,8 @@
+--- Inspecting /mnt/extra-addons/products_template_import.xlsx ---
+Row 0: ('id', 'is_favorite', 'name', 'default_code', 'list_price', 'standard_price', 'qty_available', 'serial_prefix_format', 'bom_line_ids/product_qty')
+Row 1: ('__export__.product_template_27_c03ee75c', False, '1U Storage Tray', None, 1, 0, 0, None, None)
+Row 2: ('__import__.product_template_2', False, 'AC/DC Power Converter', 'IRM-90-12ST', 0, 26.48, 0, None, 1)
+--- Inspecting /mnt/extra-addons/lots_import.xlsx ---
+Row 0: ('id', 'name', 'product_id', 'activity_ids', 'x_assigned_part_ids/x_assigned_part_ids', 'x_assigned_part_ids/name', 'x_destination_server_lot_id')
+Row 1: ('__export__.stock_lot_10_a585d070', 'OA246S062528', 'Right PCIE riser', None, None, None, None)
+Row 2: ('__export__.stock_lot_9_9d5dea52', 'OA248S061339', 'Left Riser PCIE', None, None, None, None)

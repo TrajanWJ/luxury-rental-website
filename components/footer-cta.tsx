@@ -1,96 +1,84 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { motion, useInView } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { AdvancedBookingPopup } from "./advanced-booking-popup"
+
+const COLORS = {
+  linen: "#ECE9E7",
+  charcoal: "#2B2B2B",
+  taupe: "#BCA28A",
+  rust: "#9D5F36"
+}
 
 export default function FooterCTA() {
   const [bookingOpen, setBookingOpen] = useState(false)
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end end"]
+  })
 
-  const scrollToContact = () => {
-    const contactSection = document.querySelector("#contact")
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" })
-    }
-  }
+  // Gentle reveal
+  const scale = useTransform(scrollYProgress, [0, 1], [1.05, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.8, 1])
 
   return (
     <>
       <section
         id="contact"
         ref={ref}
-        className="relative py-24 md:py-32 overflow-hidden bg-background border-t border-black/5"
+        className="relative py-32 md:py-48 overflow-hidden bg-[#2B2B2B] text-[#ECE9E7]"
       >
-        <motion.div
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={isInView ? { scale: 1, opacity: 0.15 } : {}}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0"
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/luxury-lakefront-estate-sunset-view.jpg')" }}
-          />
-        </motion.div>
-
-        <div className="relative container mx-auto px-4 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold text-foreground mb-6"
-          >
-            Ready for Your Lakefront Escape?
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl text-foreground/90 mb-10 max-w-3xl mx-auto"
-          >
-            Book your luxury retreat at Smith Mountain Lake today and create memories that will last a lifetime
-          </motion.p>
-
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
+            style={{ scale, opacity, backgroundImage: "url('/luxury-lakefront-estate-sunset-view.jpg')" }}
+            className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-overlay grayscale-[30%]"
+          />
+          <div className="absolute inset-0 bg-[#2B2B2B]/60" /> {/* Heavy wash for text legibility */}
+        </div>
+
+        <div className="relative z-10 container mx-auto px-6 md:px-12 text-center">
+          <span className="text-[#BCA28A] text-xs font-bold uppercase tracking-[0.25em] mb-6 block">
+            Begin Your Stay
+          </span>
+
+          <h2 className="text-5xl md:text-7xl font-serif font-medium leading-[1] mb-6 tracking-tight text-[#ECE9E7]">
+            Settle for… the Extraordinary
+          </h2>
+
+          <p className="text-lg md:text-xl text-[#ECE9E7]/80 mb-4 max-w-2xl mx-auto font-light leading-relaxed">
+            The lake is waiting. Book your luxury retreat at Smith Mountain Lake today.
+          </p>
+
+          <p className="text-base md:text-lg text-[#BCA28A]/90 mb-16 max-w-xl mx-auto font-light leading-relaxed">
+            Our team will guide you through every detail, ensuring your stay is nothing short of extraordinary.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button
               onClick={() => setBookingOpen(true)}
-              size="lg"
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8 py-6 rounded-full transition-transform hover:scale-105 active:scale-95 shadow-xl"
+              className="bg-[#ECE9E7] text-[#2B2B2B] hover:bg-white rounded-full px-10 py-8 text-sm uppercase tracking-widest font-semibold transition-all duration-500 min-w-[200px]"
             >
               Book Your Stay
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="bg-black/5 backdrop-blur-sm text-foreground border-2 border-foreground/20 hover:bg-black/10 text-lg px-8 py-6 rounded-full transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              <a href="mailto:angela@wilson-premier.com">
-                Contact Our Team
-              </a>
-            </Button>
-          </motion.div>
 
-          {/* Footer Info */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="mt-16 pt-8 border-t border-black/10"
-          >
-            <p className="text-foreground/80 mb-2 font-medium">Wilson Premier Properties - Smith Mountain Lake, Virginia</p>
-            <a href="mailto:angela@wilson-premier.com" className="text-foreground/80 hover:text-foreground mb-4 block transition-colors">angela@wilson-premier.com</a>
-            <p className="text-foreground/60 text-sm">Luxury Lakefront Vacation Rentals & Experiences</p>
-          </motion.div>
+            <a
+              href="mailto:angela@wilson-premier.com"
+              className="text-[#ECE9E7]/60 hover:text-[#ECE9E7] text-sm uppercase tracking-widest border-b border-transparent hover:border-[#ECE9E7] pb-1 transition-all duration-300"
+            >
+              Contact Concierge
+            </a>
+          </div>
+
+          {/* Footer Minimal Info */}
+          <div className="mt-32 border-t border-[#ECE9E7]/10 pt-12 flex flex-col md:flex-row justify-between items-center gap-6 text-[#BCA28A] text-xs uppercase tracking-widest">
+            <span>Wilson Premier Properties</span>
+            <span>Smith Mountain Lake, Virginia</span>
+            <span>© {new Date().getFullYear()}</span>
+          </div>
         </div>
       </section>
 
