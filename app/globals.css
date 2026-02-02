@@ -247,7 +247,7 @@ select:focus {
 }
 
 .brand-card-premium:hover {
-  @apply border-[var(--color-brand-rust)]/50 shadow-[0_8px_32px_rgba(157, 95, 54, 0.08)];
+  @apply border-[var(--color-brand-rust)]/50 shadow-[0_8px_32px_rgba(157,95,54,0.08)];
 }
 
 /* Background Depth Bands */
