@@ -28,7 +28,7 @@ export default function ContactPage() {
         // Simulate submission
         await new Promise(resolve => setTimeout(resolve, 1500))
 
-        alert("Thank you for your inquiry! Our team will be in touch shortly.")
+        alert("Thank you for reaching out to Wilson Premier Properties. Our concierge team will review your plans and follow up with thoughtful, customized recommendations for your stay.")
         setFormData({ name: "", email: "", phone: "", interest: "", message: "" })
         setIsSubmitting(false)
     }
@@ -63,6 +63,68 @@ export default function ContactPage() {
                     </div>
                 </section>
 
+                {/* Lake Experiences Section */}
+                <section className="py-20 md:py-28">
+                    <div className="container mx-auto px-6 md:px-12 max-w-3xl">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            viewport={{ once: true }}
+                        >
+                            <h2 className="text-4xl md:text-5xl font-serif font-medium text-[#2B2B2B] mb-8 text-center tracking-tight">
+                                Elevated Lake Experiences
+                            </h2>
+                            <div className="h-0.5 w-16 bg-[#9D5F36] mx-auto mb-12"></div>
+                            <p className="text-lg md:text-xl text-[#2B2B2B]/80 leading-relaxed font-light mb-10 text-center">
+                                From adrenaline-pumping water sports to serene vineyard tastings, discover the very best of Smith Mountain Lake. Wander from hidden coves to wide-open channels, detouring to trails, wineries, marinas, and dock-and-dine spots along the way—each turn of the lake revealing a new way to play, taste, and experience something unexpected.
+                            </p>
+
+                            <div className="grid md:grid-cols-2 gap-6 md:gap-8 bg-white border border-[#BCA28A]/30 rounded-2xl p-8 shadow-lg">
+                                <div>
+                                    <h3 className="text-xl font-serif font-medium text-[#2B2B2B] mb-4">Smith Mountain Lake</h3>
+                                    <ul className="space-y-2 text-[#2B2B2B]/80">
+                                        <li className="flex items-center gap-3">
+                                            <div className="w-1 h-1 rounded-full bg-[#9D5F36]"></div>
+                                            <span>Smith Mountain Lake Dam & Visitor Center</span>
+                                        </li>
+                                        <li className="flex items-center gap-3">
+                                            <div className="w-1 h-1 rounded-full bg-[#9D5F36]"></div>
+                                            <span>Hidden coves and waterways</span>
+                                        </li>
+                                        <li className="flex items-center gap-3">
+                                            <div className="w-1 h-1 rounded-full bg-[#9D5F36]"></div>
+                                            <span>Trails and marinas</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-serif font-medium text-[#2B2B2B] mb-4">Places to Visit</h3>
+                                    <ul className="space-y-2 text-[#2B2B2B]/80">
+                                        <li className="flex items-center gap-3">
+                                            <div className="w-1 h-1 rounded-full bg-[#9D5F36]"></div>
+                                            <span>Hickory Hill Vineyards</span>
+                                        </li>
+                                        <li className="flex items-center gap-3">
+                                            <div className="w-1 h-1 rounded-full bg-[#9D5F36]"></div>
+                                            <span>Booker T. Washington National Monument</span>
+                                        </li>
+                                        <li className="flex items-center gap-3">
+                                            <div className="w-1 h-1 rounded-full bg-[#9D5F36]"></div>
+                                            <span>SML Farm Alpacas</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* Divider */}
+                <div className="container mx-auto px-6 md:px-12">
+                    <div className="h-px bg-gradient-to-r from-transparent via-[#BCA28A]/40 to-transparent"></div>
+                </div>
+
                 {/* Contact Cards & Form Section */}
                 <section className="py-20 md:py-28">
                     <div className="container mx-auto px-6 md:px-12 max-w-6xl">
@@ -72,22 +134,8 @@ export default function ContactPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="grid md:grid-cols-3 gap-6 mb-16"
+                            className="grid md:grid-cols-2 gap-6 mb-16"
                         >
-                            {/* Email Card */}
-                            <div className="bg-white border border-[#BCA28A]/30 rounded-2xl p-8 hover:border-[#9D5F36] transition-all duration-300 hover:shadow-lg">
-                                <div className="w-12 h-12 rounded-full bg-[#9D5F36]/10 flex items-center justify-center mb-4">
-                                    <Mail className="h-6 w-6 text-[#9D5F36]" />
-                                </div>
-                                <h3 className="text-lg font-serif font-medium text-[#2B2B2B] mb-2">Email Us</h3>
-                                <a
-                                    href="mailto:angela@wilson-premier.com"
-                                    className="text-[#2B2B2B]/70 hover:text-[#9D5F36] transition-colors text-sm"
-                                >
-                                    angela@wilson-premier.com
-                                </a>
-                            </div>
-
                             {/* Phone Card */}
                             <div className="bg-white border border-[#BCA28A]/30 rounded-2xl p-8 hover:border-[#9D5F36] transition-all duration-300 hover:shadow-lg">
                                 <div className="w-12 h-12 rounded-full bg-[#9D5F36]/10 flex items-center justify-center mb-4">
@@ -125,8 +173,11 @@ export default function ContactPage() {
                                 <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#2B2B2B] mb-4 text-center">
                                     Send Us a Message
                                 </h2>
-                                <p className="text-[#2B2B2B]/70 text-center mb-10 leading-relaxed">
+                                <p className="text-[#2B2B2B]/70 text-center mb-6 leading-relaxed">
                                     Share your vision for the perfect lake retreat, and we'll make it a reality.
+                                </p>
+                                <p className="text-sm text-[#9D5F36] text-center mb-10 leading-relaxed font-medium">
+                                    Your message goes straight to our concierge team.
                                 </p>
 
                                 <form onSubmit={handleSubmit} className="space-y-6">

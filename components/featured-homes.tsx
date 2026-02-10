@@ -58,7 +58,7 @@ export default function FeaturedHomes() {
         <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16 md:mb-20 max-w-4xl mx-auto">
             <span className="text-[#BCA28A] text-xs font-bold uppercase tracking-[0.25em] mb-4 block font-serif">
-              Reunion Homes & Lakeside Townhomes
+              Reunion Homes & Lakefront Retreats
             </span>
             <h2
               className={`text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-[#2B2B2B] mb-6 leading-tight tracking-tight transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -70,7 +70,7 @@ export default function FeaturedHomes() {
               className={`text-lg md:text-xl text-[#2B2B2B]/70 max-w-2xl mx-auto mb-8 leading-relaxed font-light transition-all duration-1000 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
             >
-              Luxuriously appointed residences designed to meet every need with elegant accommodations, serene surroundings, and details that delight. Each home brings families together for memories that last a lifetime.
+              Luxuriously appointed lakefront retreats designed to meet every need with elegant accommodations, serene surroundings, and details that delight. Each home brings families together for memories that last a lifetime.
             </p>
 
             {/* Benefits List */}

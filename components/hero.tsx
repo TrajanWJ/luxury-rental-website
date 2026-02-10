@@ -49,7 +49,7 @@ export default function Hero() {
               </motion.div>
             </div>
 
-            <h1 className="text-5xl md:text-8xl lg:text-9xl font-serif font-regular tracking-tight text-[#ECE9E7] leading-[0.9]">
+            <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif font-regular tracking-tight text-[#ECE9E7] leading-[0.9]">
               Wilson <br />
               <span className="italic">Premier</span>
             </h1>
@@ -59,7 +59,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, delay: 0.6 }}
-            className="text-[#ECE9E7]/80 text-lg md:text-xl font-light max-w-lg leading-relaxed ml-2 md:ml-24 border-l border-[#ECE9E7]/20 pl-6 mb-4"
+            className="text-[#ECE9E7]/80 text-lg md:text-xl font-light max-w-lg leading-relaxed ml-2 md:ml-16 border-l border-[#ECE9E7]/20 pl-4 mb-6"
           >
             A collection of exquisite lakefront residences curated for those who seek silence, space, and water.
           </motion.p>
@@ -68,7 +68,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, delay: 0.8 }}
-            className="text-[#BCA28A]/90 text-base md:text-lg font-light max-w-lg leading-relaxed ml-2 md:ml-24 pl-6"
+            className="text-[#BCA28A]/90 text-base md:text-lg font-light max-w-lg leading-relaxed ml-2 md:ml-16 pl-4 mb-8"
           >
             From luxurious reunion homes to our five-star resort, every detail has been thoughtfully considered to create an extraordinary lake experience.
           </motion.p>
@@ -78,7 +78,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="pt-12 md:max-w-3xl"
+            className="pt-8 pb-16 px-4 md:max-w-3xl"
           >
             {/* We wrap the existing widgets but apply new CSS filters to them via parent if needed, 
                     or rely on their internal transparency */}

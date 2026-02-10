@@ -52,16 +52,16 @@ export default function MapPage() {
 
     const filteredAndSortedProperties = useMemo(() => {
         let filtered = properties.filter(p =>
-            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.teaser.toLowerCase().includes(searchQuery.toLowerCase())
+            p.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.teaser?.toLowerCase().includes(searchQuery.toLowerCase())
         )
 
         if (experienceMode === "lake-views") {
-            filtered = filtered.filter(p => p.amenities.some(a => a.toLowerCase().includes("shoreline") || a.toLowerCase().includes("dock")))
+            filtered = filtered.filter(p => p.amenities?.some(a => a?.toLowerCase().includes("shoreline") || a?.toLowerCase().includes("dock")))
         } else if (experienceMode === "quiet-retreat") {
-            filtered = filtered.filter(p => p.amenities.some(a => a.toLowerCase().includes("private") || a.toLowerCase().includes("acres")))
+            filtered = filtered.filter(p => p.amenities?.some(a => a?.toLowerCase().includes("private") || a?.toLowerCase().includes("acres")))
         } else if (experienceMode === "near-activities") {
-            filtered = filtered.filter(p => p.amenities.some(a => a.toLowerCase().includes("golf") || a.toLowerCase().includes("bowling") || a.toLowerCase().includes("theater")))
+            filtered = filtered.filter(p => p.amenities?.some(a => a?.toLowerCase().includes("golf") || a?.toLowerCase().includes("bowling") || a?.toLowerCase().includes("theater")))
         }
 
         if (checkIn && checkOut) {

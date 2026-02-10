@@ -81,9 +81,10 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Experiences", href: "#experiences" },
-    { label: "Contact", href: "/contact" },
-    { label: "Map", href: "/map" },
+    { label: "Our Pledge", href: "#pledge" },
+    { label: "Lake Experiences", href: "#experiences" },
+    { label: "Contact Concierge", href: "/contact" },
+    { label: "Getting Here", href: "/map" },
   ]
 
   const scrollToSection = (href: string) => {
@@ -120,19 +121,25 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
       >
         <div className="w-full max-w-[1920px] mx-auto px-6 md:px-12">
           <div className="flex items-center justify-between h-10 md:h-12">
-            {/* Logo */}
+            {/* Logo and Tagline - Integrated Design */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex-shrink-0"
+              className="flex-shrink-0 flex items-center"
             >
-              <h1
-                onDoubleClick={() => window.dispatchEvent(new CustomEvent('toggle-dev-tools'))}
-                className={`text-lg md:text-xl font-bold drop-shadow-md tracking-tight cursor-pointer select-none ${textColor}`}
-              >
-                Wilson Premier Properties
-              </h1>
+              <div className="hidden md:flex items-center pr-3">
+                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground whitespace-nowrap">Luxury Lakefront Vacation Rentals</p>
+              </div>
+              <div className="relative h-16 w-52 shrink-0">
+                <Image
+                  src="/brand/logo no background.png"
+                  alt="Wilson Premier Properties"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
             </motion.div>
 
             {/* Desktop Navigation */}
@@ -151,7 +158,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                       scrollToSection(link.href)
                     }
                   }}
-                  className={`transition-all duration-300 font-medium text-sm md:text-base ${textMuted} ${textHover} hover:scale-105 drop-shadow-sm`}
+                  className={`transition-all duration-300 font-medium text-sm md:text-base whitespace-nowrap ${textMuted} ${textHover} hover:scale-105 drop-shadow-sm`}
                 >
                   {link.label}
                 </motion.button>
@@ -167,7 +174,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                   onClick={() => scrollToSection("#homes")}
                   className={`flex items-center gap-1 font-medium text-sm md:text-base ${textMuted} ${textHover} transition-colors py-2`}
                 >
-                  Properties <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
+                  Lakefront Retreats <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
                 </button>
 
                 <AnimatePresence>

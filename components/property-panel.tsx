@@ -34,13 +34,13 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
   // Helper to pick featured icons
   const getFeaturedIcons = (prop: Property) => {
     const icons = []
-    if (prop.amenities.some((a: string) => a.toLowerCase().includes('dock') || a.toLowerCase().includes('shoreline'))) {
+    if (prop.amenities?.some((a: string) => a?.toLowerCase().includes('dock') || a?.toLowerCase().includes('shoreline'))) {
       icons.push({ icon: Anchor, label: "Private Dock" })
     }
-    if (prop.amenities.some((a: string) => a.toLowerCase().includes('acre'))) {
+    if (prop.amenities?.some((a: string) => a?.toLowerCase().includes('acre'))) {
       icons.push({ icon: Trees, label: "Acreage" })
     }
-    if (prop.amenities.some((a: string) => a.toLowerCase().includes('view') || a.toLowerCase().includes('waterfront'))) {
+    if (prop.amenities?.some((a: string) => a?.toLowerCase().includes('view') || a?.toLowerCase().includes('waterfront'))) {
       icons.push({ icon: Waves, label: "Lake Views" })
     }
     return icons.slice(0, 2) // Limit to top 2 features
