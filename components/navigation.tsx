@@ -123,14 +123,14 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
         <div className="w-full max-w-[1920px] mx-auto px-3 md:px-8 lg:px-12">
           <div className="flex items-center justify-between h-16 md:h-16">
 
-            {/* ─── LEFT: Logo Area ─── */}
+            {/* ─── LEFT: Logo + Quick Actions ─── */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
               className="flex-shrink-0 flex items-center gap-2 md:gap-3"
             >
-              {/* Mobile: chat button before logo */}
+              {/* Chat button — mobile only, left of logo */}
               <button
                 onClick={() => openContactModal()}
                 className={`md:hidden p-2 rounded-full transition-all ${isDark ? "bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
@@ -141,24 +141,20 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                 </svg>
               </button>
 
-              {/* Logo — large and prominent */}
+              {/* Logo — bold processed variants, no CSS filter hacks */}
               <Link href="/" className="block">
-                <div className="relative h-14 w-44 md:h-[52px] md:w-52 shrink-0">
+                <div className="relative h-14 w-48 md:h-[52px] md:w-56 shrink-0">
                   <Image
-                    src="/brand/logo no background.png"
+                    src={isDark ? "/brand/logo-bold-linen.png" : "/brand/logo-bold-charcoal.png"}
                     alt="Wilson Premier Properties"
                     fill
-                    className={`object-contain object-left ${
-                      isDark
-                        ? "invert brightness-[0.92] sepia-[0.08] drop-shadow-[0_1px_3px_rgba(255,255,255,0.15)]"
-                        : "drop-shadow-[0_1px_2px_rgba(0,0,0,0.08)]"
-                    }`}
+                    className="object-contain object-left"
                     priority
                   />
                 </div>
               </Link>
 
-              {/* Desktop: tagline divider + text */}
+              {/* Tagline — desktop lg+ only */}
               <div className="hidden lg:flex items-center gap-3 pl-2">
                 <div className={`h-8 w-px ${isDark ? "bg-white/20" : "bg-[#2B2B2B]/15"}`} />
                 <p className={`text-[10px] font-semibold uppercase tracking-[0.18em] whitespace-nowrap ${isDark ? "text-white/70" : "text-[#2B2B2B]/60"}`}>
@@ -168,7 +164,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
             </motion.div>
 
             {/* ─── RIGHT: Desktop Navigation ─── */}
-            <div className="hidden md:flex items-center gap-5 lg:gap-7">
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
               {navLinks.map((link, index) => (
                 <motion.button
                   key={link.label}
@@ -179,8 +175,6 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                     if (link.label === "Contact Concierge") {
                       scrollToSection("#footer")
                       setTimeout(() => openContactModal(), 600)
-                    } else if (link.label === "Contact") {
-                      openContactModal()
                     } else {
                       scrollToSection(link.href)
                     }
@@ -236,6 +230,31 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                 </AnimatePresence>
               </div>
 
+              {/* Desktop icon buttons: Map + Chat */}
+              <div className="flex items-center gap-2 pl-1">
+                <button
+                  onClick={() => window.location.href = '/map'}
+                  className={`p-2 rounded-full transition-all ${isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-[#2B2B2B]/60 hover:text-[#2B2B2B] hover:bg-[#2B2B2B]/10"}`}
+                  aria-label="Getting Here - Map"
+                  title="Getting Here"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => openContactModal()}
+                  className={`p-2 rounded-full transition-all ${isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-[#2B2B2B]/60 hover:text-[#2B2B2B] hover:bg-[#2B2B2B]/10"}`}
+                  aria-label="Contact Concierge"
+                  title="Contact Concierge"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </button>
+              </div>
+
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -251,7 +270,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
             </div>
 
             {/* ─── RIGHT: Mobile Actions ─── */}
-            <div className="md:hidden flex items-center gap-3">
+            <div className="md:hidden flex items-center gap-2.5">
               <button
                 onClick={() => window.location.href = '/map'}
                 className={`backdrop-blur-md border p-2 rounded-full transition-all shadow-sm ${isDark ? "bg-white/10 border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
@@ -310,7 +329,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                     </button>
                   ))}
 
-                  {/* Properties in mobile menu */}
+                  {/* Lakefront Retreats in mobile menu */}
                   <button
                     onClick={() => scrollToSection("#homes")}
                     className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-base border-b border-white/5 font-serif"
