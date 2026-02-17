@@ -83,6 +83,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
     { label: "Home", href: "/" },
     { label: "Our Pledge", href: "#pledge" },
     { label: "Lake Experiences", href: "#experiences" },
+    { label: "House Rules", href: "/house-rules" },
     { label: "Contact Concierge", href: "/contact" },
     { label: "Getting Here", href: "/map" },
   ]
@@ -116,35 +117,58 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
         transition={{ duration: 0.6 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
           ? scrollBg
-          : "bg-transparent py-3"
+          : "bg-transparent py-2 md:py-3"
           }`}
       >
-        <div className="w-full max-w-[1920px] mx-auto px-6 md:px-12">
-          <div className="flex items-center justify-between h-10 md:h-12">
-            {/* Logo and Tagline - Integrated Design */}
+        <div className="w-full max-w-[1920px] mx-auto px-3 md:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-16 md:h-16">
+
+            {/* ─── LEFT: Logo Area ─── */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex-shrink-0 flex items-center"
+              className="flex-shrink-0 flex items-center gap-2 md:gap-3"
             >
-              <div className="hidden md:flex items-center pr-3">
-                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground whitespace-nowrap">Luxury Lakefront Vacation Rentals</p>
-              </div>
-              <div className="relative h-16 w-52 shrink-0">
-                <Image
-                  src="/brand/logo no background.png"
-                  alt="Wilson Premier Properties"
-                  fill
-                  className="object-contain"
-                  priority
-                />
+              {/* Mobile: chat button before logo */}
+              <button
+                onClick={() => openContactModal()}
+                className={`md:hidden p-2 rounded-full transition-all ${isDark ? "bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
+                aria-label="Contact Concierge"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              </button>
+
+              {/* Logo — large and prominent */}
+              <Link href="/" className="block">
+                <div className="relative h-14 w-44 md:h-[52px] md:w-52 shrink-0">
+                  <Image
+                    src="/brand/logo no background.png"
+                    alt="Wilson Premier Properties"
+                    fill
+                    className={`object-contain object-left ${
+                      isDark
+                        ? "invert brightness-[0.92] sepia-[0.08] drop-shadow-[0_1px_3px_rgba(255,255,255,0.15)]"
+                        : "drop-shadow-[0_1px_2px_rgba(0,0,0,0.08)]"
+                    }`}
+                    priority
+                  />
+                </div>
+              </Link>
+
+              {/* Desktop: tagline divider + text */}
+              <div className="hidden lg:flex items-center gap-3 pl-2">
+                <div className={`h-8 w-px ${isDark ? "bg-white/20" : "bg-[#2B2B2B]/15"}`} />
+                <p className={`text-[10px] font-semibold uppercase tracking-[0.18em] whitespace-nowrap ${isDark ? "text-white/70" : "text-[#2B2B2B]/60"}`}>
+                  Luxury Lakefront Vacation Rentals
+                </p>
               </div>
             </motion.div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8 lg:gap-10">
-
+            {/* ─── RIGHT: Desktop Navigation ─── */}
+            <div className="hidden md:flex items-center gap-5 lg:gap-7">
               {navLinks.map((link, index) => (
                 <motion.button
                   key={link.label}
@@ -152,19 +176,22 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index + 0.3 }}
                   onClick={() => {
-                    if (link.label === "Contact") {
+                    if (link.label === "Contact Concierge") {
+                      scrollToSection("#footer")
+                      setTimeout(() => openContactModal(), 600)
+                    } else if (link.label === "Contact") {
                       openContactModal()
                     } else {
                       scrollToSection(link.href)
                     }
                   }}
-                  className={`transition-all duration-300 font-medium text-sm md:text-base whitespace-nowrap ${textMuted} ${textHover} hover:scale-105 drop-shadow-sm`}
+                  className={`transition-all duration-300 font-medium text-[13px] lg:text-sm whitespace-nowrap ${textMuted} ${textHover} hover:scale-105`}
                 >
                   {link.label}
                 </motion.button>
               ))}
 
-              {/* PROPERTIES DROPDOWN - Moved to right side */}
+              {/* Properties Dropdown */}
               <div
                 className="relative group h-full flex items-center"
                 onMouseEnter={() => setHoveringProperties(true)}
@@ -172,9 +199,9 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               >
                 <button
                   onClick={() => scrollToSection("#homes")}
-                  className={`flex items-center gap-1 font-medium text-sm md:text-base ${textMuted} ${textHover} transition-colors py-2`}
+                  className={`flex items-center gap-1 font-medium text-[13px] lg:text-sm ${textMuted} ${textHover} transition-colors py-2`}
                 >
-                  Lakefront Retreats <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
+                  Lakefront Retreats <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
                 </button>
 
                 <AnimatePresence>
@@ -184,7 +211,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 mt-2 w-80 bg-card rounded-2xl shadow-2xl overflow-hidden py-2 border border-border ring-1 ring-black/5"
+                      className="absolute top-full right-0 mt-2 w-80 bg-card rounded-2xl shadow-2xl overflow-hidden py-2 border border-border ring-1 ring-black/5"
                     >
                       <div className="px-4 py-2 border-b border-border">
                         <span className="text-xs font-semibold uppercase text-muted-foreground">Available Properties</span>
@@ -198,7 +225,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                               </div>
                               <div>
                                 <p className="font-semibold text-foreground text-sm font-serif">{prop.name}</p>
-                                <p className="text-xs text-muted-foreground">{prop.bedrooms} Bed • {prop.sleeps} Guests</p>
+                                <p className="text-xs text-muted-foreground">{prop.bedrooms} Bedrooms &middot; {prop.sleeps} Guests</p>
                               </div>
                             </div>
                           </Link>
@@ -216,88 +243,94 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               >
                 <Button
                   onClick={() => setBookingOpen(true)}
-                  className={`${buttonClass} rounded-full px-6 py-4 text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20 border-0`}
+                  className={`${buttonClass} rounded-full px-5 py-3.5 text-[13px] font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20 border-0`}
                 >
                   Book Now
                 </Button>
               </motion.div>
             </div>
 
-            {/* Mobile Menu Button and Map Button */}
+            {/* ─── RIGHT: Mobile Actions ─── */}
             <div className="md:hidden flex items-center gap-3">
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                onClick={() => scrollToSection("/map")}
-                className={`p-2 ${textColor} hover:scale-110 transition-transform`}
-                aria-label="View Map"
+              <button
+                onClick={() => window.location.href = '/map'}
+                className={`backdrop-blur-md border p-2 rounded-full transition-all shadow-sm ${isDark ? "bg-white/10 border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
+                aria-label="Getting Here - Map"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-6 w-6"
-                >
-                  <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
-                  <line x1="9" y1="3" x2="9" y2="18" />
-                  <line x1="15" y1="6" x2="15" y2="21" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                  <circle cx="12" cy="10" r="3" />
                 </svg>
-              </motion.button>
+              </button>
 
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className={`p-2 ${textColor}`}
+              <button
+                className="flex flex-col justify-center items-center w-9 h-9 space-y-1.5 focus:outline-none z-50"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
               >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </motion.button>
+                <motion.span
+                  animate={mobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                  className={`block w-7 h-0.5 ${isDark ? "bg-white" : "bg-[#2B2B2B]"}`}
+                />
+                <motion.span
+                  animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                  className={`block w-7 h-0.5 ${isDark ? "bg-white" : "bg-[#2B2B2B]"}`}
+                />
+                <motion.span
+                  animate={mobileMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                  className={`block w-7 h-0.5 ${isDark ? "bg-white" : "bg-[#2B2B2B]"}`}
+                />
+              </button>
             </div>
-          </div>
 
-          {/* Mobile Menu */}
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: -20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                className="md:hidden absolute top-20 left-4 right-4 py-8 bg-[#2B2B2B]/95 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl px-6 flex flex-col gap-6"
-              >
-                {navLinks.map((link) => (
-                  <button
-                    key={link.label}
-                    onClick={() => {
-                      if (link.label === "Contact") {
-                        setMobileMenuOpen(false)
-                        openContactModal()
-                      } else {
-                        scrollToSection(link.href)
-                      }
-                    }}
-                    className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-lg border-b border-white/5 font-serif"
-                  >
-                    {link.label}
-                  </button>
-                ))}
-                <Button
-                  onClick={() => {
-                    setBookingOpen(true)
-                    setMobileMenuOpen(false)
-                  }}
-                  className="bg-primary text-primary-foreground w-full py-6 text-lg rounded-full"
+            {/* ─── Mobile Menu Overlay ─── */}
+            <AnimatePresence>
+              {mobileMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: -20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                  className="md:hidden absolute top-[76px] left-3 right-3 py-6 bg-[#2B2B2B]/95 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl px-5 flex flex-col gap-1"
                 >
-                  Book Now
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  {navLinks.map((link) => (
+                    <button
+                      key={link.label}
+                      onClick={() => {
+                        if (link.label === "Contact Concierge") {
+                          setMobileMenuOpen(false)
+                          scrollToSection("#footer")
+                          setTimeout(() => openContactModal(), 600)
+                        } else {
+                          scrollToSection(link.href)
+                        }
+                      }}
+                      className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-base border-b border-white/5 font-serif"
+                    >
+                      {link.label}
+                    </button>
+                  ))}
+
+                  {/* Properties in mobile menu */}
+                  <button
+                    onClick={() => scrollToSection("#homes")}
+                    className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-base border-b border-white/5 font-serif"
+                  >
+                    Lakefront Retreats
+                  </button>
+
+                  <Button
+                    onClick={() => {
+                      setBookingOpen(true)
+                      setMobileMenuOpen(false)
+                    }}
+                    className="bg-white text-[#2B2B2B] hover:bg-white/90 w-full py-5 text-base rounded-full mt-3 font-semibold"
+                  >
+                    Book Now
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </motion.nav>
 

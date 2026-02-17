@@ -194,15 +194,25 @@ export function ContactModal() {
                                                     <ArrowRight className="h-3 w-3" />
                                                 </a>
                                             </div>
+
+                                            <div className="text-center pt-2">
+                                                <a
+                                                    href="/contact"
+                                                    className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2B2B2B]/40 hover:text-[#2B2B2B]/60 transition-colors border-b border-[#2B2B2B]/10 hover:border-[#2B2B2B]/30 pb-0.5"
+                                                >
+                                                    Go to Full Contact Page
+                                                </a>
+                                            </div>
                                         </div>
                                     </form>
                                 </>
                             )}
                         </div>
                     </motion.div>
-                </div>
-            )}
-        </AnimatePresence>
+                </div >
+            )
+            }
+        </AnimatePresence >
     )
 }
 

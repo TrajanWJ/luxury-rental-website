@@ -4,9 +4,10 @@ import { useRef } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import Navigation from "@/components/navigation"
 import FooterCTA from "@/components/footer-cta"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Phone, Globe, Mail } from "lucide-react"
 import Image from "next/image"
-import { experiences } from "@/lib/experiences-data"
+import Link from "next/link"
+import { experiences, Experience } from "@/lib/experiences"
 
 const COLORS = {
     linen: "#EAE8E4",  // Main background
@@ -16,7 +17,7 @@ const COLORS = {
 }
 
 // Editorial Experience Component
-function EditorialExperience({ item, index }: { item: any, index: number }) {
+function EditorialExperience({ item, index }: { item: Experience, index: number }) {
     const containerRef = useRef(null)
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -55,7 +56,7 @@ function EditorialExperience({ item, index }: { item: any, index: number }) {
                         className="text-5xl md:text-7xl font-serif font-medium leading-[0.95]"
                         style={{ color: COLORS.charcoal }}
                     >
-                        {item.title}
+                        {item.name}
                     </h2>
 
                     <p
@@ -65,14 +66,74 @@ function EditorialExperience({ item, index }: { item: any, index: number }) {
                         {item.description}
                     </p>
 
-                    <motion.div
-                        whileHover={{ x: 10 }}
-                        className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest cursor-pointer group"
-                        style={{ color: COLORS.charcoal }}
-                    >
-                        Explore
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </motion.div>
+                    {/* Contact Info */}
+                    <div className="space-y-3 pt-2">
+                        {item.contactName && (
+                            <p className="text-sm font-medium" style={{ color: COLORS.charcoal }}>
+                                {item.contactName}
+                                {item.contactTitle && (
+                                    <span className="font-light ml-2" style={{ color: COLORS.stone }}>
+                                        &mdash; {item.contactTitle}
+                                    </span>
+                                )}
+                            </p>
+                        )}
+
+                        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                            {item.phone && (
+                                <Link
+                                    href={`tel:${item.phone.replace(/[^+\d]/g, "")}`}
+                                    className="inline-flex items-center gap-1.5 text-sm transition-colors hover:opacity-70"
+                                    style={{ color: COLORS.stone }}
+                                >
+                                    <Phone className="h-3.5 w-3.5" />
+                                    {item.phone}
+                                </Link>
+                            )}
+                            {item.email && (
+                                <Link
+                                    href={`mailto:${item.email}`}
+                                    className="inline-flex items-center gap-1.5 text-sm transition-colors hover:opacity-70"
+                                    style={{ color: COLORS.stone }}
+                                >
+                                    <Mail className="h-3.5 w-3.5" />
+                                    {item.email}
+                                </Link>
+                            )}
+                        </div>
+
+                        {item.serviceOffered && (
+                            <span
+                                className="inline-block text-[11px] font-semibold tracking-[0.15em] uppercase px-3 py-1.5 rounded-full border"
+                                style={{ color: COLORS.brass, borderColor: `${COLORS.brass}40` }}
+                            >
+                                {item.serviceOffered}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* CTA */}
+                    {item.website ? (
+                        <Link href={item.website} target="_blank" rel="noopener noreferrer">
+                            <motion.div
+                                whileHover={{ x: 10 }}
+                                className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest cursor-pointer group"
+                                style={{ color: COLORS.charcoal }}
+                            >
+                                Get in Touch
+                                <Globe className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            </motion.div>
+                        </Link>
+                    ) : (
+                        <motion.div
+                            whileHover={{ x: 10 }}
+                            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest cursor-pointer group"
+                            style={{ color: COLORS.charcoal }}
+                        >
+                            Learn More
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </motion.div>
+                    )}
                 </motion.div>
 
                 {/* Image Side */}
@@ -83,8 +144,8 @@ function EditorialExperience({ item, index }: { item: any, index: number }) {
                             className="w-full h-[120%] relative -top-[10%]"
                         >
                             <Image
-                                src={item.image}
-                                alt={item.title}
+                                src={item.imageUrl || "/placeholder.jpg"}
+                                alt={item.name}
                                 fill
                                 className="object-cover"
                                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -112,17 +173,17 @@ export default function ExperiencesPage() {
                         className="max-w-4xl"
                     >
                         <span className="block text-xs md:text-sm font-bold tracking-[0.25em] mb-8 uppercase" style={{ color: COLORS.brass }}>
-                            Curated Collection
+                            Your Concierge Collection
                         </span>
                         <h1
                             className="text-6xl md:text-9xl font-serif font-regular tracking-tight leading-[0.9] mb-12"
                             style={{ color: COLORS.charcoal }}
                         >
-                            Life on <br />
-                            <span className="italic">the Water</span>
+                            At Your <br />
+                            <span className="italic">Service</span>
                         </h1>
                         <p className="text-xl md:text-2xl font-light max-w-xl leading-relaxed" style={{ color: COLORS.stone }}>
-                            A slower pace. A deeper breath. We’ve curated the lake’s finest moments, so you can simply arrive and belong.
+                            Private chefs, lake cruises, in-home spa — our hand-picked partners are ready before you arrive, so every detail is already taken care of.
                         </p>
                     </motion.div>
                 </div>
@@ -134,7 +195,7 @@ export default function ExperiencesPage() {
             {/* List of Experiences */}
             <div className="pb-32">
                 {experiences.map((experience, index) => (
-                    <EditorialExperience key={index} item={experience} index={index} />
+                    <EditorialExperience key={experience.id} item={experience} index={index} />
                 ))}
             </div>
 

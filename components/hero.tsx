@@ -21,8 +21,7 @@ export default function Hero() {
         }}
       >
         {/* Editorial Grade Overlay: Charcoal Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#2B2B2B]/40 via-transparent to-[#2B2B2B]/90" />
-        <div className="absolute inset-0 bg-[#2B2B2B]/20 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2B2B2B]/30 via-transparent to-[#2B2B2B]/80" />
       </motion.div>
 
       {/* Content */}
@@ -40,37 +39,32 @@ export default function Hero() {
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-center gap-4 text-[#BCA28A]"
+                className="flex items-center gap-4 text-white drop-shadow-md"
               >
-                <div className="h-px w-12 bg-current opacity-50" />
+                <div className="h-px w-12 bg-white opacity-80" />
                 <span className="text-xs font-bold uppercase tracking-[0.25em]">
                   Smith Mountain Lake
                 </span>
               </motion.div>
             </div>
 
-            <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif font-regular tracking-tight text-[#ECE9E7] leading-[0.9]">
+            <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif font-regular tracking-tight text-white leading-[0.9] drop-shadow-lg">
               Wilson <br />
               <span className="italic">Premier</span>
             </h1>
+
+            <p className="text-sm md:text-base italic text-white tracking-wide mt-4 drop-shadow-md font-medium">
+              Settle for… the Extraordinary
+            </p>
           </motion.div>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, delay: 0.6 }}
-            className="text-[#ECE9E7]/80 text-lg md:text-xl font-light max-w-lg leading-relaxed ml-2 md:ml-16 border-l border-[#ECE9E7]/20 pl-4 mb-6"
+            className="text-white text-lg md:text-xl font-medium max-w-lg leading-relaxed ml-2 md:ml-16 border-l border-white/40 pl-4 mb-6 drop-shadow-md"
           >
-            A collection of exquisite lakefront residences curated for those who seek silence, space, and water.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.5, delay: 0.8 }}
-            className="text-[#BCA28A]/90 text-base md:text-lg font-light max-w-lg leading-relaxed ml-2 md:ml-16 pl-4 mb-8"
-          >
-            From luxurious reunion homes to our five-star resort, every detail has been thoughtfully considered to create an extraordinary lake experience.
+            Wilson Premier Properties curates extraordinary lakefront vacation homes at Smith Mountain Lake—flagship estates and refined retreats designed for families, friends, and executive gatherings who expect more than just a place to stay.
           </motion.p>
 
           {/* Widgets - Minimal Integration */}

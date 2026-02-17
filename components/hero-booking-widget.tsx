@@ -100,7 +100,7 @@ export function HeroBookingWidget() {
                                         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                                             <span className="font-medium">{p.name}</span>
                                             <span className="text-[11px] text-white/50 font-normal">
-                                                ({p.bedrooms} Beds, {p.sleeps} Guests)
+                                                ({p.bedrooms} Bedrooms, {p.sleeps} Guests)
                                             </span>
                                         </div>
                                     </SelectItem>

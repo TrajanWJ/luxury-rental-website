@@ -402,8 +402,7 @@ export const properties: Property[] = [
             "/images/suite-retreat/suite-retreat-341.jpg",
             "/images/suite-retreat/suite-retreat-342.jpg"
         ],
-    },
-    {
+        pricePerNight: 2500,
         lat: 37.104681,
         lng: -79.655861,
         hostawayId: "466647",
@@ -640,7 +639,7 @@ export const properties: Property[] = [
     {
         id: "6",
         name: "Milan Manor House",
-        teaser: "Enchanting 1940s historic manor on 30 private acres",
+        teaser: "A gracious manor-style home that pairs classic design with modern comforts—ideal for smaller reunions, special celebrations, or quiet retreats at the lake.",
         image: "/images/milan-manor/milan-manor-5.jpg",
         sleeps: 14,
         bedrooms: 5,
@@ -746,26 +745,35 @@ export const properties: Property[] = [
     {
         id: "7",
         name: "Penthouse View",
-        teaser: "Stunning 3-bedroom penthouse with long water views",
+        teaser: "A luxury top-floor lakefront condo with sweeping water and mountain views",
         image: "/penthouse-view.jpg",
-        sleeps: 8,
-        bedrooms: 3,
+        sleeps: 6,
+        bedrooms: 2,
         bathrooms: 3,
         amenities: [
-            "Penthouse Views",
-            "Traeger Grill",
-            "Gourmet kitchen",
-            "1,453 sq ft",
-            "Screened decks",
-            "Open-air decks",
-            "Shared dock access",
-            "Elevator",
-            "Lakeside resort amenities"
+            "3 private suites",
+            "Fully equipped kitchen",
+            "Electric kettle",
+            "Keurig, blender",
+            "Wine glasses, ice bucket, wine opener",
+            "Dining table for 6",
+            "Board games",
+            "Washer and dryer",
+            "Hair dryer and iron",
+            "Wi-Fi",
+            "Foldable cart",
+            "Elevator access",
+            "Free parking",
+            "Screened porch",
+            "Traeger pellet grill",
+            "Dock for swimming and fishing",
+            "Foldable chairs",
+            "Four televisions"
         ],
         description:
-            "Penthouse View is a brand-new, top-floor luxury condominium featuring three bedrooms and three full bathrooms with breathtaking long water views that make the lake feel like a private canvas.\\n\n" +
-            "This elevated condo is designed for comfort, with indoor–outdoor living spaces that include both screened-in and open-air decks and a Traeger grill for easy, flavorful meals with a view. Guests enjoy all the amenities of the Lakeside Resort, including shared dock access and an elevator for effortless access.\\n\n" +
-            "Penthouse View delivers an upscale lakefront condominium experience designed for relaxation, sunset moments, and weekend ease.",
+            "Penthouse View is a luxury top-floor lakefront condo designed for couples, small families, and groups who want Smith Mountain Lake views with luxury amenities. The retreat features three bedrooms and three bathrooms, with stylish, comfortable living spaces oriented toward sweeping water and mountain views.\n\n" +
+            "Inside, you\u2019ll find a fully equipped kitchen, in-unit laundry, multiple TVs, a dedicated workspace, and thoughtful \u201Cthey thought of everything\u201D touches like board games and a foldable cart to make settling in effortless.\n\n" +
+            "Outside, Penthouse View delivers a resort-style feel with both screened-in and open-air decks furnished for lounging, dining, and taking in long water views. Convenient elevator access, parking, a shared dock for swimming and fishing, floating and foldable chairs, and a Traeger pellet grill keep lake days easy and enjoyable from sunrise coffee to sunset dinners.",
         images: [
             "/images/penthouse-view/penthouse-view-1.jpg",
             "/images/penthouse-view/penthouse-view-2.jpg",
@@ -810,16 +818,33 @@ export const properties: Property[] = [
     {
         id: "5",
         name: "Lake View",
-        teaser: "Luxury 2-bedroom condo with stunning waterfront views",
-        image: "/photos/lake-view/thumbnail.jpg",
-        sleeps: 6,
+        teaser: "A stylish lakefront condo for couples and small families seeking an intimate lake escape",
+        image: "/images/lake-view/lake-view-2.jpg",
+        sleeps: 4,
         bedrooms: 2,
         bathrooms: 2,
-        amenities: ["Waterfront Views", "Screened Decks", "Traeger Grill", "Swim Dock", "Wi-Fi"],
+        amenities: [
+            "2 private suites",
+            "Fully equipped kitchen",
+            "Electric kettle",
+            "Keurig, blender",
+            "Wine glasses, ice bucket, wine opener",
+            "Dining table for 4",
+            "Board games",
+            "Washer and dryer",
+            "Hair dryer and iron",
+            "Wi-Fi",
+            "Foldable cart",
+            "Elevator access",
+            "Free parking",
+            "Screened porch",
+            "Traeger pellet grill",
+            "Dock for swimming and fishing",
+            "Foldable chairs"
+        ],
         description:
-            "A ground-floor lakefront condominium with two bedrooms and two bathrooms offering 1,040 square feet of lakeside living, with waterfront views and a furnished balcony or patio that extends directly over the lake.\\n\n" +
-            "The condo’s full kitchen and stylish layout welcomes couples, small families, or intimate friend getaways. A shared dock keeps you steps from the water, while the community pool and resort-style amenities expand your recreational options near this waterfront gem.\\n\n" +
-            "Lake View delivers convenience, comfortable furnishings, and a welcoming full kitchen designed for a laid-back, family-friendly lake vacation.",
+            "Lake View is a stylish, light-filled lakefront condo designed for couples, small families, and friends who want the Wilson Premier experience in a more intimate setting. Thoughtfully laid out with comfortable bedrooms, modern bathrooms, and an open kitchen-and-living area, it\u2019s made for slow mornings, shared meals, and late-night conversations with the water in view.\n\n" +
+            "Inside, you\u2019ll find a fully equipped kitchen, cozy seating, multiple TVs, and smart touches that make settling in effortless\u2014whether you\u2019re working remotely for a few days or unplugging all week. Outside, Lake View brings the best of Smith Mountain Lake right to your doorstep with a furnished balcony or patio, easy access to the water, and shared community perks like pools or docks (where applicable). From your first cup of coffee overlooking the lake to sunset drinks after a day on the water, Lake View delivers a relaxed, elevated stay that feels distinctly Wilson Premier.",
         images: [
             "/images/lake-view/lake-view-1.jpg",
             "/images/lake-view/lake-view-2.jpg",
@@ -848,8 +873,8 @@ export const properties: Property[] = [
         ],
         matterportUrl: "https://my.matterport.com/show/?m=vih9WU3PNQj",
         pricePerNight: 450,
-        lat: 40.741895,
-        lng: -73.989308,
+        lat: 37.106738,
+        lng: -79.657229,
         hostawayId: "466645",
     },
 ]

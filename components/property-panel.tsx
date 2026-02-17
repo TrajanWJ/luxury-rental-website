@@ -27,8 +27,10 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
 
   // Calculate scale based on index and scroll progress
   // As the section scrolls up, it scales down slightly
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9])
-  const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.6])
+  // Disable scale/opacity animations for the last property
+  const isLast = index === total - 1
+  const scale = useTransform(scrollYProgress, [0, 1], isLast ? [1, 1] : [1, 0.9])
+  const opacity = useTransform(scrollYProgress, [0, 0.8, 1], isLast ? [1, 1, 1] : [1, 1, 0.6])
 
   // Helper to pick a featured icon based on amenities or property specific features
   // Helper to pick featured icons
@@ -60,7 +62,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
           opacity,
           zIndex: index,
         }}
-        className="relative h-screen w-full overflow-hidden cursor-pointer group shadow-2xl origin-center"
+        className={`relative h-screen w-full overflow-hidden cursor-pointer group origin-center ${isLast ? "" : "shadow-2xl"}`}
         onClick={onClick}
       >
         {/* Background Image */}
@@ -105,7 +107,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
               size="lg"
               className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform"
             >
-              Explore Property
+              Explore {property.name}
             </Button>
             {property.videoUrl && (
               <Button
@@ -149,7 +151,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
               <div className="w-px h-4 bg-white/20" />
               <div className="flex items-center gap-2">
                 <BedDouble className="h-5 w-5 md:h-4 md:w-4 opacity-80" />
-                <span className="text-base md:text-sm font-medium">{property.bedrooms} Beds</span>
+                <span className="text-base md:text-sm font-medium">{property.bedrooms} Bedrooms</span>
               </div>
               <div className="w-px h-4 bg-white/20" />
               <div className="flex items-center gap-2">
