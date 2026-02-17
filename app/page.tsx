@@ -3,7 +3,6 @@ import Hero from "@/components/hero"
 import FullScreenHomes from "@/components/full-screen-homes"
 import Experiences from "@/components/experiences"
 
-import Testimonials from "@/components/testimonials"
 import FooterCTA from "@/components/footer-cta"
 
 export default function HomePage() {
@@ -22,10 +21,6 @@ export default function HomePage() {
 
       <Experiences />
 
-      {/* Section Separator */}
-      <div className="section-separator"></div>
-
-      <Testimonials />
       <FooterCTA />
     </main>
   )

@@ -105,7 +105,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
           >
             <Button
               size="lg"
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform"
+              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-8 py-3 text-base shadow-lg hover:scale-105 transition-transform"
             >
               Explore {property.name}
             </Button>
@@ -116,7 +116,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
                   e.stopPropagation();
                   onVideoClick?.(e);
                 }}
-                className="bg-white text-primary hover:bg-white/90 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
+                className="bg-white text-primary hover:bg-white/90 rounded-full px-8 py-3 text-base shadow-lg hover:scale-105 transition-transform border-0"
               >
                 Video Preview
               </Button>
@@ -128,7 +128,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
                   e.stopPropagation();
                   on3DClick?.(e);
                 }}
-                className="bg-white text-primary hover:bg-white/90 rounded-full px-10 py-7 text-xl shadow-lg hover:scale-105 transition-transform border-0"
+                className="bg-white text-primary hover:bg-white/90 rounded-full px-8 py-3 text-base shadow-lg hover:scale-105 transition-transform border-0"
               >
                 3D View
               </Button>

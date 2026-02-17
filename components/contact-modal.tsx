@@ -186,13 +186,7 @@ export function ContactModal() {
                                             </Button>
 
                                             <div className="text-center">
-                                                <a
-                                                    href="mailto:angela@wilson-premier.com"
-                                                    className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#BCA28A] hover:text-[#9D5F36] transition-colors inline-flex items-center gap-2"
-                                                >
-                                                    Email Concierge Directly
-                                                    <ArrowRight className="h-3 w-3" />
-                                                </a>
+                                                <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#BCA28A]">Your message goes straight to our concierge team</p>
                                             </div>
 
                                             <div className="text-center pt-2">
@@ -213,25 +207,5 @@ export function ContactModal() {
             )
             }
         </AnimatePresence >
-    )
-}
-
-function ArrowRight(props: any) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-        </svg>
     )
 }

@@ -48,6 +48,8 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
     const [matches, setMatches] = useState<Property[]>([])
     const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
     const [viewMode, setViewMode] = useState<"detail" | "alternatives">("detail")
+    const [heroDescExpanded, setHeroDescExpanded] = useState(false)
+    const [expandedTeasers, setExpandedTeasers] = useState<Record<string, boolean>>({})
     const router = useRouter()
 
     // Sync dates from global context (strings "YYYY-MM-DD")
@@ -64,9 +66,10 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
     const [guestCount, setGuestCount] = useState(1)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-    // Reset image index when property changes
+    // Reset image index and description expand when property changes
     useEffect(() => {
         setCurrentImageIndex(0)
+        setHeroDescExpanded(false)
     }, [selectedProperty])
 
     const nextImage = (e?: React.MouseEvent) => {
@@ -208,7 +211,17 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                             <Star className="h-3 w-3 fill-white" /> Top Match
                                         </div>
                                         <h2 className="text-2xl md:text-5xl font-bold mb-1 md:mb-2 text-shadow-sm font-serif">{selectedProperty.name}</h2>
-                                        <p className="text-sm md:text-lg text-white/90 line-clamp-2 max-w-xl font-light hidden md:block">{selectedProperty.teaser || selectedProperty.description}</p>
+                                        <p className={`text-sm md:text-lg text-white/90 max-w-xl font-light hidden md:block ${heroDescExpanded ? "" : "line-clamp-2"}`}>{selectedProperty.teaser || selectedProperty.description}</p>
+                                        {!heroDescExpanded && (
+                                            <button onClick={() => setHeroDescExpanded(true)} className="pointer-events-auto text-xs text-white/80 font-medium mt-1 hover:text-white hidden md:inline-block underline underline-offset-2">
+                                                Show more...
+                                            </button>
+                                        )}
+                                        {heroDescExpanded && (
+                                            <button onClick={() => setHeroDescExpanded(false)} className="pointer-events-auto text-xs text-white/80 font-medium mt-1 hover:text-white hidden md:inline-block underline underline-offset-2">
+                                                Show less
+                                            </button>
+                                        )}
 
                                         <div className="flex gap-4 md:gap-6 mt-2 md:mt-4">
                                             <div className="flex items-center gap-1.5 md:gap-2">
@@ -336,7 +349,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                     <div className="space-y-4 pb-6">
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between">
-                                                <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Our Residences</label>
+                                                <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Our Homes</label>
                                                 <span className="text-xs text-slate-400">{matches.length} found</span>
                                             </div>
                                             <div className="space-y-3">
@@ -367,10 +380,25 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                                     </div>
                                                                 )}
                                                             </div>
-                                                            <p className="text-xs text-slate-500 line-clamp-1 mt-1 mb-2">{prop.teaser || prop.description}</p>
+                                                            <p className={`text-xs text-slate-500 mt-1 mb-2 ${expandedTeasers[prop.id] ? "" : "line-clamp-2"}`}>{prop.teaser || prop.description}</p>
+                                                            {!expandedTeasers[prop.id] ? (
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); setExpandedTeasers(prev => ({ ...prev, [prop.id]: true })) }}
+                                                                    className="text-[10px] text-[#9D5F36] font-medium hover:underline -mt-1 mb-1"
+                                                                >
+                                                                    Show more...
+                                                                </button>
+                                                            ) : (
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); setExpandedTeasers(prev => ({ ...prev, [prop.id]: false })) }}
+                                                                    className="text-[10px] text-[#9D5F36] font-medium hover:underline -mt-1 mb-1"
+                                                                >
+                                                                    Show less
+                                                                </button>
+                                                            )}
                                                             <div className="flex items-center gap-3 text-xs font-medium text-slate-400">
                                                                 <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {prop.sleeps}</span>
-                                                                <span className="flex items-center gap-1"><Info className="h-3 w-3" /> {prop.bedrooms} BD</span>
+                                                                <span className="flex items-center gap-1"><Info className="h-3 w-3" /> {prop.bedrooms} Bedrooms</span>
                                                             </div>
                                                         </div>
                                                     </button>
@@ -412,7 +440,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                             }
                                         }}
                                     >
-                                        {!selectedProperty ? "Choose Residence" : "Book Now"}
+                                        {!selectedProperty ? "Choose Home" : "Book Now"}
                                     </Button>
                                 </div>
                                 <p className="text-center text-[10px] text-slate-400 mt-3">

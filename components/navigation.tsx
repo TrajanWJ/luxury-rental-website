@@ -85,7 +85,6 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
     { label: "Lake Experiences", href: "#experiences" },
     { label: "House Rules", href: "/house-rules" },
     { label: "Contact Concierge", href: "/contact" },
-    { label: "Getting Here", href: "/map" },
   ]
 
   const scrollToSection = (href: string) => {
@@ -133,10 +132,10 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               {/* Chat button — mobile only, left of logo */}
               <button
                 onClick={() => openContactModal()}
-                className={`md:hidden p-2 rounded-full transition-all ${isDark ? "bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
+                className={`md:hidden p-2.5 rounded-full transition-all ${isDark ? "bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
                 aria-label="Contact Concierge"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </button>
@@ -179,7 +178,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                       scrollToSection(link.href)
                     }
                   }}
-                  className={`transition-all duration-300 font-medium text-[13px] lg:text-sm whitespace-nowrap ${textMuted} ${textHover} hover:scale-105`}
+                  className={`transition-all duration-300 font-medium text-[13px] lg:text-sm whitespace-nowrap px-1 py-2 ${textMuted} ${textHover} hover:scale-105`}
                 >
                   {link.label}
                 </motion.button>
@@ -193,7 +192,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               >
                 <button
                   onClick={() => scrollToSection("#homes")}
-                  className={`flex items-center gap-1 font-medium text-[13px] lg:text-sm ${textMuted} ${textHover} transition-colors py-2`}
+                  className={`flex items-center gap-1 font-medium text-[13px] lg:text-sm whitespace-nowrap px-1 py-2 ${textMuted} ${textHover} transition-colors`}
                 >
                   Lakefront Retreats <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
                 </button>
@@ -231,10 +230,10 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               </div>
 
               {/* Desktop icon buttons: Map + Chat */}
-              <div className="flex items-center gap-2 pl-1">
+              <div className="flex items-center gap-1.5 pl-1">
                 <button
                   onClick={() => window.location.href = '/map'}
-                  className={`p-2 rounded-full transition-all ${isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-[#2B2B2B]/60 hover:text-[#2B2B2B] hover:bg-[#2B2B2B]/10"}`}
+                  className={`p-2.5 rounded-full transition-all ${isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-[#2B2B2B]/60 hover:text-[#2B2B2B] hover:bg-[#2B2B2B]/10"}`}
                   aria-label="Getting Here - Map"
                   title="Getting Here"
                 >
@@ -245,7 +244,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                 </button>
                 <button
                   onClick={() => openContactModal()}
-                  className={`p-2 rounded-full transition-all ${isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-[#2B2B2B]/60 hover:text-[#2B2B2B] hover:bg-[#2B2B2B]/10"}`}
+                  className={`p-2.5 rounded-full transition-all ${isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-[#2B2B2B]/60 hover:text-[#2B2B2B] hover:bg-[#2B2B2B]/10"}`}
                   aria-label="Contact Concierge"
                   title="Contact Concierge"
                 >
@@ -262,7 +261,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               >
                 <Button
                   onClick={() => setBookingOpen(true)}
-                  className={`${buttonClass} rounded-full px-5 py-3.5 text-[13px] font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20 border-0`}
+                  className={`${buttonClass} rounded-full px-5 py-2.5 text-[13px] lg:text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-white/20 border-0`}
                 >
                   Book Now
                 </Button>
@@ -273,17 +272,17 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
             <div className="md:hidden flex items-center gap-2.5">
               <button
                 onClick={() => window.location.href = '/map'}
-                className={`backdrop-blur-md border p-2 rounded-full transition-all shadow-sm ${isDark ? "bg-white/10 border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
+                className={`backdrop-blur-md border p-2.5 rounded-full transition-all shadow-sm ${isDark ? "bg-white/10 border-white/20 text-white hover:bg-white/20" : "bg-[#2B2B2B]/10 border-[#2B2B2B]/20 text-[#2B2B2B] hover:bg-[#2B2B2B]/20"}`}
                 aria-label="Getting Here - Map"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
               </button>
 
               <button
-                className="flex flex-col justify-center items-center w-9 h-9 space-y-1.5 focus:outline-none z-50"
+                className="flex flex-col justify-center items-center w-11 h-11 space-y-1.5 focus:outline-none z-50"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
@@ -323,7 +322,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                           scrollToSection(link.href)
                         }
                       }}
-                      className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-base border-b border-white/5 font-serif"
+                      className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-base border-b border-white/5 font-serif min-h-[44px] flex items-center"
                     >
                       {link.label}
                     </button>
@@ -332,7 +331,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                   {/* Lakefront Retreats in mobile menu */}
                   <button
                     onClick={() => scrollToSection("#homes")}
-                    className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-base border-b border-white/5 font-serif"
+                    className="text-left text-white/80 hover:text-white transition-colors font-medium py-3 text-base border-b border-white/5 font-serif min-h-[44px] flex items-center"
                   >
                     Lakefront Retreats
                   </button>
@@ -342,7 +341,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                       setBookingOpen(true)
                       setMobileMenuOpen(false)
                     }}
-                    className="bg-white text-[#2B2B2B] hover:bg-white/90 w-full py-5 text-base rounded-full mt-3 font-semibold"
+                    className="bg-white text-[#2B2B2B] hover:bg-white/90 w-full py-3.5 text-base rounded-full mt-3 font-semibold min-h-[44px]"
                   >
                     Book Now
                   </Button>

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { format } from "date-fns"
-import { Calendar as CalendarIcon, Users, Home, Search, ChevronDown, ArrowRight } from "lucide-react"
+import { Calendar as CalendarIcon, Users, Home, Search } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
@@ -86,12 +86,11 @@ export function HeroBookingWidget() {
                             Property
                         </Label>
                         <Select value={location} onValueChange={setLocation}>
-                            <SelectTrigger className={cn(pillInputStyle, "!h-[42px] md:!h-[50px] flex items-center justify-between text-left")}>
+                            <SelectTrigger className={cn(pillInputStyle, "!h-[42px] md:!h-[50px] flex items-center justify-between text-left [&_svg]:text-white/50")}>
                                 <div className="flex items-center gap-2 md:gap-3 overflow-hidden">
                                     <Home className="h-3.5 w-3.5 md:h-4 md:w-4 opacity-50 shrink-0" />
                                     <span className="truncate font-medium">{location && location !== "all" ? location : "Lakefront Home"}</span>
                                 </div>
-                                <ChevronDown className="h-3.5 w-3.5 md:h-4 md:w-4 opacity-40 shrink-0" />
                             </SelectTrigger>
                             <SelectContent className="rounded-xl border border-white/10 shadow-2xl bg-[#2B2B2B]/95 backdrop-blur-xl text-white max-h-[300px]">
                                 <SelectItem value="all" className="py-2.5 px-4 focus:bg-white/10 cursor-pointer font-medium text-sm">Any Lakefront Home</SelectItem>

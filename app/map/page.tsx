@@ -371,7 +371,7 @@ export default function MapPage() {
                                                     </div>
                                                     <div className="flex items-center gap-1">
                                                         <Bed className="h-3 w-3" />
-                                                        <span>{property.bedrooms} BD</span>
+                                                        <span>{property.bedrooms} Bedrooms</span>
                                                     </div>
                                                     <div className="flex items-center gap-1">
                                                         <Bath className="h-3 w-3" />

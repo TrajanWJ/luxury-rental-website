@@ -12,8 +12,8 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfa
 const workSans = Work_Sans({ subsets: ["latin"], variable: '--font-work-sans' });
 
 export const metadata: Metadata = {
-  title: 'Luxury Rentals | Premium Home Experiences',
-  description: 'Exquisite luxury rentals for discerning travelers. Curated stays in the world\'s most beautiful locations.',
+  title: 'Wilson Premier Properties | Luxury Lakefront Vacation Rentals at Smith Mountain Lake',
+  description: 'Experience the extraordinary at Smith Mountain Lake, Virginia. Book curated luxury lakefront vacation homes with private docks, concierge service, and stunning mountain views.',
   generator: 'luxury-rentals',
   metadataBase: new URL('https://wilson-premier.com'),
   icons: {
@@ -57,7 +57,7 @@ export default function RootLayout({
         </DemoProvider>
         <Analytics />
         <Script src="https://d2q3n06xhbi0am.cloudfront.net/calendar.js" strategy="afterInteractive" />
-        <Script src="/hostaway-debug.js" strategy="afterInteractive" />
+        {/* Debug script removed for production */}
       </body>
     </html>
   )

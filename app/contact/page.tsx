@@ -54,7 +54,7 @@ export default function ContactPage() {
                                 Plan Your Extraordinary Lake Stay
                             </h1>
                             <p className="text-lg md:text-xl text-[#ECE9E7]/80 leading-relaxed font-light mb-4">
-                                From selecting the perfect residence to arranging curated experiences, our team is dedicated to ensuring every detail exceeds your expectations.
+                                From selecting the perfect lakefront retreat to arranging curated experiences, our team is dedicated to ensuring every detail exceeds your expectations.
                             </p>
                             <p className="text-base md:text-lg text-[#BCA28A]/90 leading-relaxed font-light">
                                 Reach out today, and we'll guide you through creating an unforgettable Smith Mountain Lake experience.
@@ -317,7 +317,7 @@ export default function ContactPage() {
                                 </div>
                                 <h4 className="font-medium text-[#2B2B2B] mb-2">We Curate</h4>
                                 <p className="text-sm text-[#2B2B2B]/70 leading-relaxed">
-                                    We'll recommend the perfect residence and experiences for your stay.
+                                    We'll recommend the perfect lakefront home and experiences for your stay.
                                 </p>
                             </div>
                             <div>

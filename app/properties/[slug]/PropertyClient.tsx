@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Property } from "@/lib/data"
 import Navigation from "@/components/navigation"
@@ -12,6 +12,9 @@ import HostawayCalendar from "@/components/hostaway-calendar"
 import Link from "next/link"
 
 export default function PropertyClient({ property }: { property: Property }) {
+    const [descExpanded, setDescExpanded] = useState(false)
+    const [showAllAmenities, setShowAllAmenities] = useState(false)
+
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
@@ -54,7 +57,7 @@ export default function PropertyClient({ property }: { property: Property }) {
                                 <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
                                 <span className="flex items-center gap-2"><Users className="h-5 w-5 opacity-70" /> {property.sleeps} Guests</span>
                                 <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-                                <span className="flex items-center gap-2"><Info className="h-5 w-5 opacity-70" /> {property.bedrooms} Beds</span>
+                                <span className="flex items-center gap-2"><Info className="h-5 w-5 opacity-70" /> {property.bedrooms} Bedrooms</span>
                             </div>
                         </div>
                     </div>
@@ -71,9 +74,18 @@ export default function PropertyClient({ property }: { property: Property }) {
                         {/* Description */}
                         <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-100">
                             <h2 className="text-2xl font-bold text-slate-900 mb-6">About this home</h2>
-                            <p className="text-lg text-slate-600 leading-relaxed whitespace-pre-line">
+                            <p className={`text-lg text-slate-600 leading-relaxed whitespace-pre-line ${descExpanded ? "" : "line-clamp-4"}`}>
                                 {property.description}
                             </p>
+                            {!descExpanded ? (
+                                <button onClick={() => setDescExpanded(true)} className="text-sm text-[#9D5F36] font-medium mt-2 hover:underline">
+                                    Read more...
+                                </button>
+                            ) : (
+                                <button onClick={() => setDescExpanded(false)} className="text-sm text-[#9D5F36] font-medium mt-2 hover:underline">
+                                    Read less
+                                </button>
+                            )}
 
                             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6">
                                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">

@@ -745,7 +745,7 @@ export const properties: Property[] = [
     {
         id: "7",
         name: "Penthouse View",
-        teaser: "A luxury top-floor lakefront condo with sweeping water and mountain views",
+        teaser: "A luxury top-floor lakefront retreat with sweeping water and mountain views",
         image: "/penthouse-view.jpg",
         sleeps: 6,
         bedrooms: 2,
@@ -771,8 +771,8 @@ export const properties: Property[] = [
             "Four televisions"
         ],
         description:
-            "Penthouse View is a luxury top-floor lakefront condo designed for couples, small families, and groups who want Smith Mountain Lake views with luxury amenities. The retreat features three bedrooms and three bathrooms, with stylish, comfortable living spaces oriented toward sweeping water and mountain views.\n\n" +
-            "Inside, you\u2019ll find a fully equipped kitchen, in-unit laundry, multiple TVs, a dedicated workspace, and thoughtful \u201Cthey thought of everything\u201D touches like board games and a foldable cart to make settling in effortless.\n\n" +
+            "Penthouse View is a luxury top-floor lakefront retreat designed for couples, small families, and groups who want Smith Mountain Lake views with luxury amenities. The retreat features three bedrooms and three bathrooms, with stylish, comfortable living spaces oriented toward sweeping water and mountain views.\n\n" +
+            "Inside, you\u2019ll find a fully equipped kitchen, in-home washer and dryer, multiple TVs, a dedicated workspace, and thoughtful \u201Cthey thought of everything\u201D touches like board games and a foldable cart to make settling in effortless.\n\n" +
             "Outside, Penthouse View delivers a resort-style feel with both screened-in and open-air decks furnished for lounging, dining, and taking in long water views. Convenient elevator access, parking, a shared dock for swimming and fishing, floating and foldable chairs, and a Traeger pellet grill keep lake days easy and enjoyable from sunrise coffee to sunset dinners.",
         images: [
             "/images/penthouse-view/penthouse-view-1.jpg",
@@ -818,7 +818,7 @@ export const properties: Property[] = [
     {
         id: "5",
         name: "Lake View",
-        teaser: "A stylish lakefront condo for couples and small families seeking an intimate lake escape",
+        teaser: "A stylish lakefront retreat for couples and small families seeking an intimate lake escape",
         image: "/images/lake-view/lake-view-2.jpg",
         sleeps: 4,
         bedrooms: 2,
@@ -843,7 +843,7 @@ export const properties: Property[] = [
             "Foldable chairs"
         ],
         description:
-            "Lake View is a stylish, light-filled lakefront condo designed for couples, small families, and friends who want the Wilson Premier experience in a more intimate setting. Thoughtfully laid out with comfortable bedrooms, modern bathrooms, and an open kitchen-and-living area, it\u2019s made for slow mornings, shared meals, and late-night conversations with the water in view.\n\n" +
+            "Lake View is a stylish, light-filled lakefront retreat designed for couples, small families, and friends who want the Wilson Premier experience in a more intimate setting. Thoughtfully laid out with comfortable bedrooms, modern bathrooms, and an open kitchen-and-living area, it\u2019s made for slow mornings, shared meals, and late-night conversations with the water in view.\n\n" +
             "Inside, you\u2019ll find a fully equipped kitchen, cozy seating, multiple TVs, and smart touches that make settling in effortless\u2014whether you\u2019re working remotely for a few days or unplugging all week. Outside, Lake View brings the best of Smith Mountain Lake right to your doorstep with a furnished balcony or patio, easy access to the water, and shared community perks like pools or docks (where applicable). From your first cup of coffee overlooking the lake to sunset drinks after a day on the water, Lake View delivers a relaxed, elevated stay that feels distinctly Wilson Premier.",
         images: [
             "/images/lake-view/lake-view-1.jpg",
