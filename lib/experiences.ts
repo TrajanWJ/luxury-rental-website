@@ -28,7 +28,7 @@ export const experiences: Experience[] = [
         email: "napolibythelake@gmail.com",
         website: "https://napolibythelakesml.com/",
         serviceOffered: "Private Chef, Bartending & Catering",
-        imageUrl: "/waterfront-dining.png"
+        imageUrl: "https://img1.wsimg.com/isteam/ip/6bf85f7d-6c61-49d4-a892-e18e4f131e93/IMG_4873.jpg"
     },
     {
         id: "lindas-catering",
@@ -47,11 +47,11 @@ export const experiences: Experience[] = [
         id: "mt-fuji-hibachi",
         name: "Mt. Fuji Private Hibachi",
         type: "dining",
-        description: "Bring the excitement of a live hibachi experience directly to your lakefront property — food, fire, and entertainment included.",
+        description: "Bring the excitement of a live hibachi experience directly to your lakefront property â food, fire, and entertainment included.",
         details: "Our team handles everything so you can focus on the show. Choose from chicken, steak, shrimp, salmon, filet, ribeye, and scallops. Just tell us which Wilson Premier property you're staying at.",
         phone: "(757) 828-0147",
         email: "atinfo@fuji757.com",
-        website: "https://mtfujiof757.com/richmond-virgina-beach-mt-fuji-private-hibachi-hibachi",
+        website: "https://www.mtfujiof757.com/",
         serviceOffered: "Private Hibachi Experience",
         imageUrl: "/rustic-dining-room-wooden-beams.jpg"
     },
@@ -59,7 +59,7 @@ export const experiences: Experience[] = [
         id: "sml-fine-wines",
         name: "SML Fine Wines",
         type: "dining",
-        description: "Curated wine tastings, private classes, and sommelier services across Southwest Virginia — Roanoke, Smith Mountain Lake, and Lynchburg.",
+        description: "Curated wine tastings, private classes, and sommelier services across Southwest Virginia â Roanoke, Smith Mountain Lake, and Lynchburg.",
         details: "From private tastings and wine education to party planning and rental-home wine stocking, Ryan brings the vineyard experience to your door.",
         contactName: "Ryan McFeely",
         contactTitle: "Owner",
@@ -67,7 +67,7 @@ export const experiences: Experience[] = [
         email: "ryan@smlfinewines.com",
         website: "https://www.smlfinewines.com/",
         serviceOffered: "Tastings, Sommelier Services, Party Planning, Wine Supplier",
-        imageUrl: "/vineyard-tasting.png"
+        imageUrl: "https://image9.zibster.com/8584/29_20250616165519_8287004_xlarge.jpg"
     },
     {
         id: "mountain-view-farm",
@@ -81,7 +81,7 @@ export const experiences: Experience[] = [
         email: "bfulper@cobbblestonemilk.com",
         website: "https://www.mvfpremierbeef.com/",
         serviceOffered: "Wagyu Beef & Steaks Supplier",
-        imageUrl: "/outdoor-patio-fire-pit-lake.jpg"
+        imageUrl: "https://images.squarespace-cdn.com/content/v1/62057f1c04afc544e1d4eea2/5339a149-286b-4dcc-b602-bfe1fb76425c/Noah+Collins+-+FiletStripRibeye.png"
     },
     {
         id: "traveling-therapy",
@@ -94,7 +94,7 @@ export const experiences: Experience[] = [
         phone: "(540) 492-0855",
         website: "https://travelingtherapy.ncbcertified.com/",
         serviceOffered: "In-House Massage Therapist & Spa",
-        imageUrl: "/infinity-pool-overlooking-lake.jpg"
+        imageUrl: "https://travelingtherapy.ncbcertified.com/images/sites/756/1831.jpg"
     },
     {
         id: "goodhue-boat-company",
@@ -108,7 +108,7 @@ export const experiences: Experience[] = [
         email: "Codyg@goodhueboat.com",
         website: "https://www.goodhueboat.com/",
         serviceOffered: "Boat Rentals & Delivery",
-        imageUrl: "/boating-water-sports.png"
+        imageUrl: "https://goodhueboat.com/wp-content/uploads/2025/09/CS22ii_5705-900x604.jpg"
     },
     {
         id: "virginia-dare-cruises",
@@ -122,7 +122,7 @@ export const experiences: Experience[] = [
         email: "victor@bebetterdomore.com",
         website: "https://www.vadaresml.com/virginia-dare",
         serviceOffered: "Charter Boat Services & Boat Tours",
-        imageUrl: "/sunset-cruises.png"
+        imageUrl: "https://static.wixstatic.com/media/41b7d8_0796712dc079410b96272d4cf7c015f4~mv2.jpg"
     },
     {
         id: "captain-vic-sea-ray",
@@ -136,7 +136,7 @@ export const experiences: Experience[] = [
         email: "victor@bebetterdomore.com",
         website: "https://www.facebook.com/CaptainVicServices/",
         serviceOffered: "Charter Boat Services & Boat Tours",
-        imageUrl: "/modern-lakefront-home-dock.jpg"
+        imageUrl: "https://goodhueboat.com/wp-content/uploads/2025/09/CS23-2019_10926-copy-900x604.jpg"
     },
     {
         id: "patriot-fishing-charters",
@@ -149,7 +149,20 @@ export const experiences: Experience[] = [
         phone: "(304) 520-2100",
         website: "https://patriotfishingcharter.com/",
         serviceOffered: "Charter Fishing",
-        imageUrl: "/fishing-recreation.png"
+        imageUrl: "https://i0.wp.com/patriotfishingcharter.com/wp-content/uploads/2022/06/67735981800__42C33B21-2A24-41F2-B609-62CC7AD1832D-rotated.jpg"
+    },
+    {
+        id: "charlotte-efoil",
+        name: "CharlotteEfoil",
+        type: "boating",
+        description: "Exclusive electric hydrofoil adventures for individuals, families, and groups of up to 20+ riders — delivered directly to your dock.",
+        details: "Turn an ordinary lake day into something unforgettable. With seasoned professional instruction and dedicated one-on-one coaching, beginners quickly gain confidence and experience the thrill of flying above the water. High energy, safe instruction, incredible memories.",
+        contactName: "Daniel Gleason",
+        contactTitle: "Founder & Lead Instructor",
+        phone: "(704) 421-8778",
+        website: "https://www.charlotteefoil.com/",
+        serviceOffered: "Electric Hydrofoil Adventures",
+        imageUrl: "https://static.wixstatic.com/media/ece71f_ab958efcd4ca4cb49539b94ec0dbdd88~mv2.jpg"
     },
     {
         id: "betty-ashton-harpist",
@@ -163,7 +176,7 @@ export const experiences: Experience[] = [
         email: "ba@bettyashton.com",
         website: "https://www.bettyashton.com/",
         serviceOffered: "Live Harp Music",
-        imageUrl: "/luxury-lakefront-estate-sunset-view.jpg"
+        imageUrl: "https://images.squarespace-cdn.com/content/v1/5db0b55c9639c745906e3382/e52e3195-8328-481a-b127-e2371f190ec3/Betty+Ashton+Harp.jpeg"
     },
     {
         id: "shows-great-media",
@@ -177,7 +190,7 @@ export const experiences: Experience[] = [
         email: "showsgreatmedia@gmail.com",
         website: "https://showsgreat.photography/",
         serviceOffered: "Photography & Videography",
-        imageUrl: "/penthouse-view.jpg"
+        imageUrl: "https://media.hd.pics/2/2egnsckxec.jpg"
     },
     {
         id: "personal-assistant",
@@ -203,7 +216,7 @@ export const experiences: Experience[] = [
         email: "atyourservicepc@gmail.com",
         website: "https://atyourservicepc.com/",
         serviceOffered: "Concierge & Driver",
-        imageUrl: "/luxury-bedroom-lake-view.jpg"
+        imageUrl: "http://atyourservicepc.com/wp-content/uploads/2020/08/cottage-1550083_1280.jpg"
     },
     {
         id: "acti-kare-childcare",
@@ -228,6 +241,6 @@ export const experiences: Experience[] = [
         email: "craig@wilson-premier.com",
         website: "https://smllakefront.com/",
         serviceOffered: "Real Estate Services",
-        imageUrl: "/luxury-lakefront-estate-sunset-view.jpg"
+        imageUrl: "https://smllakefront.com/wp-content/uploads/2024/01/sml-aerial.jpg"
     }
 ];
