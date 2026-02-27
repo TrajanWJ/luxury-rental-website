@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
-import { query } from "@/lib/db"
+import { removeFromTrash } from "@/lib/trash-store"
 
 export async function POST(request: NextRequest) {
   const { id } = await request.json()
-  await query("DELETE FROM trash_items WHERE id = ?", [id])
+  await removeFromTrash(id)
   return NextResponse.json({ ok: true })
 }

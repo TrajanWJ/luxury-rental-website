@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X } from "lucide-react"
+import { usePopupFreeze } from "@/hooks/use-popup-freeze"
 
 interface BookingPopupProps {
   isOpen: boolean
@@ -14,6 +15,7 @@ interface BookingPopupProps {
 }
 
 export function BookingPopup({ isOpen, onClose, initialLocation }: BookingPopupProps) {
+  usePopupFreeze(isOpen)
   const [location, setLocation] = useState(initialLocation || "Smith Mountain Lake, VA")
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
@@ -39,7 +41,7 @@ export function BookingPopup({ isOpen, onClose, initialLocation }: BookingPopupP
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div data-popup-root className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
 

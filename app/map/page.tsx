@@ -4,6 +4,7 @@ import { useState, useMemo } from "react"
 import dynamic from "next/dynamic"
 import Navigation from "@/components/navigation"
 import { properties, Property, isDateUnavailable } from "@/lib/data"
+import { usePhotoOrder } from "@/components/photo-order-context"
 import { experiences, Experience } from "@/lib/experiences"
 import { Search, Users, Bed, Bath, Calendar, Sparkles, Mountain, Waves, TreePine, X, MapPin, ChevronRight, ChevronLeft, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -38,6 +39,7 @@ function checkAvailability(propertyId: string, from?: Date, to?: Date): boolean 
 }
 
 export default function MapPage() {
+    const { getHeroImage } = usePhotoOrder()
     const [searchQuery, setSearchQuery] = useState("")
     const [activeMarker, setActiveMarker] = useState<Property | null>(null)
     const [modalProperty, setModalProperty] = useState<Property | null>(null)
@@ -342,7 +344,7 @@ export default function MapPage() {
                                         >
                                             <div className="aspect-[16/9] overflow-hidden relative">
                                                 <img
-                                                    src={property.image}
+                                                    src={getHeroImage(property)}
                                                     alt={property.name}
                                                     className="w-full h-full object-cover"
                                                 />

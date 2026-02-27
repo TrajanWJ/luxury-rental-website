@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarIcon, Users, MapPin, CreditCard, Lock, Check, ArrowLeft, ChevronDown } from "lucide-react"
 import { properties } from "@/lib/data"
+import { usePhotoOrder } from "@/components/photo-order-context"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 
@@ -19,6 +20,7 @@ import { useBookingContext } from "@/hooks/use-booking-context"
 import HostawayCalendar from "@/components/hostaway-calendar"
 
 function BookContent() {
+    const { getHeroImage } = usePhotoOrder()
     const { isDemoMode } = useDemo()
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -398,7 +400,7 @@ function BookContent() {
                                 <>
                                     <div className="relative h-48 rounded-2xl overflow-hidden mb-4">
                                         <Image
-                                            src={property.image}
+                                            src={getHeroImage(property)}
                                             alt={property.name}
                                             fill
                                             className="object-cover"

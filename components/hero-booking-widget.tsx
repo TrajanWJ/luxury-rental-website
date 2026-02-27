@@ -73,33 +73,33 @@ export function HeroBookingWidget() {
     // Refined Glass Card styles - More subtle and premium (More transparent per user request)
     const glassCardStyle = "bg-black/10 backdrop-blur-md border border-white/10 shadow-2xl rounded-2xl md:rounded-3xl p-3 md:p-[18px]"
     const pillInputStyle = "h-[42px] md:h-[50px] bg-white/5 border border-white/10 text-white placeholder:text-white/50 rounded-xl md:rounded-2xl px-2.5 md:px-[14px] transition-all hover:bg-white/10 focus-visible:bg-white/10 focus-visible:border-white/30 text-[11px] md:text-sm lg:text-base outline-none ring-0 w-full flex items-center"
-    const labelStyle = "text-[9px] md:text-[11px] font-semibold uppercase tracking-[0.1em] md:tracking-[0.15em] text-white/60 ml-1 mb-1 md:mb-1.5 block whitespace-nowrap overflow-hidden text-ellipsis"
+    const labelStyle = "text-[9px] md:text-[11px] font-semibold uppercase tracking-[0.1em] md:tracking-[0.15em] text-[#E2D0BB]/85 ml-1 mb-1 md:mb-1.5 block whitespace-nowrap overflow-hidden text-ellipsis"
 
     return (
         <>
             <div className={cn(glassCardStyle, "w-full")}>
-                <form onSubmit={handleSearch} className="grid grid-cols-10 gap-2 md:gap-[14px] items-end">
+                <form onSubmit={handleSearch} className="grid grid-cols-2 gap-2 md:grid-cols-10 md:gap-[14px] items-end">
 
                     {/* Property Selector */}
-                    <div className="col-span-3 group">
+                    <div className="col-span-1 md:col-span-3 group">
                         <Label className={labelStyle}>
-                            Property
+                            Lakefront Homes
                         </Label>
                         <Select value={location} onValueChange={setLocation}>
-                            <SelectTrigger className={cn(pillInputStyle, "!h-[42px] md:!h-[50px] flex items-center justify-between text-left [&_svg]:text-white/50")}>
+                            <SelectTrigger className={cn(pillInputStyle, "!h-[42px] md:!h-[50px] flex items-center justify-between text-left [&_svg]:text-[#E2D0BB]/70 data-[placeholder]:text-[#E2D0BB]/80")}>
                                 <div className="flex items-center gap-2 md:gap-3 overflow-hidden">
-                                    <Home className="h-3.5 w-3.5 md:h-4 md:w-4 opacity-50 shrink-0" />
-                                    <span className="truncate font-medium">{location && location !== "all" ? location : "Lakefront Home"}</span>
+                                    <Home className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#E2D0BB]/75 shrink-0" />
+                                    <span className="truncate font-medium text-[#E2D0BB]">{location && location !== "all" ? location : "Lakefront Home"}</span>
                                 </div>
                             </SelectTrigger>
-                            <SelectContent className="rounded-xl border border-white/10 shadow-2xl bg-[#2B2B2B]/95 backdrop-blur-xl text-white max-h-[300px]">
-                                <SelectItem value="all" className="py-2.5 px-4 focus:bg-white/10 cursor-pointer font-medium text-sm">Any Lakefront Home</SelectItem>
+                            <SelectContent className="rounded-xl border border-white/10 shadow-2xl bg-[#2B2B2B]/95 backdrop-blur-xl text-[#E2D0BB] max-h-[300px]">
+                                <SelectItem value="all" className="py-2.5 px-4 focus:bg-white/10 cursor-pointer font-medium text-sm text-[#E2D0BB] focus:text-[#F0E2CF]">Any Lakefront Home</SelectItem>
                                 {displayProperties.map(p => (
-                                    <SelectItem key={p.id} value={p.name} className="py-2.5 px-4 focus:bg-white/10 cursor-pointer text-sm">
+                                    <SelectItem key={p.id} value={p.name} className="py-2.5 px-4 focus:bg-white/10 cursor-pointer text-sm text-[#E2D0BB] focus:text-[#F0E2CF]">
                                         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                                            <span className="font-medium">{p.name}</span>
-                                            <span className="text-[11px] text-white/50 font-normal">
-                                                ({p.bedrooms} Bedrooms, {p.sleeps} Guests)
+                                            <span className="font-medium text-[#E2D0BB]">{p.name}</span>
+                                            <span className="text-[11px] text-[#E2D0BB]/60 font-normal">
+                                                ({p.bedrooms} Beds, {p.sleeps} Guests)
                                             </span>
                                         </div>
                                     </SelectItem>
@@ -109,7 +109,7 @@ export function HeroBookingWidget() {
                     </div>
 
                     {/* Date Range Picker */}
-                    <div className="col-span-3 group relative">
+                    <div className="col-span-1 md:col-span-3 group relative">
                         <Label className={labelStyle}>
                             Dates
                         </Label>
@@ -143,7 +143,7 @@ export function HeroBookingWidget() {
                     </div>
 
                     {/* Guests */}
-                    <div className="col-span-3 group">
+                    <div className="col-span-1 md:col-span-3 group">
                         <Label className={labelStyle}>
                             Guests
                         </Label>
@@ -162,11 +162,11 @@ export function HeroBookingWidget() {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="col-span-1">
+                    <div className="col-span-1 md:col-span-1">
                         <Button
                             type="submit"
                             size="lg"
-                            className="w-full h-[42px] md:h-[50px] rounded-xl md:rounded-2xl bg-[#463930] text-white hover:bg-[#3d312a] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 flex items-center justify-center px-0 font-bold border border-white/10"
+                            className="w-full h-[42px] md:h-[50px] rounded-xl md:rounded-2xl bg-[#9D5F36] text-white hover:bg-[#874E2B] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 flex items-center justify-center px-0 font-bold border border-white/10"
                         >
                             <Search className="h-4 w-4 md:h-5 md:w-5" />
                         </Button>

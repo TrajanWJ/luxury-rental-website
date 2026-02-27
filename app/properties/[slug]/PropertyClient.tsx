@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Property } from "@/lib/data"
+import { usePhotoOrder } from "@/components/photo-order-context"
 import Navigation from "@/components/navigation"
 import FooterCTA from "@/components/footer-cta"
 import { Button } from "@/components/ui/button"
@@ -12,8 +13,13 @@ import HostawayCalendar from "@/components/hostaway-calendar"
 import Link from "next/link"
 
 export default function PropertyClient({ property }: { property: Property }) {
+    const { getOrderedImages, getHeroImage } = usePhotoOrder()
+    const orderedImages = getOrderedImages(property)
+    const heroImage = getHeroImage(property)
     const [descExpanded, setDescExpanded] = useState(false)
     const [showAllAmenities, setShowAllAmenities] = useState(false)
+    const isMilanManor = property.name === "Milan Manor"
+    const isPenthouseView = property.name === "Penthouse View"
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -22,13 +28,22 @@ export default function PropertyClient({ property }: { property: Property }) {
     return (
         <div className="min-h-screen bg-slate-50 font-sans">
             {/* Nav Background */}
-            <div className="fixed top-0 left-0 right-0 h-24 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 z-40" />
-            <Navigation />
+            <div
+                className={cn(
+                    "fixed top-0 left-0 right-0 h-32 backdrop-blur-xl z-40",
+                    isMilanManor
+                        ? "bg-slate-200/90 border-b border-slate-500/20"
+                        : isPenthouseView
+                            ? "bg-transparent border-b border-transparent backdrop-blur-none"
+                        : "bg-slate-900/80 border-b border-white/5"
+                )}
+            />
+            <Navigation theme={isMilanManor ? "light" : "dark"} />
 
             {/* Hero Section */}
             <header className="relative h-[85vh] w-full overflow-hidden mt-0">
                 <Image
-                    src={property.image}
+                    src={heroImage}
                     alt={property.name}
                     fill
                     className="object-cover"
@@ -57,7 +72,7 @@ export default function PropertyClient({ property }: { property: Property }) {
                                 <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
                                 <span className="flex items-center gap-2"><Users className="h-5 w-5 opacity-70" /> {property.sleeps} Guests</span>
                                 <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-                                <span className="flex items-center gap-2"><Info className="h-5 w-5 opacity-70" /> {property.bedrooms} Bedrooms</span>
+                                <span className="flex items-center gap-2"><Info className="h-5 w-5 opacity-70" /> {property.bedrooms} Beds</span>
                             </div>
                         </div>
                     </div>
@@ -90,7 +105,7 @@ export default function PropertyClient({ property }: { property: Property }) {
                             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6">
                                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
                                     <span className="block text-3xl font-bold text-slate-900 mb-1">{property.bedrooms}</span>
-                                    <span className="text-sm text-slate-500 font-medium uppercase tracking-wide">Bedrooms</span>
+                                    <span className="text-sm text-slate-500 font-medium uppercase tracking-wide">Beds</span>
                                 </div>
                                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
                                     <span className="block text-3xl font-bold text-slate-900 mb-1">{property.bathrooms}</span>
@@ -144,7 +159,7 @@ export default function PropertyClient({ property }: { property: Property }) {
                                         i === 0 ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
                                     )}>
                                         <Image
-                                            src={property.images?.[i] || property.image}
+                                            src={orderedImages[i] || heroImage}
                                             alt={`Gallery image ${i + 1}`}
                                             fill
                                             className="object-cover transition-transform duration-700 group-hover:scale-110"

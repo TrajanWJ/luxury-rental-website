@@ -1,10 +1,10 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useScroll, useTransform, useSpring } from "framer-motion"
+import { useRef, useState } from "react"
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import Navigation from "@/components/navigation"
 import FooterCTA from "@/components/footer-cta"
-import { ArrowRight, Phone, Globe, Mail } from "lucide-react"
+import { ArrowRight, Phone, Globe, Mail, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { experiences, Experience } from "@/lib/experiences"
@@ -19,6 +19,7 @@ const COLORS = {
 // Editorial Experience Component
 function EditorialExperience({ item, index }: { item: Experience, index: number }) {
     const containerRef = useRef(null)
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"]
@@ -29,6 +30,10 @@ function EditorialExperience({ item, index }: { item: Experience, index: number 
     const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1])
 
     const isEven = index % 2 === 0
+    const galleryImages = item.images && item.images.length > 0
+        ? item.images
+        : [item.imageUrl || "/placeholder.jpg"]
+    const hasMultiple = galleryImages.length > 1
 
     return (
         <section
@@ -143,15 +148,57 @@ function EditorialExperience({ item, index }: { item: Experience, index: number 
                             style={{ scale, y }}
                             className="w-full h-[120%] relative -top-[10%]"
                         >
-                            <Image
-                                src={item.imageUrl || "/placeholder.jpg"}
-                                alt={item.name}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                            />
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={currentImageIndex}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="absolute inset-0"
+                                >
+                                    <Image
+                                        src={galleryImages[currentImageIndex]}
+                                        alt={`${item.name} ${currentImageIndex + 1}`}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
                         </motion.div>
                     </div>
+
+                    {/* Gallery Navigation */}
+                    {hasMultiple && (
+                        <>
+                            <button
+                                onClick={() => setCurrentImageIndex(prev => prev === 0 ? galleryImages.length - 1 : prev - 1)}
+                                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center text-[#1C1C1C] hover:bg-white/80 transition-all shadow-md"
+                                aria-label="Previous image"
+                            >
+                                <ChevronLeft className="h-5 w-5" />
+                            </button>
+                            <button
+                                onClick={() => setCurrentImageIndex(prev => prev === galleryImages.length - 1 ? 0 : prev + 1)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center text-[#1C1C1C] hover:bg-white/80 transition-all shadow-md"
+                                aria-label="Next image"
+                            >
+                                <ChevronRight className="h-5 w-5" />
+                            </button>
+                            {/* Dot indicators */}
+                            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                                {galleryImages.map((_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setCurrentImageIndex(i)}
+                                        className={`h-2 rounded-full transition-all duration-300 ${i === currentImageIndex ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/70'}`}
+                                        aria-label={`View image ${i + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </section>
@@ -173,7 +220,7 @@ export default function ExperiencesPage() {
                         className="max-w-4xl"
                     >
                         <span className="block text-xs md:text-sm font-bold tracking-[0.25em] mb-8 uppercase" style={{ color: COLORS.brass }}>
-                            Your Concierge Collection
+                            Exclusive to Wilson Premier Guests
                         </span>
                         <h1
                             className="text-6xl md:text-9xl font-serif font-regular tracking-tight leading-[0.9] mb-12"

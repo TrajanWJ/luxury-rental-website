@@ -1,12 +1,97 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { experiences, Experience } from "@/lib/experiences"
-import { ArrowRight, ChevronLeft, ChevronRight, X, Globe, Phone, Mail, User, Check, Sparkles } from "lucide-react"
+import { ArrowRight, ChevronLeft, ChevronRight, X, Globe, Phone, Mail, User, Check, Sparkles, Anchor, UtensilsCrossed, CalendarDays, Compass, HelpCircle } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { useConcierge } from "./concierge-context"
+import { usePopupFreeze } from "@/hooks/use-popup-freeze"
+
+// ─── Insider's Guide Categories ───
+const insiderCategories = [
+  {
+    id: "events-festivals",
+    name: "Events & Festivals",
+    icon: CalendarDays,
+    image: "/bridgewater-plaza.png",
+    description: "Seasonal celebrations, live music, and community gatherings around the lake.",
+    items: [
+      "Smith Mountain Lake Wine Festival",
+      "SML Charity Home Tour",
+      "Lighthouse Music Fest",
+      "Fourth of July Fireworks on the Lake",
+      "Fall Foliage Cruise Weekend",
+      "Lake Christmas Boat Parade",
+      "Bridgewater Plaza Summer Concert Series",
+    ],
+  },
+  {
+    id: "boating",
+    name: "Boating",
+    icon: Anchor,
+    image: "/boating-water-sports.png",
+    description: "Pontoon rentals, guided fishing trips, sunset cruises, and everything on the water.",
+    items: [
+      "Pontoon & Boat Rentals",
+      "Guided Fishing Charters",
+      "Sunset & Sightseeing Cruises",
+      "Jet Ski & Kayak Rentals",
+      "Wakeboarding & Tubing",
+      "Dock & Swim Access",
+      "Sailing Lessons",
+    ],
+  },
+  {
+    id: "dining",
+    name: "Dining",
+    icon: UtensilsCrossed,
+    image: "/waterfront-dining.png",
+    description: "Lakeside restaurants, private chefs, and the best places to eat at Smith Mountain Lake.",
+    items: [
+      "Mango\u2019s Bar & Grill",
+      "The Landing Restaurant",
+      "Cafe del Lago",
+      "Napoli at the Lake (Private Chef)",
+      "Bridgewater Plaza Dining",
+      "Local Wineries & Breweries",
+      "Catering & Private Events",
+    ],
+  },
+  {
+    id: "activities-experiences",
+    name: "Activities & Experiences",
+    icon: Compass,
+    image: "/state-park-beach.png",
+    description: "Hiking, golf, spa days, live entertainment, and family-friendly adventures.",
+    items: [
+      "Smith Mountain Lake State Park",
+      "Hiking & Nature Trails",
+      "Golf Courses Nearby",
+      "In-Home Spa & Wellness",
+      "Live Entertainment & Shows",
+      "Horseback Riding",
+      "Shopping & Local Boutiques",
+    ],
+  },
+  {
+    id: "essentials-faq",
+    name: "Essentials / FAQ",
+    icon: HelpCircle,
+    image: "/marina-docks.png",
+    description: "Grocery stores, marinas, gas stations, pharmacies, and everything you need to know.",
+    items: [
+      "Nearest Grocery Stores",
+      "Gas Stations & Marinas",
+      "Urgent Care & Pharmacies",
+      "ATMs & Banks",
+      "Weather & Lake Conditions",
+      "Directions & Getting Here",
+      "Emergency Contacts",
+    ],
+  },
+]
 
 // ─── Colors (matching the /experiences standalone page) ───
 const COLORS = {
@@ -19,112 +104,31 @@ const COLORS = {
 
 // ─── Main Experiences Component (used on homepage) ───
 export default function Experiences() {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const positionRef = useRef(0)
-  const [isPaused, setIsPaused] = useState(false)
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<typeof insiderCategories[number] | null>(null)
   const [isListExpanded, setIsListExpanded] = useState(true)
   const [activeFilter, setActiveFilter] = useState<string>("all")
   const [descExpanded, setDescExpanded] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { openContactModal } = useConcierge()
-
-  // Touch/swipe state refs
-  const touchStartRef = useRef(0)
-  const touchDeltaRef = useRef(0)
-  const isTouchingRef = useRef(false)
+  usePopupFreeze(!!selectedExperience || !!selectedCategory)
 
   // Get unique experience types for filter buttons
   const experienceTypes = Array.from(new Set(experiences.map(e => e.type)))
 
-  // Map experiences to the format we need
-  const experienceCards = experiences.map(exp => ({
-    ...exp,
-    title: exp.name,
-    image: exp.imageUrl || "/images/placeholder.jpg",
-  }))
-
-  // Duplicate the array multiple times for seamless infinite scroll
-  const infiniteExperiences = [
-    ...experienceCards,
-    ...experienceCards,
-    ...experienceCards,
-    ...experienceCards
-  ]
-
-  // Helper to clamp position within infinite scroll bounds
-  const clampPosition = (pos: number, singleSetWidth: number) => {
-    if (singleSetWidth <= 0) return pos
-    if (pos < singleSetWidth) return pos + singleSetWidth
-    if (pos >= singleSetWidth * 3) return pos - singleSetWidth
-    return pos
-  }
-
-  // Navigate carousel by offset (used by buttons)
-  const navigateCarousel = (offset: number) => {
-    positionRef.current += offset
-  }
-
-  // Auto-scroll animation with bidirectional infinite loop
-  useEffect(() => {
-    const scrollContainer = scrollRef.current
-    if (!scrollContainer) return
-
-    let animationFrameId: number
-    const scrollSpeed = 0.15
-
-    // Start at the beginning of Set 2
-    const initialWidth = scrollContainer.scrollWidth / 4
-    if (initialWidth > 0 && positionRef.current < initialWidth) {
-      positionRef.current = initialWidth
-      scrollContainer.scrollLeft = positionRef.current
-    }
-
-    const animate = () => {
-      if (scrollContainer) {
-        if (!isPaused && !isTouchingRef.current) {
-          positionRef.current += scrollSpeed
-        }
-
-        const singleSetWidth = scrollContainer.scrollWidth / 4
-        positionRef.current = clampPosition(positionRef.current, singleSetWidth)
-        scrollContainer.scrollLeft = positionRef.current
-      }
-      animationFrameId = requestAnimationFrame(animate)
-    }
-
-    animationFrameId = requestAnimationFrame(animate)
-
-    return () => cancelAnimationFrame(animationFrameId)
-  }, [isPaused])
-
-  // Touch/swipe handlers for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    isTouchingRef.current = true
-    touchStartRef.current = e.touches[0].clientX
-    touchDeltaRef.current = 0
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isTouchingRef.current) return
-    const delta = touchStartRef.current - e.touches[0].clientX
-    const frameDelta = delta - touchDeltaRef.current
-    touchDeltaRef.current = delta
-    positionRef.current += frameDelta
-  }
-
-  const handleTouchEnd = () => {
-    isTouchingRef.current = false
-  }
-
-  // Reset description expanded state when experience changes
+  // Reset description expanded and image index state when experience changes
   useEffect(() => {
     setDescExpanded(false)
+    setCurrentImageIndex(0)
   }, [selectedExperience])
 
   // Close modal on escape key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedExperience(null)
+      if (e.key === "Escape") {
+        setSelectedExperience(null)
+        setSelectedCategory(null)
+      }
     }
     window.addEventListener("keydown", handleEsc)
     return () => window.removeEventListener("keydown", handleEsc)
@@ -135,7 +139,7 @@ export default function Experiences() {
       {/* ═══════════════════════════════════════════════════════════════════
           PART 1 & 2: Combined Concierge Headers
       ═══════════════════════════════════════════════════════════════════ */}
-      <section id="experiences" className="relative px-6 md:px-12 overflow-hidden pt-10 pb-4 md:pt-14 md:pb-6" style={{ backgroundColor: COLORS.linen }}>
+      <section id="experiences" className="relative px-5 md:px-12 overflow-hidden pt-12 pb-6 md:pt-14 md:pb-6" style={{ backgroundColor: COLORS.linen }}>
         <div className="container mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -145,35 +149,20 @@ export default function Experiences() {
             className="space-y-4 max-w-2xl"
           >
             <div>
-              <span className="block text-[10px] md:text-xs font-bold tracking-[0.25em] mb-3 uppercase" style={{ color: COLORS.brass }}>
-                Your Concierge Collection
+              <span className="block text-xs md:text-xs font-bold tracking-[0.2em] mb-3 uppercase" style={{ color: COLORS.brass }}>
+                Smith Mountain Lake
               </span>
               <div className="flex flex-col sm:flex-row sm:items-end gap-6">
                 <h2
-                  className="text-3xl md:text-5xl font-serif font-medium tracking-tight leading-[0.95]"
+                  className="text-4xl md:text-5xl font-serif font-medium tracking-tight leading-[0.95]"
                   style={{ color: COLORS.charcoal }}
                 >
-                  At Your <span className="italic">Service</span>
+                  Insider&apos;s <span className="italic">Guide</span>
                 </h2>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => openContactModal()}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all shadow-lg shrink-0"
-                  style={{
-                    backgroundColor: COLORS.charcoal,
-                    color: COLORS.linen,
-                  }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                  </svg>
-                  Contact Concierge
-                </motion.button>
               </div>
             </div>
-            <p className="text-base md:text-lg font-light max-w-xl leading-relaxed" style={{ color: COLORS.stone }}>
-              From private chefs and in-home spa to boat rentals and live entertainment — our curated partners ensure every moment of your stay is effortless.
+            <p className="text-lg md:text-lg font-light max-w-xl leading-relaxed" style={{ color: COLORS.stone }}>
+              From boat rentals to live entertainment — discover the best of Smith Mountain Lake.
             </p>
           </motion.div>
         </div>
@@ -181,96 +170,142 @@ export default function Experiences() {
         {/* Subtle Grain/Texture Overlay */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
 
-      {/* Infinite Auto-Scrolling Carousel */}
-      <div
-        className="relative group mt-4 md:mt-8"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        {/* Navigation Buttons - visible always on touch, on hover for desktop */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            navigateCarousel(-350)
-          }}
-          className="absolute left-2 md:left-6 top-[40%] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white/50 backdrop-blur-xl border border-white/40 flex items-center justify-center text-[#1C1C1C] hover:bg-white/70 transition-all duration-300 shadow-lg md:opacity-0 md:group-hover:opacity-100"
-          aria-label="Scroll left"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </button>
-
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            navigateCarousel(350)
-          }}
-          className="absolute right-2 md:right-6 top-[40%] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white/50 backdrop-blur-xl border border-white/40 flex items-center justify-center text-[#1C1C1C] hover:bg-white/70 transition-all duration-300 shadow-lg md:opacity-0 md:group-hover:opacity-100"
-          aria-label="Scroll right"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
-
-        <div
-          ref={scrollRef}
-          onFocus={() => setIsPaused(true)}
-          onBlur={() => setIsPaused(false)}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          className="flex gap-5 overflow-x-hidden scrollbar-hide px-6 md:px-12"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none'
-          }}
-        >
-          {infiniteExperiences.map((exp, index) => (
-            <div
-              key={`${exp.id}-${index}`}
-              onClick={() => setSelectedExperience(exp)}
-              className="flex-shrink-0 w-[240px] md:w-[280px] group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#9D5F36] focus:ring-offset-4 rounded-2xl transition-all duration-300"
-              tabIndex={0}
-            >
-              {/* Image Container */}
-              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#BCA28A] mb-3">
-                {exp.image && (
+      {/* Category Cards Grid */}
+      <div className="container mx-auto mt-8 md:mt-10 pb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
+          {insiderCategories.map((category, index) => {
+            const IconComponent = category.icon
+            return (
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                whileHover={{ y: -4, transition: { duration: 0.3 } }}
+                onClick={() => setSelectedCategory(category)}
+                className="group cursor-pointer"
+              >
+                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#BCA28A]">
                   <Image
-                    src={exp.image}
-                    alt={exp.title}
+                    src={category.image}
+                    alt={category.name}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 group-focus:scale-105"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                )}
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent group-focus:bg-transparent transition-colors duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/5 group-hover:from-black/70 transition-all duration-500" />
 
-                {/* Type Badge */}
-                <div className="absolute top-3 left-3">
-                  <span className="bg-white/80 backdrop-blur-sm px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-[#2B2B2B] rounded-full">
-                    {exp.type}
-                  </span>
+                  {/* Icon + Title overlay */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 backdrop-blur-sm">
+                        <IconComponent className="h-4 w-4 text-white" />
+                      </span>
+                    </div>
+                    <h3 className="text-base md:text-lg font-serif font-medium text-white leading-tight">
+                      {category.name}
+                    </h3>
+                    <p className="text-[11px] md:text-xs text-white/70 font-light mt-1 leading-relaxed line-clamp-2">
+                      {category.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-
-              {/* Content */}
-              <div className="space-y-1.5 px-1">
-                <h3 className="text-base font-serif font-medium group-hover:text-[#9D5F36] group-focus:text-[#9D5F36] transition-colors line-clamp-1" style={{ color: COLORS.charcoal }}>
-                  {exp.title}
-                </h3>
-                <p className="text-xs leading-relaxed font-light line-clamp-2" style={{ color: COLORS.stone }}>
-                  {exp.description}
-                </p>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            )
+          })}
         </div>
       </div>
 
       {/* Subtle hint */}
-      <div className="text-center mt-6">
-        <p className="text-xs uppercase tracking-[0.2em]" style={{ color: COLORS.brass }}>
-          Hover to pause &bull; Click to explore
+      <div className="text-center mt-5 pb-2">
+        <p className="text-[11px] md:text-xs uppercase tracking-[0.16em]" style={{ color: COLORS.brass }}>
+          Click a category to explore
         </p>
       </div>
     </section>
+
+    {/* Category Popup */}
+    <AnimatePresence>
+      {selectedCategory && (
+        <div data-popup-root className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 md:p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setSelectedCategory(null)}
+            className="absolute inset-0 bg-black/50 backdrop-blur-md"
+          />
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 24 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-[560px] bg-[#ECE9E7] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl max-h-[85dvh] flex flex-col"
+          >
+            {/* Close Button */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setSelectedCategory(null)}
+              className="absolute top-4 right-4 z-30 h-9 w-9 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm flex items-center justify-center text-[#2B2B2B] transition-all duration-200 shadow-sm"
+            >
+              <X className="h-4 w-4" />
+            </motion.button>
+
+            {/* Header Image */}
+            <div className="relative w-full aspect-[16/7] shrink-0 overflow-hidden">
+              <Image
+                src={selectedCategory.image}
+                alt={selectedCategory.name}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+              <div className="absolute bottom-4 left-5 right-14">
+                <div className="flex items-center gap-2.5 mb-1.5">
+                  {(() => { const Icon = selectedCategory.icon; return <Icon className="h-5 w-5 text-white/80" /> })()}
+                  <h2 className="text-2xl sm:text-3xl font-serif font-medium text-white leading-tight">
+                    {selectedCategory.name}
+                  </h2>
+                </div>
+                <p className="text-xs text-white/70 font-light">{selectedCategory.description}</p>
+              </div>
+            </div>
+
+            {/* Items List */}
+            <div className="overflow-y-auto flex-1 p-5 sm:p-7">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4" style={{ color: COLORS.brass }}>
+                What to Explore
+              </p>
+              <div className="space-y-2.5">
+                {selectedCategory.items.map((item, i) => (
+                  <motion.div
+                    key={item}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 * i, duration: 0.3 }}
+                    className="flex items-center gap-3 py-2.5 px-3 rounded-xl bg-white/50 border border-[#BCA28A]/10 hover:bg-white/80 transition-colors duration-200"
+                  >
+                    <span className="flex items-center justify-center h-6 w-6 rounded-full bg-[#9D5F36]/10 shrink-0">
+                      <ArrowRight className="h-3 w-3 text-[#9D5F36]" />
+                    </span>
+                    <span className="text-sm font-light" style={{ color: COLORS.charcoal }}>
+                      {item}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <p className="text-xs font-light text-center mt-6 italic" style={{ color: COLORS.stone }}>
+                Full details coming soon — ask us anything during your stay.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
 
     {/* ═══════════════════════════════════════════════════════════════════
           PART 3: Collapsible & Filterable Editorial Story Scroll List
@@ -292,14 +327,14 @@ export default function Experiences() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="block text-[10px] font-bold tracking-[0.25em] uppercase mb-3" style={{ color: COLORS.brass }}>
-            Full Directory
+          <span className="block text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: COLORS.brass }}>
+            Exclusive to Wilson Premier Guests
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-medium leading-tight" style={{ color: COLORS.charcoal }}>
-            All Concierge Partners
+          <h2 className="text-4xl md:text-4xl font-serif font-medium leading-tight" style={{ color: COLORS.charcoal }}>
+            Concierge Partners Directory
           </h2>
-          <p className="text-sm md:text-base font-light mt-2 max-w-md leading-relaxed" style={{ color: COLORS.stone }}>
-            Browse our complete collection of hand-picked local partners — from private chefs to lakefront adventures.
+          <p className="text-base md:text-base font-light mt-2 max-w-md leading-relaxed" style={{ color: COLORS.stone }}>
+            Our hand-picked local partners are available exclusively to Wilson Premier guests — from private chefs to lakefront adventures.
           </p>
         </motion.div>
 
@@ -309,7 +344,7 @@ export default function Experiences() {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.5 }}
           onClick={() => setIsListExpanded(!isListExpanded)}
-          className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-[11px] font-bold uppercase tracking-[0.15em] transition-all duration-300 hover:scale-105 shadow-md shrink-0 self-start md:self-auto"
+          className="inline-flex items-center gap-3 px-7 py-4 rounded-full text-xs font-bold uppercase tracking-[0.12em] transition-all duration-300 hover:scale-105 shadow-md shrink-0 self-start md:self-auto"
           style={{
             color: isListExpanded ? COLORS.linen : COLORS.linen,
             backgroundColor: isListExpanded ? COLORS.stone : COLORS.charcoal,
@@ -333,11 +368,11 @@ export default function Experiences() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="flex flex-wrap gap-2 md:gap-3"
+        className="flex flex-wrap gap-2.5 md:gap-3"
       >
         <button
           onClick={() => { setActiveFilter('all'); setIsListExpanded(true) }}
-          className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] border transition-all duration-200 hover:scale-105 ${activeFilter === 'all'
+          className={`px-4 py-2.5 rounded-full text-[11px] md:text-[10px] font-bold uppercase tracking-[0.12em] border transition-all duration-200 hover:scale-105 ${activeFilter === 'all'
             ? 'bg-[#463930] text-[#ECE9E7] border-[#463930] shadow-md'
             : 'bg-white/50 border-[#463930]/15 hover:border-[#463930]/40 hover:bg-white/80'
             }`}
@@ -352,7 +387,7 @@ export default function Experiences() {
             <button
               key={type}
               onClick={() => { setActiveFilter(type); setIsListExpanded(true) }}
-              className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] border transition-all duration-200 hover:scale-105 ${isActive
+              className={`px-4 py-2.5 rounded-full text-[11px] md:text-[10px] font-bold uppercase tracking-[0.12em] border transition-all duration-200 hover:scale-105 ${isActive
                 ? 'bg-[#463930] text-[#ECE9E7] border-[#463930] shadow-md'
                 : 'bg-white/50 border-[#463930]/15 hover:border-[#463930]/40 hover:bg-white/80'
                 }`}
@@ -377,7 +412,7 @@ export default function Experiences() {
               className="overflow-hidden"
             >
               <div className="container mx-auto px-6 md:px-12 pb-20 pt-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6">
                   {experiences
                     .filter(exp => activeFilter === 'all' || exp.type === activeFilter)
                     .map((experience, index) => (
@@ -387,12 +422,12 @@ export default function Experiences() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
                         onClick={() => setSelectedExperience(experience)}
-                        className="group cursor-pointer rounded-2xl p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                        className="group cursor-pointer rounded-2xl p-6 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
                         style={{ backgroundColor: 'rgba(255,255,255,0.55)', border: `1px solid rgba(140,137,132,0.12)` }}
                       >
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 md:gap-4">
                           {/* Image */}
-                          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl">
+                          <div className="relative h-24 w-24 md:h-20 md:w-20 shrink-0 overflow-hidden rounded-xl">
                             <Image
                               src={experience.imageUrl || "/images/placeholder.jpg"}
                               alt={experience.name}
@@ -406,7 +441,7 @@ export default function Experiences() {
                           <div className="flex-1 min-w-0 space-y-1.5">
                             <div className="flex items-start justify-between gap-2">
                               <h3
-                                className="text-base font-serif font-medium leading-snug line-clamp-1 transition-colors duration-200 group-hover:text-[#A4907C]"
+                              className="text-lg md:text-base font-serif font-medium leading-snug line-clamp-1 transition-colors duration-200 group-hover:text-[#A4907C]"
                                 style={{ color: COLORS.charcoal }}
                               >
                                 {experience.name}
@@ -415,14 +450,14 @@ export default function Experiences() {
 
                             {/* Type badge */}
                             <span
-                              className="inline-block text-[9px] font-bold uppercase tracking-[0.12em] px-2.5 py-0.5 rounded-full"
+                              className="inline-block text-[10px] md:text-[9px] font-bold uppercase tracking-[0.1em] px-3 py-1 md:px-2.5 md:py-0.5 rounded-full"
                               style={{ backgroundColor: `${COLORS.brass}18`, color: COLORS.brass }}
                             >
                               {experience.type}
                             </span>
 
                             <p
-                              className="text-xs font-light leading-relaxed line-clamp-2"
+                              className="text-sm md:text-xs font-light leading-relaxed line-clamp-3 md:line-clamp-2"
                               style={{ color: COLORS.stone }}
                             >
                               {experience.description}
@@ -434,7 +469,7 @@ export default function Experiences() {
                         <div className="mt-4 pt-3 flex items-center justify-between gap-3" style={{ borderTop: `1px solid ${COLORS.stone}15` }}>
                           <div className="min-w-0">
                             {experience.contactName && (
-                              <p className="text-xs font-medium truncate" style={{ color: COLORS.charcoal }}>
+                              <p className="text-sm md:text-xs font-medium truncate" style={{ color: COLORS.charcoal }}>
                                 {experience.contactName}
                               </p>
                             )}
@@ -442,7 +477,7 @@ export default function Experiences() {
                               <a
                                 href={`tel:${experience.phone.replace(/[^+\d]/g, "")}`}
                                 onClick={(e) => e.stopPropagation()}
-                                className="inline-flex items-center gap-1 text-[11px] mt-0.5 transition-colors hover:opacity-70"
+                                className="inline-flex items-center gap-1 text-xs md:text-[11px] mt-0.5 transition-colors hover:opacity-70"
                                 style={{ color: COLORS.stone }}
                               >
                                 <Phone className="h-3 w-3" />
@@ -452,7 +487,7 @@ export default function Experiences() {
                           </div>
 
                           <span
-                            className="shrink-0 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.1em] transition-all duration-200 group-hover:gap-2.5"
+                            className="shrink-0 inline-flex items-center gap-1.5 text-[11px] md:text-[10px] font-bold uppercase tracking-[0.08em] transition-all duration-200 group-hover:gap-2.5"
                             style={{ color: COLORS.brass }}
                           >
                             View Details
@@ -471,7 +506,7 @@ export default function Experiences() {
       {/* Experience Details Popup */}
       <AnimatePresence>
         {selectedExperience && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 md:p-6">
+          <div data-popup-root className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 md:p-6">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -500,38 +535,88 @@ export default function Experiences() {
                 <X className="h-4 w-4 md:h-5 md:w-5" />
               </motion.button>
 
-              {/* Left Side: Image */}
-              <div className="relative w-full md:w-[38%] shrink-0 aspect-[16/10] sm:aspect-[16/9] md:aspect-auto md:min-h-full overflow-hidden">
-                <Image
-                  src={selectedExperience.imageUrl || "/images/placeholder.jpg"}
-                  alt={selectedExperience.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 38vw"
-                />
-                {/* Subtle gradient overlay for text readability on image */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-black/[0.06]" />
+              {/* Left Side: Image Gallery */}
+              {(() => {
+                const galleryImages = selectedExperience.images && selectedExperience.images.length > 0
+                  ? selectedExperience.images
+                  : [selectedExperience.imageUrl || "/images/placeholder.jpg"]
+                const hasMultiple = galleryImages.length > 1
+                return (
+                  <div className="relative w-full md:w-[38%] shrink-0 aspect-[16/10] sm:aspect-[16/9] md:aspect-auto md:min-h-full overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={currentImageIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute inset-0"
+                      >
+                        <Image
+                          src={galleryImages[currentImageIndex]}
+                          alt={`${selectedExperience.name} ${currentImageIndex + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 38vw"
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-black/[0.06]" />
 
-                {/* Type Badge */}
-                <div className="absolute top-4 left-4 md:top-5 md:left-5">
-                  <span className="bg-[#463930]/90 backdrop-blur-sm text-white px-3.5 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.15em] shadow-md">
-                    {selectedExperience.type}
-                  </span>
-                </div>
+                    {/* Type Badge */}
+                    <div className="absolute top-4 left-4 md:top-5 md:left-5">
+                      <span className="bg-[#463930]/90 backdrop-blur-sm text-white px-3.5 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.15em] shadow-md">
+                        {selectedExperience.type}
+                      </span>
+                    </div>
 
-                {/* Service Offered pill on image */}
-                {selectedExperience.serviceOffered && (
-                  <div className="absolute bottom-4 left-4 md:bottom-5 md:left-5 right-16 md:right-5">
-                    <span className="inline-flex items-center gap-1.5 bg-white/85 backdrop-blur-sm text-[#463930] px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.1em] shadow-sm">
-                      <Sparkles className="h-3 w-3 text-[#9D5F36] shrink-0" />
-                      <span className="truncate">{selectedExperience.serviceOffered}</span>
-                    </span>
+                    {/* Gallery Navigation */}
+                    {hasMultiple && (
+                      <>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === 0 ? galleryImages.length - 1 : prev - 1) }}
+                          className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center text-[#1C1C1C] hover:bg-white/80 transition-all shadow-md"
+                          aria-label="Previous image"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === galleryImages.length - 1 ? 0 : prev + 1) }}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center text-[#1C1C1C] hover:bg-white/80 transition-all shadow-md"
+                          aria-label="Next image"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </button>
+                        {/* Dot indicators */}
+                        <div className="absolute bottom-14 md:bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                          {galleryImages.map((_, i) => (
+                            <button
+                              key={i}
+                              onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(i) }}
+                              className={`h-2 rounded-full transition-all duration-300 ${i === currentImageIndex ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/70'}`}
+                              aria-label={`View image ${i + 1}`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+
+                    {/* Service Offered pill on image */}
+                    {selectedExperience.serviceOffered && (
+                      <div className={`absolute left-4 md:left-5 right-16 md:right-5 ${hasMultiple ? 'bottom-10 md:bottom-12' : 'bottom-4 md:bottom-5'}`}>
+                        <span className="inline-flex items-center gap-1.5 bg-white/85 backdrop-blur-sm text-[#463930] px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.1em] shadow-sm">
+                          <Sparkles className="h-3 w-3 text-[#9D5F36] shrink-0" />
+                          <span className="truncate">{selectedExperience.serviceOffered}</span>
+                        </span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                )
+              })()}
 
               {/* Right Side: Content */}
-              <div className="w-full md:w-[62%] overflow-y-auto overscroll-contain">
+              <div className="w-full md:w-[62%] overflow-y-auto scrollbar-hide overscroll-contain">
                 <div className="p-6 sm:p-8 md:p-10 lg:p-12">
 
                   {/* Section 1: Title & Description */}
@@ -672,7 +757,7 @@ export default function Experiences() {
                         setTimeout(() => openContactModal(selectedExperience.name), 300)
                       }}
                       className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold uppercase tracking-[0.12em] text-[10px] border transition-all duration-300 hover:bg-[#BCA28A]/10 flex-1"
-                      style={{ color: '#463930', borderColor: 'rgba(188,162,138,0.35)' }}
+                      style={{ color: '#463930', borderColor: '#463930' }}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />

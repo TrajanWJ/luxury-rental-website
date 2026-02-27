@@ -29,7 +29,7 @@ export default function RealEstateHero() {
       <motion.div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('/luxury-lakefront-estate-sunset-view.jpg')",
+          backgroundImage: "url('/images/suite-retreat/suite-retreat-71.jpg')",
           y: bgY,
         }}
       >
@@ -37,6 +37,14 @@ export default function RealEstateHero() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A1410]/90 via-[#2B2B2B]/40 to-transparent" />
         {/* Gradient overlay: left-side subtle brand wash */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#2B2B2B]/55 via-[#2B2B2B]/15 to-transparent" />
+        {/* Dot-grid texture overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, #ECE9E7 1px, transparent 0)",
+            backgroundSize: "26px 26px",
+          }}
+        />
       </motion.div>
 
       {/* Content — anchored to bottom */}

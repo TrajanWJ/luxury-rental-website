@@ -1,7 +1,8 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import {
   Sun,
   Leaf,
@@ -11,6 +12,7 @@ import {
   TreePine,
   Flower2,
   MapPin,
+  ChevronDown,
 } from "lucide-react"
 import { properties } from "@/lib/data"
 
@@ -193,16 +195,21 @@ export function LakeOverviewSection() {
             Key Facts
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {LAKE_FACTS.map((fact) => (
-              <div
+            {LAKE_FACTS.map((fact, i) => (
+              <motion.div
                 key={fact.label}
-                className="rounded-xl border border-[#BCA28A]/20 bg-[#f8f4ee] p-5 text-center"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: i * 0.06 }}
+
+                className="rounded-2xl border border-[#BCA28A]/35 bg-[#f8f4ee]/90 backdrop-blur-md p-5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
               >
                 <p className="text-lg font-semibold text-[#2B2B2B]">{fact.value}</p>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-[#2B2B2B]/60 font-medium">
                   {fact.label}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -213,12 +220,17 @@ export function LakeOverviewSection() {
             Weather &amp; Seasons
           </p>
           <div className="grid md:grid-cols-3 gap-4">
-            {SEASONS.map((season) => {
+            {SEASONS.map((season, i) => {
               const Icon = season.icon
               return (
-                <div
+                <motion.div
                   key={season.title}
-                  className="rounded-xl border border-[#BCA28A]/20 bg-white p-5"
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: i * 0.06 }}
+  
+                  className="rounded-2xl border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#BCA28A]/25 bg-[#f8f4ee]">
@@ -227,7 +239,7 @@ export function LakeOverviewSection() {
                     <h3 className="font-semibold text-[#2B2B2B]">{season.title}</h3>
                   </div>
                   <p className="text-[#2B2B2B]/75 leading-relaxed text-sm">{season.body}</p>
-                </div>
+                </motion.div>
               )
             })}
           </div>
@@ -269,12 +281,17 @@ export function LakeLifeSection() {
             Activities &amp; Recreation
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            {ACTIVITIES.map((activity) => {
+            {ACTIVITIES.map((activity, i) => {
               const Icon = activity.icon
               return (
-                <div
+                <motion.div
                   key={activity.title}
-                  className="rounded-xl border border-[#BCA28A]/20 bg-white p-5"
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: i * 0.06 }}
+  
+                  className="rounded-2xl border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#BCA28A]/25 bg-[#f8f4ee]">
@@ -283,7 +300,7 @@ export function LakeLifeSection() {
                     <h3 className="font-semibold text-[#2B2B2B]">{activity.title}</h3>
                   </div>
                   <p className="text-[#2B2B2B]/75 leading-relaxed text-sm">{activity.body}</p>
-                </div>
+                </motion.div>
               )
             })}
           </div>
@@ -295,14 +312,19 @@ export function LakeLifeSection() {
             Golf Courses
           </p>
           <div className="grid md:grid-cols-3 gap-4">
-            {GOLF_COURSES.map((course) => (
-              <div
+            {GOLF_COURSES.map((course, i) => (
+              <motion.div
                 key={course.name}
-                className="rounded-xl border border-[#BCA28A]/20 bg-white p-5"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: i * 0.06 }}
+
+                className="rounded-2xl border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
               >
                 <h3 className="font-semibold text-[#2B2B2B] mb-2">{course.name}</h3>
                 <p className="text-[#2B2B2B]/75 leading-relaxed text-sm">{course.body}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -313,17 +335,22 @@ export function LakeLifeSection() {
             SML Happenings
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {SML_HAPPENINGS.map((item) => (
-              <div
+            {SML_HAPPENINGS.map((item, i) => (
+              <motion.div
                 key={item.title}
-                className="rounded-xl border border-[#BCA28A]/20 bg-white p-5"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: i * 0.06 }}
+
+                className="rounded-2xl border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
               >
                 <h3 className="font-semibold text-[#2B2B2B]">{item.title}</h3>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[#9D5F36] font-medium">
                   {item.timing}
                 </p>
                 <p className="mt-3 text-[#2B2B2B]/75 leading-relaxed text-sm">{item.body}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -331,7 +358,7 @@ export function LakeLifeSection() {
         {/* Pop Culture callout */}
         <motion.div
           {...reveal}
-          className="mt-14 rounded-xl border border-[#BCA28A]/25 bg-white p-5 md:p-6"
+          className="mt-14 rounded-2xl border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-5 md:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"
         >
           <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-3">
             Pop Culture
@@ -382,16 +409,21 @@ export function MarketSection() {
             County Tax Rates
           </p>
           <div className="grid sm:grid-cols-3 gap-4">
-            {TAX_RATES.map((item) => (
-              <div
+            {TAX_RATES.map((item, i) => (
+              <motion.div
                 key={item.county}
-                className="rounded-xl border border-[#BCA28A]/20 bg-[#f8f4ee] p-5 text-center"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: i * 0.06 }}
+
+                className="rounded-2xl border border-[#BCA28A]/35 bg-[#f8f4ee]/90 backdrop-blur-md p-5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
               >
                 <p className="text-lg font-semibold text-[#2B2B2B]">{item.rate}</p>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-[#2B2B2B]/60 font-medium">
                   {item.county}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
           <p className="mt-4 text-sm text-[#2B2B2B]/65 leading-relaxed">
@@ -399,54 +431,13 @@ export function MarketSection() {
           </p>
         </motion.div>
 
-        {/* Driving Distance Table */}
-        <motion.div {...reveal} className="mt-14">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-5">
-            Driving Distances
-          </p>
-          <div className="rounded-xl border border-[#BCA28A]/20 overflow-hidden">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="bg-[#2B2B2B] text-[#ECE9E7]">
-                  <th className="px-5 py-3 font-semibold text-[11px] uppercase tracking-[0.12em]">
-                    <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5" />
-                      City
-                    </span>
-                  </th>
-                  <th className="px-5 py-3 font-semibold text-[11px] uppercase tracking-[0.12em]">
-                    Miles
-                  </th>
-                  <th className="px-5 py-3 font-semibold text-[11px] uppercase tracking-[0.12em]">
-                    Drive Time
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {DRIVING_DISTANCES.map((row, i) => (
-                  <tr
-                    key={row.city}
-                    className={`border-t border-[#BCA28A]/15 transition-colors duration-200 hover:bg-[#f8f4ee] ${
-                      i % 2 === 0 ? "bg-white" : "bg-[#faf8f5]"
-                    }`}
-                  >
-                    <td className="px-5 py-3 font-medium text-[#2B2B2B]">{row.city}</td>
-                    <td className="px-5 py-3 text-[#2B2B2B]/75">{row.miles}</td>
-                    <td className="px-5 py-3 text-[#2B2B2B]/75">{row.time}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-4 text-sm text-[#2B2B2B]/65 leading-relaxed">
-            Drive times may vary based on traffic, route, and season.
-          </p>
-        </motion.div>
+        {/* Driving Distance Table — collapsible */}
+        <DrivingDistancesTable />
 
         {/* "Why This Matters" callout */}
         <motion.div
           {...reveal}
-          className="mt-14 rounded-xl border border-[#BCA28A]/20 border-l-4 border-l-[#9D5F36] bg-[#f8f4ee] p-6 md:p-8"
+          className="mt-14 rounded-[24px] border border-[#BCA28A]/35 border-l-4 border-l-[#9D5F36] bg-[#f8f4ee]/90 backdrop-blur-md p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"
         >
           <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-3">
             Why This Matters
@@ -461,10 +452,86 @@ export function MarketSection() {
 }
 
 /* ═══════════════════════════════════════════════
+   Driving Distances (collapsible)
+   ═══════════════════════════════════════════════ */
+
+function DrivingDistancesTable() {
+  const [open, setOpen] = useState(true)
+
+  return (
+    <motion.div {...reveal} id="driving-distances" className="mt-14">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 group"
+      >
+        <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold">
+          Driving Distances
+        </p>
+        <ChevronDown
+          className={`h-4 w-4 text-[#9D5F36] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="pt-5">
+              <div className="rounded-2xl border border-[#BCA28A]/35 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-[#2B2B2B] text-[#ECE9E7]">
+                      <th className="px-5 py-3 font-semibold text-[11px] uppercase tracking-[0.12em]">
+                        <span className="inline-flex items-center gap-1.5">
+                          <MapPin className="h-3.5 w-3.5" />
+                          City
+                        </span>
+                      </th>
+                      <th className="px-5 py-3 font-semibold text-[11px] uppercase tracking-[0.12em]">
+                        Miles
+                      </th>
+                      <th className="px-5 py-3 font-semibold text-[11px] uppercase tracking-[0.12em]">
+                        Drive Time
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {DRIVING_DISTANCES.map((row, i) => (
+                      <tr
+                        key={row.city}
+                        className={`border-t border-[#BCA28A]/15 transition-colors duration-200 hover:bg-[#f8f4ee] ${
+                          i % 2 === 0 ? "bg-white" : "bg-[#faf8f5]"
+                        }`}
+                      >
+                        <td className="px-5 py-3 font-medium text-[#2B2B2B]">{row.city}</td>
+                        <td className="px-5 py-3 text-[#2B2B2B]/75">{row.miles}</td>
+                        <td className="px-5 py-3 text-[#2B2B2B]/75">{row.time}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-4 text-sm text-[#2B2B2B]/65 leading-relaxed">
+                Drive times may vary based on traffic, route, and season.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  )
+}
+
+/* ═══════════════════════════════════════════════
    4. FeaturedListingSection
    ═══════════════════════════════════════════════ */
 
-export function FeaturedListingSection() {
+export function FeaturedListingSection({ onOpenMarketModal }: { onOpenMarketModal?: () => void } = {}) {
   const milan = properties.find((p) => p.name === "Milan Manor")
   if (!milan) return null
 
@@ -484,7 +551,7 @@ export function FeaturedListingSection() {
         {/* Large image + details card */}
         <motion.div
           {...reveal}
-          className="mt-10 grid lg:grid-cols-[1.2fr_1fr] overflow-hidden rounded-xl border border-[#BCA28A]/20 shadow-[0_16px_44px_rgba(0,0,0,0.18)]"
+          className="mt-10 grid lg:grid-cols-[1.2fr_1fr] overflow-hidden rounded-[24px] border border-[#BCA28A]/35 shadow-[0_20px_55px_rgba(0,0,0,0.22)]"
         >
           {/* Image */}
           <div className="relative min-h-[280px] md:min-h-[420px]">
@@ -549,12 +616,21 @@ export function FeaturedListingSection() {
               >
                 View Listing
               </Link>
-              <Link
-                href="/real-estate/contact"
-                className="inline-flex items-center justify-center rounded-md border border-[#ECE9E7]/50 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/10 transition-colors duration-300"
-              >
-                Inquire About This Property
-              </Link>
+              {onOpenMarketModal ? (
+                <button
+                  onClick={onOpenMarketModal}
+                  className="inline-flex items-center justify-center rounded-md border border-[#ECE9E7]/55 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/12 transition-colors duration-300"
+                >
+                  Why This Matters
+                </button>
+              ) : (
+                <Link
+                  href="/real-estate/contact"
+                  className="inline-flex items-center justify-center rounded-md border border-[#ECE9E7]/50 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/10 transition-colors duration-300"
+                >
+                  Inquire About This Property
+                </Link>
+              )}
             </div>
           </div>
         </motion.div>

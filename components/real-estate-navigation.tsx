@@ -98,11 +98,6 @@ export default function RealEstateNavigation() {
                   className="h-[36px] w-auto object-contain md:h-[42px]"
                 />
               </button>
-              <img
-                src="/real-estate/remax-logo-minimal.png"
-                alt="RE/MAX"
-                className="h-[18px] w-auto object-contain opacity-60 md:h-[22px]"
-              />
             </div>
 
             {/* Right: Headshot + CTA (desktop) | Headshot + hamburger (mobile) */}
@@ -114,12 +109,12 @@ export default function RealEstateNavigation() {
                 className="h-8 w-8 rounded-full object-cover border border-[#BCA28A]/40 md:h-9 md:w-9"
               />
 
-              {/* Desktop CTA */}
+              {/* Contact CTA — always visible */}
               <button
                 onClick={() => (window.location.href = "/real-estate/contact")}
-                className="hidden md:inline-flex items-center rounded-full bg-[#9D5F36] px-5 py-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#864E2B]"
+                className="inline-flex items-center rounded-full bg-[#9D5F36] px-4 py-1.5 md:px-5 md:py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#864E2B]"
               >
-                Contact Craig
+                Contact
               </button>
 
               {/* Mobile hamburger */}

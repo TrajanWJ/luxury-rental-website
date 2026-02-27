@@ -155,11 +155,20 @@
 }
 
 /* Hide scrollbar for carousel */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-/* Adding smooth scroll behavior */
+/* Prevent horizontal overflow without breaking sticky positioning */
+html, body {
+  overflow-x: clip;
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 96%;
@@ -261,4 +270,15 @@ select:focus {
   /* Very lightened taupe for banding */
   border-top: 1px solid rgba(188, 162, 138, 0.1);
   border-bottom: 1px solid rgba(188, 162, 138, 0.1);
+}
+
+/* Freeze background site motion while any popup/modal is open */
+html.popup-active,
+body.popup-active {
+  overflow: hidden;
+}
+
+body.popup-active :not([data-popup-root], [data-popup-root] *) {
+  animation: none !important;
+  transition: none !important;
 }

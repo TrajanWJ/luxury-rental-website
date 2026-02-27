@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { DemoProvider } from '@/components/demo-context'
 import { ConciergeProvider } from '@/components/concierge-context'
+import { PhotoOrderProvider } from '@/components/photo-order-context'
 import { ContactModal } from '@/components/contact-modal'
 
 import Script from 'next/script'
@@ -17,8 +18,8 @@ export const metadata: Metadata = {
   generator: 'luxury-rentals',
   metadataBase: new URL('https://wilson-premier.com'),
   icons: {
-    icon: 'https://wilson-premier.com/wp-content/uploads/2023/12/WPP_Digital_RGB_logo_linen_on_charcoal.png',
-    apple: 'https://wilson-premier.com/wp-content/uploads/2023/12/WPP_Digital_RGB_logo_linen_on_charcoal.png',
+    icon: '/brand/favicon.png',
+    apple: '/brand/favicon.png',
   },
   openGraph: {
     title: 'Wilson Premier Properties | Luxury Lakefront Rentals',
@@ -51,8 +52,10 @@ export default function RootLayout({
       <body className={`font-sans antialiased ${playfair.variable} ${workSans.variable}`}>
         <DemoProvider>
           <ConciergeProvider>
-            {children}
-            <ContactModal />
+            <PhotoOrderProvider>
+              {children}
+              <ContactModal />
+            </PhotoOrderProvider>
           </ConciergeProvider>
         </DemoProvider>
         <Analytics />

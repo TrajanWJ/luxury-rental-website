@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, MapPin, Phone, Mail, Facebook } from "lucide-react"
+import { NarrativeModals, ContactPathDiagram, type ModalKey } from "@/components/real-estate-modals"
 
 /* ─────────────────────────────────────────────
    Shared animation defaults
@@ -59,6 +60,7 @@ export default function ContactPage() {
   const contact = useObfuscatedContact()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [activeModal, setActiveModal] = useState<ModalKey>(null)
 
   const {
     register,
@@ -98,7 +100,7 @@ export default function ContactPage() {
              ───────────────────────────────────── */}
           <motion.div
             {...reveal}
-            className="rounded-2xl border border-[#BCA28A]/20 bg-white p-6 md:p-8"
+            className="rounded-[24px] border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"
           >
             {isSuccess ? (
               /* ── Success state ── */
@@ -225,14 +227,24 @@ export default function ContactPage() {
                     )}
                   </div>
 
-                  {/* Submit */}
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#9D5F36] hover:bg-[#8A5230] text-white h-12 text-[11px] font-bold uppercase tracking-[0.13em] rounded-md transition-colors duration-300 disabled:opacity-50"
-                  >
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                  </Button>
+                  {/* Submit + Inquiry Guide */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="flex-1 bg-[#9D5F36] hover:bg-[#8A5230] text-white h-12 text-[11px] font-bold uppercase tracking-[0.13em] rounded-md transition-colors duration-300 disabled:opacity-50"
+                    >
+                      {isSubmitting ? "Sending..." : "Send Message"}
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => setActiveModal("contact-intent")}
+                      variant="outline"
+                      className="h-12 border-[#9D5F36]/45 text-[#9D5F36] hover:bg-[#9D5F36]/8 text-[11px] font-bold uppercase tracking-[0.13em] rounded-md transition-colors duration-300"
+                    >
+                      Inquiry Guide
+                    </Button>
+                  </div>
                 </form>
               </>
             )}
@@ -244,7 +256,7 @@ export default function ContactPage() {
           <motion.aside
             {...reveal}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] as const, delay: 0.12 }}
-            className="lg:sticky lg:top-32 rounded-2xl border border-[#BCA28A]/20 bg-[#e8eff3] p-6 md:p-8"
+            className="lg:sticky lg:top-32 rounded-[24px] border border-[#BCA28A]/35 bg-[#e8eff3]/90 backdrop-blur-md p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"
           >
             {/* RE/MAX logo */}
             <div className="mb-6">
@@ -307,7 +319,64 @@ export default function ContactPage() {
             </div>
           </motion.aside>
         </div>
+
+        {/* ─────────────────────────────────────
+            What Happens Next
+           ───────────────────────────────────── */}
+        <motion.div
+          {...reveal}
+          className="mt-12 rounded-[24px] border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"
+        >
+          <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-3">
+            What Happens Next
+          </p>
+          <h3 className="font-serif text-xl md:text-2xl tracking-tight text-[#2B2B2B] mb-4">
+            From inquiry to action
+          </h3>
+          <ContactPathDiagram />
+        </motion.div>
+
+        {/* ─────────────────────────────────────
+            Best First Message Tips
+           ───────────────────────────────────── */}
+        <motion.div
+          {...reveal}
+          className="mt-6 rounded-[24px] border border-[#BCA28A]/35 bg-[#fffaf4] p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"
+        >
+          <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-3">
+            Best First Message
+          </p>
+          <p className="text-sm text-[#2B2B2B]/75 mb-4">
+            To help Craig prepare the best response, consider including:
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { title: "Timing", text: "Target move or purchase window." },
+              { title: "Use Case", text: "Primary, second home, or investment." },
+              { title: "Location Fit", text: "Preferred area or shoreline type." },
+              { title: "Budget Band", text: "Comfort range, not exact target." },
+            ].map((tip, i) => (
+              <motion.div
+                key={tip.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
+                className="rounded-xl border border-[#2B2B2B]/10 bg-white px-3 py-2.5"
+              >
+                <p className="text-[10px] uppercase tracking-[0.11em] text-[#9D5F36] font-semibold">{tip.title}</p>
+                <p className="mt-1 text-sm text-[#2B2B2B]/72">{tip.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
+
+      <NarrativeModals
+        activeModal={activeModal}
+        onClose={() => setActiveModal(null)}
+        onOpen={(key) => setActiveModal(key)}
+      />
     </main>
   )
 }

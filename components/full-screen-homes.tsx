@@ -41,10 +41,10 @@ export default function FullScreenHomes() {
 
   return (
     <>
-      <section id="homes" ref={containerRef} className="relative bg-depth-linen border-t border-[var(--color-brand-taupe)]/20 py-16">
+      <section id="homes" ref={containerRef} className="relative bg-depth-linen border-t border-[var(--color-brand-taupe)]/20 pt-16">
         <div className="container mx-auto px-6 mb-12 text-center">
           <span className="brand-overline">Premier Lakefront Retreats</span>
-          <h2 className="text-4xl md:text-5xl font-serif font-medium text-[var(--color-brand-charcoal)] mb-4">Available for Your Vacation</h2>
+          <h2 className="text-4xl md:text-5xl font-serif font-medium text-[var(--color-brand-charcoal)] mb-4">Available for Your Private Retreats and Stays</h2>
           <div className="h-0.5 w-12 bg-[var(--color-brand-rust)] mx-auto"></div>
         </div>
         {displayProperties.map((property, index) => (

@@ -13,6 +13,7 @@ export interface Experience {
     website?: string;
     serviceOffered?: string;
     imageUrl?: string;
+    images?: string[];
 }
 
 export const experiences: Experience[] = [
@@ -81,7 +82,8 @@ export const experiences: Experience[] = [
         email: "bfulper@cobbblestonemilk.com",
         website: "https://www.mvfpremierbeef.com/",
         serviceOffered: "Wagyu Beef & Steaks Supplier",
-        imageUrl: "https://images.squarespace-cdn.com/content/v1/62057f1c04afc544e1d4eea2/5339a149-286b-4dcc-b602-bfe1fb76425c/Noah+Collins+-+FiletStripRibeye.png"
+        imageUrl: "/wagyu-beef-1.jpg",
+        images: ["/wagyu-beef-1.jpg", "/wagyu-beef-2.jpg", "/wagyu-beef-3.jpg"]
     },
     {
         id: "traveling-therapy",
@@ -165,6 +167,19 @@ export const experiences: Experience[] = [
         imageUrl: "https://static.wixstatic.com/media/ece71f_ab958efcd4ca4cb49539b94ec0dbdd88~mv2.jpg"
     },
     {
+        id: "charlotte-efoil",
+        name: "CharlotteEfoil",
+        type: "boating",
+        description: "Exclusive electric hydrofoil adventures for individuals, families, and groups of up to 20+ riders — delivered directly to your dock.",
+        details: "Turn an ordinary lake day into something unforgettable. With seasoned professional instruction and dedicated one-on-one coaching, beginners quickly gain confidence and experience the thrill of flying above the water. High energy, safe instruction, incredible memories.",
+        contactName: "Daniel Gleason",
+        contactTitle: "Owner",
+        phone: "(704) 421-8778",
+        website: "https://www.charlotteefoil.com/",
+        serviceOffered: "Electric Hydrofoil Experiences",
+        imageUrl: "/boating-water-sports.png"
+    },
+    {
         id: "betty-ashton-harpist",
         name: "Betty Ashton Mayo",
         type: "entertainment",
@@ -197,8 +212,8 @@ export const experiences: Experience[] = [
         name: "Personal Assistant Service",
         type: "lifestyle",
         description: "Wilson Premier Properties offers a dedicated personal assistant to help facilitate your every need during your stay.",
-        details: "From grocery runs to reservation coordination, Hilda is available upon request to ensure your lakefront vacation is completely effortless.",
-        contactName: "Hilda McArtor",
+        details: "From grocery runs to reservation coordination, your personal assistant is available upon request to ensure your lakefront vacation is completely effortless.",
+        contactName: "",
         contactTitle: "Personal Assistant",
         phone: "(703) 930-6999",
         serviceOffered: "Personal Assistant Service",
