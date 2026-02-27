@@ -20,6 +20,19 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/about-us', destination: '/', permanent: true },
+      { source: '/smith-mountain-lake-reunion-homes', destination: '/', permanent: true },
+      { source: '/smith-mountain-lake-reunion-homes/suite-retreat', destination: '/properties/suite-retreat', permanent: true },
+      { source: '/suite-view', destination: '/properties/suite-view', permanent: true },
+      { source: '/milan-manor-house', destination: '/properties/milan-manor', permanent: true },
+      { source: '/rentals', destination: '/', permanent: true },
+      { source: '/lake-view-condo', destination: '/properties/lake-view', permanent: true },
+      { source: '/penthouse-view', destination: '/properties/penthouse-view', permanent: true },
+      { source: '/contact-us', destination: '/contact', permanent: true },
+    ]
+  },
 }
 
 export default nextConfig
