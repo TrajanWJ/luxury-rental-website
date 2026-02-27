@@ -296,7 +296,7 @@ export default function ContactPage() {
               <div className="flex items-center gap-3">
                 <Facebook className="h-4 w-4 shrink-0 text-[#9D5F36]" />
                 <a
-                  href="https://facebook.com/askcraig"
+                  href="https://www.facebook.com/askcraig"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-[#2B2B2B]/85 hover:text-[#9D5F36] transition-colors duration-300"
