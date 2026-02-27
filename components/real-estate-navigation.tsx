@@ -22,18 +22,27 @@ export default function RealEstateNavigation() {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     handleScroll()
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll when mobile menu is open; close on Escape
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden"
     } else {
       document.body.style.overflow = ""
     }
-    return () => { document.body.style.overflow = "" }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false)
+    }
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", handleKeyDown)
+    }
   }, [mobileMenuOpen])
 
   const handleNavClick = useCallback(
@@ -118,6 +127,7 @@ export default function RealEstateNavigation() {
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-2 rounded-full text-[#2b2925]/75 hover:text-[#1f1d1a] hover:bg-[#1f1d1a]/10 transition-colors"
                 aria-label="Toggle menu"
+                aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
@@ -137,7 +147,9 @@ export default function RealEstateNavigation() {
                     onClick={() => handleNavClick(link)}
                     className={cn(
                       "text-[12px] lg:text-[13px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors duration-300",
-                      "text-[#2b2925]/80 hover:text-[#9D5F36]",
+                      !link.anchor && pathname === link.href
+                        ? "text-[#9D5F36]"
+                        : "text-[#2b2925]/80 hover:text-[#9D5F36]",
                     )}
                   >
                     {link.label}
@@ -185,7 +197,12 @@ export default function RealEstateNavigation() {
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link)}
-                  className="w-full text-left py-3 text-base font-medium text-[#25231f]/90 hover:text-[#9D5F36] border-b border-[#1f1d1a]/10 min-h-[44px] flex items-center transition-colors"
+                  className={cn(
+                    "w-full text-left py-3 text-base font-medium border-b border-[#1f1d1a]/10 min-h-[44px] flex items-center transition-colors",
+                    !link.anchor && pathname === link.href
+                      ? "text-[#9D5F36]"
+                      : "text-[#25231f]/90 hover:text-[#9D5F36]",
+                  )}
                 >
                   {link.label}
                 </button>
@@ -208,7 +225,7 @@ export default function RealEstateNavigation() {
       </AnimatePresence>
 
       {/* ── Spacer ── */}
-      <div className="h-14 md:h-[96px]" />
+      <div className="h-14 md:h-[98px]" />
     </>
   )
 }
