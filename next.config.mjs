@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'booking.wilson-premier.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.wilson-premier.com',
+      },
     ],
   },
 }
