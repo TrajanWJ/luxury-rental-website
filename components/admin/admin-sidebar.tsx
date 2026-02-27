@@ -11,7 +11,12 @@ const navItems = [
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
 ]
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -21,7 +26,17 @@ export function AdminSidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-[#1C1C1C] border-r border-white/5 flex flex-col z-40">
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      <aside className={cn(
+        "fixed left-0 top-0 h-full w-64 bg-[#1C1C1C] border-r border-white/5 flex flex-col z-40 transition-transform duration-300",
+        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      )}>
       <div className="p-6 border-b border-white/5">
         <div className="flex items-center gap-3">
           <Image
@@ -48,6 +63,7 @@ export function AdminSidebar() {
             <a
               key={item.href}
               href={item.href}
+              onClick={onClose}
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors",
                 isActive
@@ -65,6 +81,7 @@ export function AdminSidebar() {
       <div className="p-3 border-t border-white/5">
         <a
           href="/"
+          onClick={onClose}
           className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#ECE9E7]/30 hover:text-[#ECE9E7]/60 text-xs transition-colors"
         >
           View Live Site
@@ -77,6 +94,7 @@ export function AdminSidebar() {
           Sign Out
         </button>
       </div>
-    </aside>
+      </aside>
+    </>
   )
 }
