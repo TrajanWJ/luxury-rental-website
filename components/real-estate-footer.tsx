@@ -11,7 +11,6 @@ interface FooterLink {
   label: string
   href: string
   anchor?: string | null
-  external?: boolean
 }
 
 const QUICK_LINKS: FooterLink[] = [
@@ -179,7 +178,7 @@ export default function RealEstateFooter() {
         <div className="w-full max-w-[1920px] mx-auto px-6 md:px-12 lg:px-16 py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-2 text-[11px] text-[#ECE9E7]/50">
             <span>
-              Copyright &copy; 2026 All Rights Reserved | Wilson Premier Properties
+              Copyright &copy; {new Date().getFullYear()} All Rights Reserved | Wilson Premier Properties
             </span>
             <span className="text-center md:text-right">
               Smith Mountain Lake Real Estate | Privacy Policy | Terms &amp; Disclaimers | Sitemap
