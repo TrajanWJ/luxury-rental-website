@@ -43,11 +43,15 @@
 - Atomic filesystem writes (write to `.tmp` then rename) prevent corruption on crash
 - `PhotoOrderContext` polls `/api/photo-order?property=_all` every 3 seconds
 
-## Prerequisites
+## Infrastructure
 
 **VPS:** SSH is disabled. All server commands run via "FTP + PHP trick": upload a `.php` script to `public_html/`, execute via HTTP with Host header, script self-deletes.
 
-**Env vars on VPS (.env file):**
+**Process manager:** PM2 (at `/usr/bin/pm2`). sPanel's Node.js Manager configures PM2 to run the app. The saved PM2 config runs `app.js` via `/home/wilsonprem/node20/bin/node`.
+
+**Env vars:** `app.js` reads `/home/wilsonprem/wilson-premier-app/.env` on startup. The standalone Next.js server doesn't auto-load `.env` — our `app.js` wrapper handles this.
+
+**Current .env on VPS:**
 ```
 NODE_ENV=production
 PORT=3000
@@ -56,8 +60,6 @@ PERSISTENT_DATA_DIR=/home/wilsonprem/data
 TURSO_DATABASE_URL=libsql://wilson-premier-wilsonprem-dev26.aws-us-east-1.turso.io
 TURSO_AUTH_TOKEN=<token>
 ```
-
-If Turso vars are missing, run `scripts/set-turso-env.php` via the FTP + PHP trick (see "First-Time Turso Setup" below).
 
 ## Deployment Steps
 
@@ -126,19 +128,7 @@ if (!is_dir($dataDir)) {
     echo "Created $dataDir\n";
 }
 
-// Seed data files only if they don't already exist
-foreach (['photo-orders.json', 'site-config.json'] as $file) {
-    $persistent = "$dataDir/$file";
-    $seed = "$appDir/data/$file";
-    if (!file_exists($persistent) && file_exists($seed)) {
-        copy($seed, $persistent);
-        echo "Seeded $file to persistent location\n";
-    } else if (file_exists($persistent)) {
-        echo "$file already exists — keeping it\n";
-    }
-}
-
-// Extract the new deploy
+// Extract the new deploy FIRST (so seed files are available)
 $zip = "$appDir/wilson-premier-deploy.zip";
 if (file_exists($zip)) {
     $za = new ZipArchive();
@@ -150,11 +140,23 @@ if (file_exists($zip)) {
     }
 }
 
+// Seed data files only if they don't already exist (AFTER extraction)
+foreach (['photo-orders.json', 'site-config.json'] as $file) {
+    $persistent = "$dataDir/$file";
+    $seed = "$appDir/data/$file";
+    if (!file_exists($persistent) && file_exists($seed)) {
+        copy($seed, $persistent);
+        echo "Seeded $file to persistent location\n";
+    } else if (file_exists($persistent)) {
+        echo "$file already exists — keeping it\n";
+    }
+}
+
 echo "Done. Restart the app now.\n";
 unlink(__FILE__);
 ```
 
-### 5. Restart the app
+### 5. Restart the app via PM2
 
 Save as `restart-app.php`, upload, execute:
 
@@ -163,25 +165,44 @@ curl -s -T restart-app.php \
   ftp://209.142.66.121/public_html/restart-app.php \
   --user 'wilsonprem_trajan:<password>'
 
-curl -s --max-time 15 -H "Host: wilson-premier.com" \
+curl -s --max-time 25 -H "Host: wilson-premier.com" \
   http://209.142.66.121/restart-app.php
 ```
 
 **`restart-app.php`:**
 ```php
 <?php
-set_time_limit(10);
-$node = '/home/wilsonprem/node20/bin/node';
-$appDir = '/home/wilsonprem/wilson-premier-app';
-shell_exec("pkill -f 'node.*server.js' 2>&1");
-sleep(1);
-$cmd = "cd $appDir && set -a && source .env && set +a && nohup $node app.js >> /home/wilsonprem/app.log 2>&1 & echo \$!";
-$pid = trim(shell_exec($cmd));
-echo "Started PID: $pid\n";
+set_time_limit(20);
+$pm2 = '/usr/bin/pm2';
+
+echo "=== Stopping PM2 process ===\n";
+echo shell_exec("HOME=/home/wilsonprem $pm2 stop all 2>&1") . "\n";
+
+// Kill any orphaned node processes
+shell_exec("pkill -9 -f 'next-server' 2>&1");
+shell_exec("pkill -9 -f 'node.*server.js' 2>&1");
+shell_exec("pkill -9 -f 'node.*app.js' 2>&1");
+sleep(3);
+
+echo "=== Starting PM2 process ===\n";
+echo shell_exec("HOME=/home/wilsonprem $pm2 start all 2>&1") . "\n";
+
+sleep(3);
+
+echo "=== PM2 status ===\n";
+echo shell_exec("HOME=/home/wilsonprem $pm2 list 2>&1") . "\n";
+
+echo "=== Saving PM2 config ===\n";
+echo shell_exec("HOME=/home/wilsonprem $pm2 save 2>&1") . "\n";
+
 unlink(__FILE__);
 ```
 
-**Key change:** The restart script now sources `.env` instead of hardcoding env vars. This means `.env` is the single source of truth for `PERSISTENT_DATA_DIR`, `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, etc.
+**Key details:**
+- PM2 is managed by sPanel's Node.js Manager at `/usr/bin/pm2`
+- PM2's saved config runs `app.js` which loads `.env` before starting the server
+- Must kill orphaned `next-server` processes — PM2 sometimes leaves them behind
+- `HOME=/home/wilsonprem` is required for PM2 to find its config
 
 ### 6. Verify
 
@@ -222,17 +243,33 @@ curl -s -H "Host: wilson-premier.com" \
 ### 3. Create Turso tables
 
 ```bash
-curl -s -X POST https://wilson-premier.com/api/admin/migrate
+# Login first to get session token
+curl -s -X POST https://wilson-premier.com/api/admin/auth \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: Mozilla/5.0" \
+  -d '{"username":"Admin","password":"WPPAdmin26"}' \
+  -D /dev/stderr 2>&1 | head -1
+# Copy the admin-session token from the set-cookie header
+
+# Create tables (requires browser-like headers to pass Apache)
+curl -s -X POST https://wilson-premier.com/api/admin/migrate \
+  -H "Cookie: admin-session=<token>" \
+  -H "User-Agent: Mozilla/5.0" \
+  -H "Origin: https://wilson-premier.com" \
+  -H "Referer: https://wilson-premier.com/admin"
 ```
 
 ### 4. Migrate existing JSON data to Turso
 
 ```bash
 curl -s -X POST https://wilson-premier.com/api/admin/migrate-data \
-  -H "Cookie: admin-session=<your-jwt>"
+  -H "Cookie: admin-session=<token>" \
+  -H "User-Agent: Mozilla/5.0" \
+  -H "Origin: https://wilson-premier.com" \
+  -H "Referer: https://wilson-premier.com/admin"
 ```
 
-Both endpoints are auth-protected (admin session required for migrate-data). The migration is idempotent — safe to run multiple times.
+Both endpoints are auth-protected. The migration is idempotent — safe to run multiple times (trash and inquiries are cleared before re-inserting).
 
 ### 5. Verify Turso is active
 
@@ -241,7 +278,9 @@ Check the Turso dashboard at https://turso.tech/app — tables should show row c
 ## Important Notes
 
 - **Never delete `/home/wilsonprem/data/`** on the VPS — it's the filesystem fallback
-- **`.env` is the single source of truth** — all env vars live there, `restart-app.php` sources it
+- **`.env` is the single source of truth** — all env vars live there, `app.js` reads it on startup
+- **PM2 manages the process** — don't use `nohup node app.js` directly, use PM2 stop/start
 - **Turso going down is not catastrophic** — the app falls back to filesystem JSON automatically
 - **Always run `scripts/backup-production-data.sh` before deploying** — commits a snapshot to git
 - **The admin panel has two logins:** Wilson / PropertyAdmin7283, Admin / WPPAdmin26
+- **Apache blocks bare POST requests** — migration curl commands need browser-like headers (User-Agent, Origin, Referer)
