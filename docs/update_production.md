@@ -79,8 +79,25 @@ curl -T wilson-premier-deploy.zip \
 
 ### 4. Extract and set up persistent data on VPS
 
-Upload and execute a PHP script to extract and set up:
+> **SSH is disabled on this VPS.** All server-side commands run via the
+> "FTP + PHP trick": upload a `.php` script to `public_html/` via FTP,
+> then execute it by hitting it with curl over HTTP. The script deletes
+> itself after running.
 
+Save the following as `deploy-update.php` locally, then:
+
+```bash
+# Upload the PHP script
+curl -s -T deploy-update.php \
+  ftp://209.142.66.121/public_html/deploy-update.php \
+  --user 'wilsonprem_trajan:USop03TKfN26J'
+
+# Execute it (use the wilson-premier.com Host header so it hits the right VHost)
+curl -s --max-time 120 -H "Host: wilson-premier.com" \
+  http://209.142.66.121/deploy-update.php
+```
+
+**`deploy-update.php`:**
 ```php
 <?php
 set_time_limit(120);
@@ -105,10 +122,9 @@ if (!file_exists($persistentFile) && file_exists($seedFile)) {
     echo "WARNING: No seed file found at $seedFile\n";
 }
 
-// Extract the new deploy (back up first)
+// Extract the new deploy
 $zip = "$appDir/wilson-premier-deploy.zip";
 if (file_exists($zip)) {
-    // Extract
     $za = new ZipArchive();
     if ($za->open($zip) === TRUE) {
         $za->extractTo($appDir);
@@ -118,24 +134,32 @@ if (file_exists($zip)) {
     }
 }
 
+// Write .env with PERSISTENT_DATA_DIR if it doesn't have it
+$envFile = "$appDir/.env";
+$envContent = file_exists($envFile) ? file_get_contents($envFile) : '';
+if (strpos($envContent, 'PERSISTENT_DATA_DIR') === false) {
+    file_put_contents($envFile, $envContent . "\nPERSISTENT_DATA_DIR=/home/wilsonprem/data\n");
+    echo "Added PERSISTENT_DATA_DIR to .env\n";
+}
+
 echo "Done. Restart the app now.\n";
 unlink(__FILE__);
 ```
 
-### 5. Set the PERSISTENT_DATA_DIR environment variable
+### 5. Restart the app
 
-In the app's `.env` file on the VPS (`/home/wilsonprem/wilson-premier-app/.env`):
+Save as `restart-app.php`, upload via FTP, execute via curl (same pattern as step 4):
 
+```bash
+curl -s -T restart-app.php \
+  ftp://209.142.66.121/public_html/restart-app.php \
+  --user 'wilsonprem_trajan:USop03TKfN26J'
+
+curl -s --max-time 15 -H "Host: wilson-premier.com" \
+  http://209.142.66.121/restart-app.php
 ```
-PERSISTENT_DATA_DIR=/home/wilsonprem/data
-```
 
-Or set it in the Node.js Manager startup command.
-
-### 6. Restart the app
-
-Via sPanel Node.js Manager, or:
-
+**`restart-app.php`:**
 ```php
 <?php
 set_time_limit(10);
@@ -172,18 +196,18 @@ for k, v in data.get('orders', {}).items():
 
 ### Before every deployment:
 
-1. **Pull latest photo orders from production** (once SSH or a sync endpoint is available):
+1. **Pull latest photo orders from production** — the API is public, no auth needed:
    ```bash
-   # Future: curl the API to get current orders and save locally
    curl -s https://wilson-premier.com/api/photo-order?property=_all | \
      python3 -c "import json,sys; d=json.load(sys.stdin); json.dump(d.get('orders',{}), open('data/photo-orders.json','w'), indent=2)"
    ```
+   If the API returns empty (app is down), the last committed version in git is your backup.
 
-2. **Commit the snapshot** to git — this is your backup
+2. **Commit the snapshot** to git — this is your insurance policy
 
-3. **Build and deploy** — the `data/photo-orders.json` in the build serves as the seed for first boot
+3. **Build and deploy** following steps 1–5 above (FTP upload + PHP execution)
 
-4. **PERSISTENT_DATA_DIR is key** — as long as it points outside the deploy directory, existing photo orders survive redeployment. The seed file is only used if no persistent file exists.
+4. **PERSISTENT_DATA_DIR is key** — as long as it points outside the deploy directory (`/home/wilsonprem/data`), existing photo orders survive redeployment. The seed file is only used on first boot when no persistent file exists.
 
 ### Important: What NOT to do
 
