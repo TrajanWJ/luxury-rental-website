@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { query, DB_CONFIGURED } from "@/lib/db"
+import { readStore, writeStore } from "@/lib/file-store"
 
 type ImageItem = { src: string; pos: number; locked: boolean }
 type OrderMap = Record<string, ImageItem[]>
@@ -8,29 +9,6 @@ interface PhotoOrderRow {
   property_slug: string
   order_data: string
   version: number
-}
-
-// JSONBlob fallback when MariaDB is unavailable
-const BLOB_ID = "019ca122-8c3b-773f-874b-c378c0605166"
-const BLOB_URL = `https://jsonblob.com/api/jsonBlob/${BLOB_ID}`
-
-async function readBlob(): Promise<Record<string, unknown>> {
-  try {
-    const res = await fetch(BLOB_URL, { headers: { Accept: "application/json" }, cache: "no-store" })
-    if (res.ok) return await res.json()
-  } catch {}
-  return {}
-}
-
-async function writeBlob(data: Record<string, unknown>): Promise<boolean> {
-  try {
-    const res = await fetch(BLOB_URL, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(data),
-    })
-    return res.ok
-  } catch { return false }
 }
 
 export async function GET(request: NextRequest) {
@@ -63,12 +41,12 @@ export async function GET(request: NextRequest) {
         version: rows[0].version,
       })
     } catch {
-      // Fall through to JSONBlob
+      // Fall through to filesystem
     }
   }
 
-  // JSONBlob fallback
-  const data = await readBlob()
+  // Filesystem fallback
+  const data = readStore()
   if (property === "_all") {
     const orders: OrderMap = {}
     for (const [key, val] of Object.entries(data)) {
@@ -119,15 +97,17 @@ export async function POST(request: NextRequest) {
       }
       return NextResponse.json({ ok: true })
     } catch {
-      // Fall through to JSONBlob
+      // Fall through to filesystem
     }
   }
 
-  // JSONBlob fallback
-  const data = await readBlob()
-  data[property] = images
-  const ok = await writeBlob(data)
-  return ok
-    ? NextResponse.json({ ok: true })
-    : NextResponse.json({ error: "Failed to save" }, { status: 500 })
+  // Filesystem fallback
+  try {
+    const data = readStore()
+    data[property] = images
+    writeStore(data)
+    return NextResponse.json({ ok: true })
+  } catch {
+    return NextResponse.json({ error: "Failed to save" }, { status: 500 })
+  }
 }
