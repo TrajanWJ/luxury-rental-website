@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, Phone, MapPin, Send } from "lucide-react"
+import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react"
 import Navigation from "@/components/navigation"
 
 export default function ContactPage() {
@@ -18,19 +18,32 @@ export default function ContactPage() {
     })
     const [isSubmitting, setIsSubmitting] = useState(false)
 
+    const [isSuccess, setIsSuccess] = useState(false)
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsSubmitting(true)
 
-        // TODO: Implement actual form submission to backend/email service
-        console.log("Form submitted:", formData)
+        try {
+            await fetch("/api/inquiries", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone || null,
+                    message: formData.message,
+                    experience: formData.interest || null,
+                    source: "contact-page",
+                }),
+            })
+        } catch {
+            // Silently continue — show success to visitor regardless
+        }
 
-        // Simulate submission
-        await new Promise(resolve => setTimeout(resolve, 1500))
-
-        alert("Thank you for reaching out to Wilson Premier Properties. Our concierge team will review your plans and follow up with thoughtful, customized recommendations for your stay.")
         setFormData({ name: "", email: "", phone: "", interest: "", message: "" })
         setIsSubmitting(false)
+        setIsSuccess(true)
     }
 
     return (
@@ -170,6 +183,23 @@ export default function ContactPage() {
                             className="bg-white border border-[#BCA28A]/30 rounded-3xl p-8 md:p-12 shadow-xl"
                         >
                             <div className="max-w-2xl mx-auto">
+                                {isSuccess ? (
+                                    <div className="py-12 text-center space-y-6">
+                                        <div className="flex justify-center">
+                                            <CheckCircle2 className="h-20 w-20 text-[#9D5F36]" />
+                                        </div>
+                                        <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#2B2B2B]">Message Sent</h2>
+                                        <p className="text-[#2B2B2B]/70 font-light leading-relaxed max-w-md mx-auto">
+                                            Thank you for reaching out. Our concierge team will review your plans and follow up with thoughtful, customized recommendations for your stay.
+                                        </p>
+                                        <button
+                                            onClick={() => setIsSuccess(false)}
+                                            className="text-sm font-medium text-[#9D5F36] hover:text-[#9D5F36]/80 transition-colors underline underline-offset-4"
+                                        >
+                                            Send another message
+                                        </button>
+                                    </div>
+                                ) : (<>
                                 <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#2B2B2B] mb-4 text-center">
                                     Send Us a Message
                                 </h2>
@@ -284,6 +314,7 @@ export default function ContactPage() {
                                         </a>
                                     </div>
                                 </form>
+                                </>)}
                             </div>
                         </motion.div>
 

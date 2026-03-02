@@ -5,6 +5,7 @@ import './globals.css'
 import { DemoProvider } from '@/components/demo-context'
 import { ConciergeProvider } from '@/components/concierge-context'
 import { PhotoOrderProvider } from '@/components/photo-order-context'
+import { SiteConfigProvider } from '@/components/site-config-context'
 import { ContactModal } from '@/components/contact-modal'
 
 import Script from 'next/script'
@@ -57,8 +58,10 @@ export default function RootLayout({
         <DemoProvider>
           <ConciergeProvider>
             <PhotoOrderProvider>
-              {children}
-              <ContactModal />
+              <SiteConfigProvider>
+                {children}
+                <ContactModal />
+              </SiteConfigProvider>
             </PhotoOrderProvider>
           </ConciergeProvider>
         </DemoProvider>

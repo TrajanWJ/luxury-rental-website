@@ -2233,5 +2233,18 @@
       "pos": 23,
       "locked": false
     }
+  ],
+  "_inquiries": [
+    {
+      "id": 1772425650776,
+      "name": "Trajan Wiley-Jimenez",
+      "email": "Trajanwj@gmail.com",
+      "phone": "7032231956",
+      "message": "trykjrbyuk5tyuk",
+      "experience": "Suite Retreat",
+      "source": "modal",
+      "email_status": "skipped",
+      "created_at": "2026-03-02T04:27:30.776Z"
+    }
   ]
 }

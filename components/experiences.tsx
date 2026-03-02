@@ -103,7 +103,15 @@ const COLORS = {
 
 
 // ─── Main Experiences Component (used on homepage) ───
-export default function Experiences() {
+interface ExperiencesProps {
+  showInsidersGuide?: boolean
+  showConciergeDirectory?: boolean
+}
+
+export default function Experiences({
+  showInsidersGuide = true,
+  showConciergeDirectory = true,
+}: ExperiencesProps = {}) {
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<typeof insiderCategories[number] | null>(null)
   const [isListExpanded, setIsListExpanded] = useState(true)
@@ -139,6 +147,7 @@ export default function Experiences() {
       {/* ═══════════════════════════════════════════════════════════════════
           PART 1 & 2: Combined Concierge Headers
       ═══════════════════════════════════════════════════════════════════ */}
+      {showInsidersGuide && (<>
       <section id="experiences" className="relative px-5 md:px-12 overflow-hidden pt-12 pb-6 md:pt-14 md:pb-6" style={{ backgroundColor: COLORS.linen }}>
         <div className="container mx-auto relative z-10">
           <motion.div
@@ -306,10 +315,12 @@ export default function Experiences() {
         </div>
       )}
     </AnimatePresence>
+      </>)}
 
     {/* ═══════════════════════════════════════════════════════════════════
           PART 3: Collapsible & Filterable Editorial Story Scroll List
       ═══════════════════════════════════════════════════════════════════ */}
+      {showConciergeDirectory && (
       <div style={{ backgroundColor: COLORS.linen }}>
         {/* Visual separator */}
         <div className="container mx-auto px-6 md:px-12">
@@ -502,6 +513,7 @@ export default function Experiences() {
           )}
         </AnimatePresence>
       </div>
+      )}
 
       {/* Experience Details Popup */}
       <AnimatePresence>

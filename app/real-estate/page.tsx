@@ -10,9 +10,13 @@ import {
 } from "@/components/real-estate-sections"
 import { NarrativeModals, type ModalKey } from "@/components/real-estate-modals"
 import { MobileDock } from "@/components/real-estate-mobile-dock"
+import { useREContact } from "@/components/real-estate-contact-context"
+import { useSiteConfig } from "@/components/site-config-context"
 
 export default function RealEstatePage() {
   const [activeModal, setActiveModal] = useState<ModalKey>(null)
+  const { openREContactModal } = useREContact()
+  const { isSectionEnabled } = useSiteConfig()
 
   return (
     <main>
@@ -38,10 +42,18 @@ export default function RealEstatePage() {
         </div>
       </div>
 
-      <FeaturedListingSection onOpenMarketModal={() => setActiveModal("market-momentum")} />
-      <LakeOverviewSection />
-      <LakeLifeSection />
-      <MarketSection />
+      {isSectionEnabled("realEstate", "featuredListing") && (
+        <FeaturedListingSection onOpenModal={setActiveModal} onOpenContactModal={openREContactModal} />
+      )}
+      {isSectionEnabled("realEstate", "lakeOverview") && (
+        <LakeOverviewSection onOpenModal={setActiveModal} />
+      )}
+      {isSectionEnabled("realEstate", "lakeLife") && (
+        <LakeLifeSection onOpenModal={setActiveModal} />
+      )}
+      {isSectionEnabled("realEstate", "market") && (
+        <MarketSection onOpenModal={setActiveModal} />
+      )}
 
       <MobileDock />
 

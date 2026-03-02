@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useConcierge } from "./concierge-context"
 import { usePhotoOrder } from "./photo-order-context"
+import { useSiteConfig } from "./site-config-context"
+import { FloorPlanLightbox } from "./floor-plan-lightbox"
 import { usePopupFreeze } from "@/hooks/use-popup-freeze"
 
 import { Property } from "@/lib/data"
@@ -22,10 +24,14 @@ interface PropertyModalProps {
 export function PropertyModal({ property, onClose, initialShow3D = false, initialShowVideo = false }: PropertyModalProps) {
   usePopupFreeze(true)
   const { getOrderedImages } = usePhotoOrder()
+  const { getPropertyConfig } = useSiteConfig()
   const orderedImages = getOrderedImages(property)
+  const propertyConfig = getPropertyConfig(property.name.toLowerCase().replace(/\s+/g, "-"))
+  const floorPlans = propertyConfig.floorPlanImages || []
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [show3DView, setShow3DView] = useState(initialShow3D)
   const [showVideoView, setShowVideoView] = useState(initialShowVideo)
+  const [showFloorPlans, setShowFloorPlans] = useState(false)
   const [descriptionExpanded, setDescriptionExpanded] = useState(false)
   const [amenitiesExpanded, setAmenitiesExpanded] = useState(false)
   const [showPhotoGrid, setShowPhotoGrid] = useState(false)
@@ -150,12 +156,22 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
         <div className="p-6 md:p-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 text-balance font-serif">{property.name}</h2>
-            <button
-              onClick={() => setShowPhotoGrid(true)}
-              className="shrink-0 ml-4 px-4 py-2 rounded-full border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#9D5F36]/8 transition-colors"
-            >
-              All Photos
-            </button>
+            <div className="flex items-center gap-2 shrink-0 ml-4">
+              <button
+                onClick={() => setShowPhotoGrid(true)}
+                className="px-4 py-2 rounded-full border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#9D5F36]/8 transition-colors"
+              >
+                All Photos
+              </button>
+              {floorPlans.length > 0 && (
+                <button
+                  onClick={() => setShowFloorPlans(true)}
+                  className="px-4 py-2 rounded-full border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#9D5F36]/8 transition-colors"
+                >
+                  Floor Plans
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Property Stats */}
@@ -261,10 +277,10 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <Button
               size="lg"
-              className="flex-1 h-12 sm:h-12 py-0 leading-none rounded-xl border border-[#9D5F36] bg-[#9D5F36] hover:bg-[#874E2B] text-white shadow-sm hover:shadow-md transition-all font-semibold text-sm"
+              className="h-12 py-0 leading-none rounded-xl border border-[#9D5F36] bg-[#9D5F36] hover:bg-[#874E2B] text-white shadow-sm hover:shadow-md transition-all font-semibold text-sm"
               onClick={() => {
                 window.dispatchEvent(new CustomEvent("open-booking", { detail: { propertyName: property.name } }))
                 onClose()
@@ -272,53 +288,50 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
             >
               Book This Home
             </Button>
-            {property.videoUrl && (
+            <Link href={`/properties/${property.name.toLowerCase().replace(/\s+/g, '-')}`} className="block">
               <Button
                 size="lg"
                 variant="outline"
-                className="flex-1 h-12 sm:h-12 py-0 leading-none rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all font-semibold text-sm"
+                className="w-full h-12 py-0 leading-none rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all bg-white font-semibold text-sm"
+              >
+                View Full Details
+              </Button>
+            </Link>
+            {(propertyConfig.videoUrl ?? property.videoUrl) && propertyConfig.videoEnabled !== false && (
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 py-0 leading-none rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all font-semibold text-sm"
                 onClick={() => setShowVideoView(true)}
               >
                 Video Preview
               </Button>
             )}
-            {property.matterportUrl && (
+            {(propertyConfig.matterportUrl ?? property.matterportUrl) && propertyConfig.matterportEnabled !== false && (
               <Button
                 size="lg"
                 variant="outline"
-                className="flex-1 h-12 sm:h-12 py-0 leading-none rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all font-semibold text-sm"
+                className="h-12 py-0 leading-none rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all font-semibold text-sm"
                 onClick={() => setShow3DView(true)}
               >
                 3D View
               </Button>
             )}
-            <Link href={`/properties/${property.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex-1">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full h-12 sm:h-12 py-0 leading-none rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all bg-transparent font-semibold text-sm"
-              >
-                View Full Details
-              </Button>
-            </Link>
-          </div>
-
-          <div className="mt-6 pt-4 border-t border-slate-100 text-center">
             <button
               onClick={() => {
                 onClose()
                 setTimeout(() => openContactModal(property.name), 300)
               }}
-              className="inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#9D5F36] border-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
+              className="h-12 rounded-xl border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.1em] hover:bg-[#9D5F36]/8 transition-colors col-span-2"
             >
-              Contact Concierge about this home
+              Contact Concierge About This Home
             </button>
           </div>
         </div>
       </div>
 
       {/* 3D View Modal Overlay */}
-      {show3DView && property.matterportUrl && (
+      {show3DView && (propertyConfig.matterportUrl ?? property.matterportUrl) && (
         <div data-popup-root className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
           <div className="relative w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
             <button
@@ -331,7 +344,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
             <iframe
               width="100%"
               height="100%"
-              src={property.matterportUrl}
+              src={propertyConfig.matterportUrl ?? property.matterportUrl}
               frameBorder="0"
               allowFullScreen
               allow="xr-spatial-tracking"
@@ -341,7 +354,9 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
       )}
 
       {/* Video View Modal Overlay */}
-      {showVideoView && property.videoUrl && (
+      {showVideoView && (propertyConfig.videoUrl ?? property.videoUrl) && (() => {
+        const vUrl = propertyConfig.videoUrl ?? property.videoUrl ?? ""
+        return (
         <div data-popup-root className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
           <div className="relative w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
             <button
@@ -354,13 +369,23 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
             <iframe
               width="100%"
               height="100%"
-              src={`https://www.youtube.com/embed/${property.videoUrl.split('v=')[1]?.slice(0, 11)}?autoplay=1`}
+              src={`https://www.youtube.com/embed/${vUrl.split('v=')[1]?.slice(0, 11)}?autoplay=1`}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
           </div>
         </div>
+        )
+      })()}
+
+      {/* Floor Plans Lightbox */}
+      {showFloorPlans && floorPlans.length > 0 && (
+        <FloorPlanLightbox
+          propertyName={property.name}
+          floorPlans={floorPlans}
+          onClose={() => setShowFloorPlans(false)}
+        />
       )}
 
       {/* Photo Gallery Overlay */}

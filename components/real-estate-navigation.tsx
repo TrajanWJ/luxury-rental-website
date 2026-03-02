@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeft, Menu, X } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useREContact } from "./real-estate-contact-context"
 
 const NAV_LINKS = [
   { label: "About SML", href: "/real-estate#about-sml", anchor: "#about-sml" },
@@ -18,6 +19,7 @@ export default function RealEstateNavigation() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { openREContactModal } = useREContact()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -49,6 +51,12 @@ export default function RealEstateNavigation() {
     (link: (typeof NAV_LINKS)[number]) => {
       setMobileMenuOpen(false)
 
+      // Contact link opens modal instead of navigating
+      if (link.label === "Contact") {
+        openREContactModal()
+        return
+      }
+
       // Anchor link (has a hash target on the hub page)
       if (link.anchor) {
         if (pathname === "/real-estate") {
@@ -65,7 +73,7 @@ export default function RealEstateNavigation() {
       // Regular page link
       window.location.href = link.href
     },
-    [pathname],
+    [pathname, openREContactModal],
   )
 
   return (
@@ -111,7 +119,7 @@ export default function RealEstateNavigation() {
 
               {/* Contact CTA — always visible */}
               <button
-                onClick={() => (window.location.href = "/real-estate/contact")}
+                onClick={() => openREContactModal()}
                 className="inline-flex items-center rounded-full bg-[#9D5F36] px-4 py-1.5 md:px-5 md:py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#864E2B]"
               >
                 Contact
@@ -180,7 +188,7 @@ export default function RealEstateNavigation() {
               <button
                 onClick={() => {
                   setMobileMenuOpen(false)
-                  window.location.href = "/real-estate/contact"
+                  openREContactModal()
                 }}
                 className="w-full rounded-full bg-[#9D5F36] py-3 text-base font-semibold text-white transition-colors hover:bg-[#864E2B] min-h-[44px] mb-3"
               >

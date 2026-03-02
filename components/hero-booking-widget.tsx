@@ -166,7 +166,7 @@ export function HeroBookingWidget() {
                         <Button
                             type="submit"
                             size="lg"
-                            className="w-full h-[42px] md:h-[50px] rounded-xl md:rounded-2xl bg-[#9D5F36] text-white hover:bg-[#874E2B] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 flex items-center justify-center px-0 font-bold border border-white/10"
+                            className="w-full h-[42px] md:h-[50px] rounded-xl md:rounded-2xl bg-[#9D5F36] text-white hover:bg-[#874E2B] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 flex items-center justify-center px-0 font-medium border border-white/10"
                         >
                             <Search className="h-4 w-4 md:h-5 md:w-5" />
                         </Button>

@@ -15,6 +15,9 @@ import {
   ChevronDown,
 } from "lucide-react"
 import { properties } from "@/lib/data"
+import { RealEstateListingModal } from "./real-estate-listing-modal"
+import type { ModalKey } from "./real-estate-modals"
+import { useSiteConfig } from "@/components/site-config-context"
 
 /* ─────────────────────────────────────────────
    Shared animation defaults
@@ -146,7 +149,7 @@ const DRIVING_DISTANCES = [
    1. LakeOverviewSection
    ═══════════════════════════════════════════════ */
 
-export function LakeOverviewSection() {
+export function LakeOverviewSection({ onOpenModal }: { onOpenModal?: (key: Exclude<ModalKey, null>) => void } = {}) {
   return (
     <section id="about-sml" className="bg-white py-16 md:py-24">
       <div className="container mx-auto px-6 md:px-12">
@@ -173,6 +176,14 @@ export function LakeOverviewSection() {
             <p className="text-[#2B2B2B]/85 leading-relaxed">
               Originally valued for energy production and flood control, Smith Mountain Lake quickly became known as a premier recreational and residential destination. Over the decades, its calm waters, rolling wooded hills, and abundant opportunities for outdoor activities have attracted visitors, second-home owners, and full-time residents alike.
             </p>
+            {onOpenModal && (
+              <button
+                onClick={() => onOpenModal("sml-deep-dive")}
+                className="rounded-full border border-[#9D5F36]/30 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
+              >
+                Lake Deep Dive →
+              </button>
+            )}
           </motion.div>
 
           {/* Right — lake image */}
@@ -229,7 +240,7 @@ export function LakeOverviewSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.06 }}
-  
+
                   className="rounded-2xl border border-[#BCA28A]/35 bg-white/86 backdrop-blur-md p-5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
                 >
                   <div className="flex items-center gap-3 mb-3">
@@ -243,6 +254,16 @@ export function LakeOverviewSection() {
               )
             })}
           </div>
+          {onOpenModal && (
+            <div className="mt-5 flex justify-end">
+              <button
+                onClick={() => onOpenModal("distance-access")}
+                className="rounded-full border border-[#9D5F36]/30 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
+              >
+                How far is the lake from you? →
+              </button>
+            </div>
+          )}
         </motion.div>
       </div>
     </section>
@@ -253,7 +274,7 @@ export function LakeOverviewSection() {
    2. LakeLifeSection
    ═══════════════════════════════════════════════ */
 
-export function LakeLifeSection() {
+export function LakeLifeSection({ onOpenModal }: { onOpenModal?: (key: Exclude<ModalKey, null>) => void } = {}) {
   return (
     <section id="sml-life" className="bg-[#f8f4ee] py-16 md:py-24">
       <div className="container mx-auto px-6 md:px-12">
@@ -355,6 +376,27 @@ export function LakeLifeSection() {
           </div>
         </motion.div>
 
+        {/* Contextual modal triggers */}
+        {onOpenModal && (
+          <motion.div
+            {...reveal}
+            className="mt-10 flex flex-wrap items-center gap-3"
+          >
+            <button
+              onClick={() => onOpenModal("market-momentum")}
+              className="rounded-full border border-[#9D5F36]/30 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
+            >
+              How seasonal trends shape the market →
+            </button>
+            <button
+              onClick={() => onOpenModal("craig-story")}
+              className="rounded-full border border-[#9D5F36]/30 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
+            >
+              Meet your guide at the lake →
+            </button>
+          </motion.div>
+        )}
+
         {/* Pop Culture callout */}
         <motion.div
           {...reveal}
@@ -376,7 +418,7 @@ export function LakeLifeSection() {
    3. MarketSection
    ═══════════════════════════════════════════════ */
 
-export function MarketSection() {
+export function MarketSection({ onOpenModal }: { onOpenModal?: (key: Exclude<ModalKey, null>) => void } = {}) {
   return (
     <section id="market" className="bg-white py-16 md:py-24">
       <div className="container mx-auto px-6 md:px-12">
@@ -401,6 +443,14 @@ export function MarketSection() {
           <p className="text-[#2B2B2B]/85 leading-relaxed">
             County tax rates around the lake are generally favorable, and the overall cost of homeownership compares well against many metropolitan areas in the region. Whether buying, selling, or exploring long-term plans, understanding the local market dynamics, seasonal patterns, and neighborhood characteristics is essential to making sound real estate decisions at Smith Mountain Lake.
           </p>
+          {onOpenModal && (
+            <button
+              onClick={() => onOpenModal("market-momentum")}
+              className="rounded-full border border-[#9D5F36]/30 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
+            >
+              See the Market Pulse →
+            </button>
+          )}
         </motion.div>
 
         {/* Tax Rates */}
@@ -446,6 +496,32 @@ export function MarketSection() {
             Smith Mountain Lake feels like a true escape, yet it&#39;s close enough to make regular visits practical. Many owners split time between the lake and nearby cities, while others enjoy hosting friends and family who can reach the lake with relative ease. It&#39;s a destination that feels removed from everyday pace &mdash; without ever feeling out of reach.
           </p>
         </motion.div>
+
+        {/* End-of-section CTA band */}
+        {onOpenModal && (
+          <motion.div
+            {...reveal}
+            className="mt-14 rounded-2xl bg-[#2B2B2B] p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-4"
+          >
+            <p className="text-[#ECE9E7]/75 text-sm font-medium">
+              Ready to explore your options at Smith Mountain Lake?
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => onOpenModal("contact-intent")}
+                className="inline-flex items-center justify-center rounded-md bg-[#9D5F36] hover:bg-[#874E2B] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-white transition-colors duration-300 shadow-sm"
+              >
+                Start a Conversation
+              </button>
+              <button
+                onClick={() => onOpenModal("craig-story")}
+                className="inline-flex items-center justify-center rounded-md border border-[#ECE9E7]/30 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/10 transition-colors duration-300"
+              >
+                About Craig
+              </button>
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   )
@@ -531,9 +607,16 @@ function DrivingDistancesTable() {
    4. FeaturedListingSection
    ═══════════════════════════════════════════════ */
 
-export function FeaturedListingSection({ onOpenMarketModal }: { onOpenMarketModal?: () => void } = {}) {
+export function FeaturedListingSection({ onOpenModal, onOpenContactModal }: { onOpenModal?: (key: Exclude<ModalKey, null>) => void; onOpenContactModal?: (propertyName: string) => void } = {}) {
+  const [showListingModal, setShowListingModal] = useState(false)
+  const { config } = useSiteConfig()
   const milan = properties.find((p) => p.name === "Milan Manor")
   if (!milan) return null
+
+  // Respect listedProperties toggle — default to true for Milan Manor (id "6")
+  const listedProperties = config.sectionToggles.realEstate?.listedProperties || {}
+  const isListed = listedProperties[milan.id] !== undefined ? listedProperties[milan.id] : true
+  if (!isListed) return null
 
   return (
     <section className="bg-[#f8f4ee] py-16 md:py-24">
@@ -610,18 +693,26 @@ export function FeaturedListingSection({ onOpenMarketModal }: { onOpenMarketModa
 
             {/* CTAs */}
             <div className="mt-7 flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/properties/milan-manor-house"
+              <button
+                onClick={() => setShowListingModal(true)}
                 className="inline-flex items-center justify-center rounded-md bg-[#ECE9E7] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#1f1d1a] hover:bg-white transition-colors duration-300"
               >
                 View Listing
-              </Link>
-              {onOpenMarketModal ? (
+              </button>
+              {onOpenModal && (
                 <button
-                  onClick={onOpenMarketModal}
+                  onClick={() => onOpenModal("market-momentum")}
                   className="inline-flex items-center justify-center rounded-md border border-[#ECE9E7]/55 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/12 transition-colors duration-300"
                 >
                   Why This Matters
+                </button>
+              )}
+              {onOpenContactModal ? (
+                <button
+                  onClick={() => onOpenContactModal("Milan Manor")}
+                  className="inline-flex items-center justify-center rounded-md border border-[#ECE9E7]/55 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/12 transition-colors duration-300"
+                >
+                  Contact Us
                 </button>
               ) : (
                 <Link
@@ -635,6 +726,10 @@ export function FeaturedListingSection({ onOpenMarketModal }: { onOpenMarketModa
           </div>
         </motion.div>
       </div>
+
+      {showListingModal && (
+        <RealEstateListingModal property={milan} onClose={() => setShowListingModal(false)} />
+      )}
     </section>
   )
 }

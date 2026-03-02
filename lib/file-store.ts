@@ -1,7 +1,7 @@
 /**
  * Persistent JSON file store for photo orders and trash.
  *
- * Fallback chain: MariaDB → filesystem → empty seed.
+ * Fallback chain: Turso → filesystem → empty seed.
  *
  * Storage locations:
  *   Development:  ./data/photo-orders.json  (project root, checked into git)

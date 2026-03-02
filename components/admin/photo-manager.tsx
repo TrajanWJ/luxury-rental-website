@@ -193,13 +193,13 @@ export function PhotoManager() {
 
   return (
     <div className="space-y-6">
-      {/* Property Selector */}
-      <div>
+      {/* Property Selector + Upload in a card */}
+      <div className="bg-[#1C1C1C] rounded-2xl border border-white/5 p-5">
         <label
           htmlFor="property-select"
-          className="block text-sm font-medium text-[#ECE9E7]/70 mb-2 uppercase tracking-[0.1em]"
+          className="block text-[#ECE9E7]/40 text-xs uppercase tracking-wider mb-2"
         >
-          Property
+          Select Property
         </label>
         <select
           id="property-select"
@@ -208,7 +208,7 @@ export function PhotoManager() {
             const prop = properties.find((p) => p.id === e.target.value)
             if (prop) setSelectedProperty(prop)
           }}
-          className="w-full max-w-md px-4 py-2.5 rounded-lg bg-[#2B2B2B] border border-white/10 text-[#ECE9E7] text-sm focus:outline-none focus:border-[#9D5F36] focus:ring-1 focus:ring-[#9D5F36]/50 transition-colors appearance-none cursor-pointer"
+          className="w-full max-w-md px-4 py-2.5 rounded-xl bg-[#2B2B2B] border border-white/10 text-[#ECE9E7] text-sm focus:outline-none focus:border-[#9D5F36]/50 transition-colors appearance-none cursor-pointer"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23BCA28A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
             backgroundRepeat: "no-repeat",
@@ -273,25 +273,16 @@ export function PhotoManager() {
 
       {/* Photo Grid */}
       <div>
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-4">
           <h3 className="text-[#ECE9E7] font-serif text-lg">
-            {selectedProperty.name} — Photos ({reorderImages.length})
+            {selectedProperty.name}
+            <span className="ml-2 text-sm font-sans text-[#ECE9E7]/30 font-normal">
+              {reorderImages.length} photo{reorderImages.length !== 1 ? "s" : ""}
+            </span>
           </h3>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#ECE9E7]/35">
-            <span>Drag to reorder</span>
-            <span>
-              <span className="text-red-400 font-bold">Pos</span> = click to edit
-            </span>
-            <span>
-              <span className="text-yellow-400">Lock</span> = pin in place
-            </span>
-            <span>
-              <span className="text-green-400 font-bold">ID</span> = filename number
-            </span>
-          </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5">
           {reorderImages.map((item, i) => (
             <div
               key={item.src}
@@ -414,10 +405,10 @@ export function PhotoManager() {
               </button>
               {/* ID number (from filename) */}
               <div
-                className="absolute bottom-2 left-2 flex items-center justify-center min-w-[40px] h-10 px-2.5 rounded-lg bg-green-600 text-white text-lg font-black shadow-lg"
+                className="absolute bottom-2 left-2 flex items-center justify-center min-w-[28px] h-6 px-1.5 rounded-md bg-green-600/90 text-white text-[10px] font-bold shadow-lg"
                 title={item.src.split("/").pop()}
               >
-                ID: {item.src.match(/(\d+)\.jpg/)?.[1] || "?"}
+                {item.src.match(/(\d+)\.jpg/)?.[1] || "?"}
               </div>
             </div>
           ))}
@@ -425,11 +416,12 @@ export function PhotoManager() {
       </div>
 
       {/* Sticky Save Bar */}
-      <div className="sticky bottom-0 z-10 -mx-6 px-6 py-4 bg-[#232323]/95 backdrop-blur-md border-t border-white/10">
+      <div className="sticky bottom-0 z-10 -mx-6 lg:-mx-8 px-6 lg:px-8 py-4 bg-[#1C1C1C]/95 backdrop-blur-md border-t border-white/10">
         <div className="flex items-center justify-between">
-          <div className="text-sm text-[#ECE9E7]/50">
-            {reorderImages.length} photo{reorderImages.length !== 1 ? "s" : ""} in{" "}
-            {selectedProperty.name}
+          <div className="text-sm text-[#ECE9E7]/40">
+            <span className="text-[#ECE9E7]/60 font-medium">{reorderImages.length}</span>{" "}
+            photo{reorderImages.length !== 1 ? "s" : ""} in{" "}
+            <span className="text-[#ECE9E7]/60">{selectedProperty.name}</span>
           </div>
           <div className="flex items-center gap-3">
             {saveStatus === "conflict" && (

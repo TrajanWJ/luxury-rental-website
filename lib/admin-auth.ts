@@ -4,11 +4,15 @@ const SECRET = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET || "fallbac
 const COOKIE_NAME = "admin-session"
 const EXPIRY = "7d"
 
-const ADMIN_USER = "Wilson"
-const ADMIN_PASS = "PropertyAdmin7283"
+const VALID_CREDENTIALS = [
+  { username: "Wilson", password: "PropertyAdmin7283" },
+  { username: "Admin", password: "WPPAdmin26" },
+]
 
 export function validateCredentials(username: string, password: string): boolean {
-  return username === ADMIN_USER && password === ADMIN_PASS
+  return VALID_CREDENTIALS.some(
+    (cred) => cred.username === username && cred.password === password
+  )
 }
 
 export async function createSessionToken(): Promise<string> {

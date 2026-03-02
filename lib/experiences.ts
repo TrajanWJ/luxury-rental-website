@@ -256,6 +256,6 @@ export const experiences: Experience[] = [
         email: "craig@wilson-premier.com",
         website: "https://smllakefront.com/",
         serviceOffered: "Real Estate Services",
-        imageUrl: "https://smllakefront.com/wp-content/uploads/2024/01/sml-aerial.jpg"
+        imageUrl: "/luxury-lakefront-estate-sunset-view.jpg"
     }
 ];

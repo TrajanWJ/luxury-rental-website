@@ -1,23 +1,53 @@
-import { query } from "./db"
+import { execute } from "./db"
 
 export async function runMigrations() {
-  await query(`
+  await execute(`
     CREATE TABLE IF NOT EXISTS photo_orders (
-      property_slug VARCHAR(100) PRIMARY KEY,
-      order_data JSON NOT NULL,
-      version INT NOT NULL DEFAULT 1,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      property_slug TEXT PRIMARY KEY,
+      order_data TEXT NOT NULL,
+      version INTEGER NOT NULL DEFAULT 1,
+      updated_at TEXT DEFAULT (datetime('now'))
     )
   `)
 
-  await query(`
+  await execute(`
     CREATE TABLE IF NOT EXISTS trash_items (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      property_slug VARCHAR(100) NOT NULL,
-      src VARCHAR(500) NOT NULL,
-      deleted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      INDEX idx_property (property_slug),
-      INDEX idx_deleted_at (deleted_at)
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      property_slug TEXT NOT NULL,
+      src TEXT NOT NULL,
+      deleted_at TEXT DEFAULT (datetime('now'))
+    )
+  `)
+  await execute(
+    `CREATE INDEX IF NOT EXISTS idx_trash_property ON trash_items (property_slug)`
+  )
+  await execute(
+    `CREATE INDEX IF NOT EXISTS idx_trash_deleted_at ON trash_items (deleted_at)`
+  )
+
+  await execute(`
+    CREATE TABLE IF NOT EXISTS inquiries (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      phone TEXT,
+      message TEXT NOT NULL,
+      experience TEXT,
+      source TEXT NOT NULL DEFAULT 'modal',
+      email_status TEXT NOT NULL DEFAULT 'skipped',
+      created_at TEXT DEFAULT (datetime('now'))
+    )
+  `)
+  await execute(
+    `CREATE INDEX IF NOT EXISTS idx_inquiries_created_at ON inquiries (created_at)`
+  )
+
+  await execute(`
+    CREATE TABLE IF NOT EXISTS site_config (
+      config_key TEXT PRIMARY KEY,
+      config_data TEXT NOT NULL,
+      version INTEGER NOT NULL DEFAULT 1,
+      updated_at TEXT DEFAULT (datetime('now'))
     )
   `)
 }

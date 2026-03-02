@@ -8,6 +8,7 @@ import { BedDouble, Users, Bath, Anchor, Trees, Waves, DoorOpen, Hotel } from "l
 
 import { Property } from "@/lib/data"
 import { usePhotoOrder } from "./photo-order-context"
+import { useSiteConfig } from "./site-config-context"
 
 interface PropertyPanelProps {
   property: Property
@@ -22,7 +23,9 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
   const container = useRef<HTMLDivElement>(null)
   const propertySlug = property.name.toLowerCase().replace(/\s+/g, "-")
   const { getHeroImage } = usePhotoOrder()
+  const { getPropertyConfig } = useSiteConfig()
   const heroImage = getHeroImage(property)
+  const propConfig = getPropertyConfig(propertySlug)
 
   const { scrollYProgress } = useScroll({
     target: container,
@@ -33,7 +36,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
   // As the section scrolls up, it scales down slightly
   // Disable scale/opacity animations for the last property
   const isLast = index === total - 1
-  const scale = useTransform(scrollYProgress, [0, 1], isLast ? [1, 1] : [1, 0.9])
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.8, 1], isLast ? [1, 1, 1] : [1, 1, 0.6])
 
   // Helper to pick a featured icon based on amenities or property specific features
@@ -59,13 +62,12 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
     <div
       ref={container}
       data-property-slug={propertySlug}
-      className="h-screen w-full flex items-center justify-center sticky top-0 overflow-hidden"
+      className="h-screen w-full flex items-center justify-center overflow-hidden"
     >
       <motion.div
         style={{
           scale,
           opacity,
-          zIndex: index,
         }}
         className={`relative h-screen w-full overflow-hidden cursor-pointer group origin-center ${isLast ? "" : "shadow-2xl"}`}
         onClick={onClick}
@@ -110,34 +112,34 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-5 items-center justify-center mb-8"
+            className="flex flex-row flex-wrap gap-3 md:gap-5 items-center justify-center mb-8"
           >
             <Button
               size="lg"
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full w-[240px] h-[52px] text-lg shadow-lg hover:scale-105 transition-transform"
+              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-5 h-[42px] md:w-[240px] md:h-[52px] text-sm md:text-lg shadow-lg hover:scale-105 transition-transform"
             >
               Explore {property.name}
             </Button>
-            {property.videoUrl && (
+            {(propConfig.videoUrl ?? property.videoUrl) && propConfig.videoEnabled !== false && (
               <Button
                 size="lg"
                 onClick={(e) => {
                   e.stopPropagation();
                   onVideoClick?.(e);
                 }}
-                className="bg-white text-primary hover:bg-white/90 rounded-full w-[240px] h-[52px] text-lg shadow-lg hover:scale-105 transition-transform border-0"
+                className="bg-white text-primary hover:bg-white/90 rounded-full px-5 h-[42px] md:w-[240px] md:h-[52px] text-sm md:text-lg shadow-lg hover:scale-105 transition-transform border-0"
               >
                 Video Preview
               </Button>
             )}
-            {property.matterportUrl && (
+            {(propConfig.matterportUrl ?? property.matterportUrl) && propConfig.matterportEnabled !== false && (
               <Button
                 size="lg"
                 onClick={(e) => {
                   e.stopPropagation();
                   on3DClick?.(e);
                 }}
-                className="bg-white text-primary hover:bg-white/90 rounded-full w-[240px] h-[52px] text-lg shadow-lg hover:scale-105 transition-transform border-0"
+                className="bg-white text-primary hover:bg-white/90 rounded-full px-5 h-[42px] md:w-[240px] md:h-[52px] text-sm md:text-lg shadow-lg hover:scale-105 transition-transform border-0"
               >
                 3D View
               </Button>

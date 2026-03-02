@@ -186,7 +186,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-2 ${showTransparentNav ? "bg-transparent border-b border-transparent" : scrolled ? `backdrop-blur-lg ${headerBase} ${headerScrolled}` : unscrolledShell}`}
       >
         <div className="w-full max-w-[1920px] mx-auto px-3 md:px-6 lg:px-10 overflow-hidden">
-          <div className="flex items-center justify-between h-[72px] md:h-[98px]">
+          <div className="flex items-center justify-between h-[44px] md:h-[58px]">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -195,11 +195,11 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
             >
               <Link href="/" className="block shrink-0">
                 <img
-                  src="https://wilson-premier.com/wp-content/uploads/2023/12/Wilson-Premier-Logo_website_Linen.png"
+                  src="/brand/logo-bold-linen.png"
                   alt="Wilson Premier"
                   width={300}
                   height={100}
-                  className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[100px]"
+                  className="h-[36px] w-auto object-contain sm:h-[40px] md:h-[58px]"
                 />
               </Link>
             </motion.div>
@@ -374,7 +374,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                   initial={{ opacity: 0, scale: 0.95, y: -20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                  className={`md:hidden absolute top-[102px] left-3 right-3 py-5 rounded-md shadow-2xl px-5 flex flex-col gap-1 border ${dropdownPanel}`}
+                  className={`md:hidden absolute top-[62px] left-3 right-3 py-5 rounded-md shadow-2xl px-5 flex flex-col gap-1 border ${dropdownPanel}`}
                 >
                   <Button
                     onClick={() => {
@@ -408,11 +408,11 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                       {link.label === "Concierge" && (
                         <div className={`flex justify-center py-4 border-b ${isDark ? "border-[#d8c7af]/12" : "border-[#1f1d1a]/12"}`}>
                           <img
-                            src="https://wilson-premier.com/wp-content/uploads/2023/12/Wilson-Premier-Logo_website_Linen.png"
+                            src="/brand/logo-bold-linen.png"
                             alt="Wilson Premier"
                             width={300}
                             height={100}
-                            className="h-[72px] w-auto object-contain"
+                            className="h-[44px] w-auto object-contain"
                           />
                         </div>
                       )}

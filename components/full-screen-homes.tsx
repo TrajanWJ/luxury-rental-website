@@ -6,20 +6,35 @@ import { PropertyModal } from "./property-modal"
 import { properties, Property } from "@/lib/data"
 
 import { useDemo } from "@/components/demo-context"
+import { useSiteConfig } from "@/components/site-config-context"
 
 export default function FullScreenHomes() {
   const { isDemoMode } = useDemo()
+  const { getPropertyConfig, getPropertyOrder } = useSiteConfig()
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
   const [startWith3D, setStartWith3D] = useState(false)
   const [startWithVideo, setStartWithVideo] = useState(false)
   const containerRef = useRef<HTMLElement>(null)
 
-  // Filter properties based on Demo Mode
-  // If Demo Mode is ON (isDemoMode = true): Show ALL properties
-  // If Demo Mode is OFF (isDemoMode = false): Show ONLY properties with hostawayId
-  const displayProperties = isDemoMode
+  // Filter properties based on Demo Mode and site config visibility
+  const baseProperties = isDemoMode
     ? properties
     : properties.filter(p => !!p.hostawayId)
+
+  // Apply site-config visibility (showOnHomepage)
+  const visibleProperties = baseProperties.filter(p => {
+    const cfg = getPropertyConfig(p.name.toLowerCase().replace(/\s+/g, "-"))
+    return cfg.showOnHomepage !== false
+  })
+
+  // Apply site-config property order
+  const propertyOrder = getPropertyOrder()
+  const displayProperties = propertyOrder.length > 0
+    ? propertyOrder
+        .map(id => visibleProperties.find(p => p.id === id))
+        .filter(Boolean)
+        .concat(visibleProperties.filter(p => !propertyOrder.includes(p.id))) as Property[]
+    : visibleProperties
 
   const handlePropertyClick = (property: Property) => {
     setStartWith3D(false)
@@ -48,15 +63,20 @@ export default function FullScreenHomes() {
           <div className="h-0.5 w-12 bg-[var(--color-brand-rust)] mx-auto"></div>
         </div>
         {displayProperties.map((property, index) => (
-          <PropertyPanel
+          <div
             key={property.id}
-            property={property}
-            index={index}
-            total={displayProperties.length}
-            onClick={() => handlePropertyClick(property)}
-            on3DClick={() => handle3DClick(property)}
-            onVideoClick={() => handleVideoClick(property)}
-          />
+            className={`sticky top-0 ${index === displayProperties.length - 1 ? "h-[100vh]" : "h-[135vh]"}`}
+            style={{ zIndex: index + 1 }}
+          >
+            <PropertyPanel
+              property={property}
+              index={index}
+              total={displayProperties.length}
+              onClick={() => handlePropertyClick(property)}
+              on3DClick={() => handle3DClick(property)}
+              onVideoClick={() => handleVideoClick(property)}
+            />
+          </div>
         ))}
       </section>
 

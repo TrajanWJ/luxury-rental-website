@@ -1,34 +1,36 @@
-import mysql from "serverless-mysql"
+import { createClient, type Client, type InValue } from "@libsql/client"
 
 const DB_CONFIGURED = !!(
-  process.env.MYSQL_HOST &&
-  process.env.MYSQL_USER &&
-  process.env.MYSQL_PASSWORD &&
-  process.env.MYSQL_DATABASE
+  process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN
 )
 
-const db = DB_CONFIGURED
-  ? mysql({
-      config: {
-        host: process.env.MYSQL_HOST,
-        port: Number(process.env.MYSQL_PORT) || 3306,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE,
-        connectTimeout: 5000,
-      },
+let _client: Client | null = null
+function getClient(): Client {
+  if (!_client) {
+    if (!DB_CONFIGURED) throw new Error("Database not configured")
+    _client = createClient({
+      url: process.env.TURSO_DATABASE_URL!,
+      authToken: process.env.TURSO_AUTH_TOKEN!,
     })
-  : null
+  }
+  return _client
+}
 
-export async function query<T = unknown>(
+export async function query<T = Record<string, unknown>>(
   sql: string,
-  values?: unknown[]
-): Promise<T> {
-  if (!db) throw new Error("Database not configured")
-  const results = await db.query(sql, values)
-  await db.end()
-  return results as T
+  values?: InValue[]
+): Promise<T[]> {
+  const result = await getClient().execute({ sql, args: values ?? [] })
+  return result.rows as unknown as T[]
+}
+
+export async function execute(
+  sql: string,
+  values?: InValue[]
+): Promise<{ rowsAffected: number }> {
+  const result = await getClient().execute({ sql, args: values ?? [] })
+  return { rowsAffected: result.rowsAffected }
 }
 
 export { DB_CONFIGURED }
-export default db
+export default null

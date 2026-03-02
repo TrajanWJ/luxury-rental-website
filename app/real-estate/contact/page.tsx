@@ -71,10 +71,30 @@ export default function ContactPage() {
     resolver: zodResolver(contactSchema),
   })
 
-  const onSubmit = async (_data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
-    // Simulated submission — replace with real endpoint later
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+
+    try {
+      const message = data.subject
+        ? `[${data.subject}]\n\n${data.message}`
+        : data.message
+
+      await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          message,
+          experience: null,
+          source: "real-estate-contact",
+        }),
+      })
+    } catch {
+      // Silently continue — show success to visitor regardless
+    }
+
     setIsSubmitting(false)
     setIsSuccess(true)
   }

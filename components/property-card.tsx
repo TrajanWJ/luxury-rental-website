@@ -66,7 +66,7 @@ export function PropertyCard({ property, onClick, on3DClick }: PropertyCardProps
       onClick={handleCardClick}
     >
       <div
-        className="relative h-[500px] md:h-[650px] overflow-hidden"
+        className="relative h-[150vh] md:h-[85vh] overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}

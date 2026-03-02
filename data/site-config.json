@@ -1,0 +1,138 @@
+{
+  "propertyOverrides": {
+    "penthouse-view": {
+      "showOnHomepage": true
+    },
+    "suite-retreat": {
+      "showOnHomepage": true,
+      "floorPlanImages": [
+        "/uploads/floor-plans/f6f426eb9944.png",
+        "/uploads/floor-plans/3bd872c7ac0d.png"
+      ]
+    },
+    "suite-view": {
+      "floorPlanImages": [
+        "/uploads/floor-plans/8651188686c8.png",
+        "/uploads/floor-plans/c8cd9fbd704a.png",
+        "/uploads/floor-plans/daac53fa2ff5.png"
+      ]
+    }
+  },
+  "propertyOrder": [],
+  "sectionToggles": {
+    "str": {
+      "hero": true,
+      "fullScreenHomes": true,
+      "socialStrip": true,
+      "pledge": true,
+      "insidersGuide": false,
+      "conciergeDirectory": true,
+      "footerCta": true,
+      "bookPage": true,
+      "contactPage": true,
+      "experiencesPage": true,
+      "houseRulesPage": true,
+      "mapPage": true
+    },
+    "realEstate": {
+      "lakeOverview": true,
+      "lakeLife": true,
+      "market": true,
+      "featuredListing": true,
+      "listedProperties": {
+        "1": false,
+        "6": false
+      }
+    }
+  },
+  "conciergeOverrides": {},
+  "conciergeOrder": [],
+  "conciergeAdditions": [],
+  "activityLog": [
+    {
+      "action": "1 floor plan uploaded for Suite View",
+      "timestamp": "2026-03-02T18:26:49.514Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite View",
+      "timestamp": "2026-03-02T18:26:31.450Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite View",
+      "timestamp": "2026-03-02T18:25:51.865Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite Retreat",
+      "timestamp": "2026-03-02T18:23:12.895Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite Retreat",
+      "timestamp": "2026-03-02T18:22:30.191Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "market enabled on Real Estate site",
+      "timestamp": "2026-03-02T18:18:52.638Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "lakeOverview enabled on Real Estate site",
+      "timestamp": "2026-03-02T18:18:51.810Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Milan Manor hidden on real estate listings",
+      "timestamp": "2026-03-02T18:14:53.333Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat hidden on real estate listings",
+      "timestamp": "2026-03-02T18:14:48.621Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "insidersGuide disabled on STR site",
+      "timestamp": "2026-03-02T18:14:08.901Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat shown on homepage",
+      "timestamp": "2026-03-02T18:10:31.264Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat hidden from homepage",
+      "timestamp": "2026-03-02T18:10:20.262Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "market disabled on Real Estate site",
+      "timestamp": "2026-03-02T18:09:31.203Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "lakeOverview disabled on Real Estate site",
+      "timestamp": "2026-03-02T18:09:22.751Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat shown on real estate listings",
+      "timestamp": "2026-03-02T18:09:03.742Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Penthouse View shown on homepage",
+      "timestamp": "2026-03-02T17:53:30.906Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Penthouse View hidden from homepage",
+      "timestamp": "2026-03-02T17:53:30.342Z",
+      "user": "Wilson"
+    }
+  ]
+}
