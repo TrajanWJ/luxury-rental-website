@@ -1,15 +1,22 @@
-# Production Update: Photo Order Persistence Fix
+# Production Update: Photo Orders, Favicon & OG Image Fixes
 
-**Date:** 2026-03-01
-**Priority:** Critical — client photo orders are not displaying on the live site
+**Date:** 2026-03-02
+**Priority:** Critical — photo orders missing, favicon broken, iMessage previews broken
 
 ## What Happened
 
+### Photo Orders
 The photo order system relied on JSONBlob (a free external JSON storage service) as its primary data store. JSONBlob deleted the blob, meaning:
 
 1. The live site at wilson-premier.com returns **empty photo orders** — visitors see default image order, not the client's curated arrangement
 2. The admin panel saves go nowhere — JSONBlob is gone
 3. The VPS couldn't even reach JSONBlob when it existed (server-side fetch failures)
+
+### Favicon & Branding
+- **Chrome tab icon**: Old favicon was a 500x359 non-square PNG (the full logo with background). Browsers expect square icons. Replaced with properly sized bird icon at 32x32, 64x64, and 192x192.
+- **Apple touch icon**: Added dedicated 180x180 `apple-touch-icon.png`
+- **iMessage/social previews**: OG image was pointing to a 1.4MB, 1920x1303 photo with mismatched dimension meta tags (said 1200x630). Created a dedicated `og-image.jpg` at exactly 1200x630, 123KB.
+- **Nav logo**: The deployed build was stale and still referenced old WordPress logo URLs. Fresh deploy fixes this.
 
 The client's photo ordering work was rescued from JSONBlob moments before it disappeared and is now committed to `data/photo-orders.json` in git.
 

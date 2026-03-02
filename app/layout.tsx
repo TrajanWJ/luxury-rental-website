@@ -18,18 +18,22 @@ export const metadata: Metadata = {
   generator: 'luxury-rentals',
   metadataBase: new URL('https://wilson-premier.com'),
   icons: {
-    icon: '/brand/favicon.png',
-    apple: '/brand/favicon.png',
+    icon: [
+      { url: '/brand/favicon.png', sizes: '64x64', type: 'image/png' },
+      { url: '/brand/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/favicon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: '/brand/apple-touch-icon.png',
   },
   openGraph: {
     title: 'Wilson Premier Properties | Luxury Lakefront Rentals',
     description: 'Experience the extraordinary at Smith Mountain Lake. Book your curated luxury stay in our signature properties.',
     images: [
       {
-        url: '/images/suite-retreat/suite-retreat-1.jpg',
+        url: '/brand/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Suite Retreat - Luxury Lakefront Estate',
+        alt: 'Suite Retreat - Luxury Lakefront Estate at Smith Mountain Lake',
       },
     ],
     type: 'website',
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Wilson Premier Properties',
     description: 'Luxury rentals at Smith Mountain Lake.',
-    images: ['/images/suite-retreat/suite-retreat-1.jpg'],
+    images: ['/brand/og-image.jpg'],
   },
 }
 
