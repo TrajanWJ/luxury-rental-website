@@ -28,17 +28,17 @@ const EXPLORE_LINKS: FooterLink[] = [
 const SOCIAL_LINKS = [
   {
     label: "Facebook",
-    href: "https://www.facebook.com/askcraig",
+    href: "https://www.facebook.com/wilsonpremierproperties",
     icon: Facebook,
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/",
+    href: "https://www.instagram.com/wilsonpremierproperties",
     icon: Instagram,
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/",
+    href: "https://www.linkedin.com/company/wilson-premier-properties",
     icon: Linkedin,
   },
 ]

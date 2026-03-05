@@ -21,6 +21,18 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    // On VPS (PERSISTENT_DATA_DIR set), serve uploads from persistent dir via API
+    if (process.env.PERSISTENT_DATA_DIR) {
+      return [
+        {
+          source: '/uploads/:path*',
+          destination: '/api/uploads/:path*',
+        },
+      ]
+    }
+    return []
+  },
   async redirects() {
     return [
       { source: '/about-us', destination: '/', permanent: true },

@@ -38,15 +38,8 @@ const navItems: NavItem[] = [
       { href: "/admin/trash", label: "Recently Deleted", icon: Trash2 },
     ],
   },
-  {
-    href: "/admin/site-management",
-    label: "Site Management",
-    icon: Settings2,
-    children: [
-      { href: "/admin/site-management", label: "Site Settings", icon: Settings2 },
-      { href: "/admin/concierge", label: "Concierge Partners", icon: Users },
-    ],
-  },
+  { href: "/admin/site-management", label: "Site Management", icon: Settings2 },
+  { href: "/admin/concierge", label: "Concierge Partners", icon: Users },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/activity-log", label: "Activity Log", icon: Activity },
 ]

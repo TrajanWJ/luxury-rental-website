@@ -3,7 +3,20 @@ import fs from "fs"
 import path from "path"
 import crypto from "crypto"
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads")
+/**
+ * Upload directory strategy:
+ *   VPS (PERSISTENT_DATA_DIR set): Writes to $PERSISTENT_DATA_DIR/uploads/
+ *     → served via /api/uploads/[...path] route
+ *   Local dev / Vercel: Writes to public/uploads/
+ *     → served as static files by Next.js
+ *
+ * Either way, the returned localPath is /uploads/subfolder/filename
+ */
+const PERSISTENT_DIR = process.env.PERSISTENT_DATA_DIR
+  ? path.join(process.env.PERSISTENT_DATA_DIR, "uploads")
+  : null
+const FALLBACK_DIR = path.join(process.cwd(), "public", "uploads")
+const UPLOAD_DIR = PERSISTENT_DIR || FALLBACK_DIR
 
 function ensureDir(dir: string) {
   if (!fs.existsSync(dir)) {
@@ -79,7 +92,7 @@ async function handleUrlDownload(request: NextRequest) {
       : `/uploads/${filename}`
 
     return NextResponse.json({ localPath, size: buffer.length })
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       { error: "Failed to save image" },
       { status: 500 }

@@ -1,6 +1,6 @@
 # Production Deployment Guide
 
-**Last updated:** 2026-03-02
+**Last updated:** 2026-03-05
 
 ## Architecture
 
@@ -45,7 +45,13 @@
 
 ## Infrastructure
 
-**VPS:** SSH is disabled. All server commands run via "FTP + PHP trick": upload a `.php` script to `public_html/`, execute via HTTP with Host header, script self-deletes.
+**VPS:** `209.142.66.121` — ScalaHosting sPanel, Rocky Linux
+
+**SSH access:**
+```bash
+ssh -p 6543 wilsonprem@209.142.66.121
+```
+Key auth is configured (`~/.ssh/authorized_keys`). sPanel also has a browser-based SSH Terminal under Tools.
 
 **Process manager:** PM2 (at `/usr/bin/pm2`). sPanel's Node.js Manager configures PM2 to run the app. The saved PM2 config runs `app.js` via `/home/wilsonprem/node20/bin/node`.
 
@@ -60,6 +66,16 @@ PERSISTENT_DATA_DIR=/home/wilsonprem/data
 TURSO_DATABASE_URL=libsql://wilson-premier-wilsonprem-dev26.aws-us-east-1.turso.io
 TURSO_AUTH_TOKEN=<token>
 ```
+
+**Key paths:**
+| Path | Purpose |
+|------|---------|
+| `/home/wilsonprem/wilson-premier-app/` | App code (overwritten each deploy) |
+| `/home/wilsonprem/wilson-premier-app/.env` | Env vars (persists across deploys) |
+| `/home/wilsonprem/wilson-premier-app/app.js` | Entry point (loads .env, starts server) |
+| `/home/wilsonprem/data/` | Persistent data (never touched by deploys) |
+| `/home/wilsonprem/node20/bin/node` | Node.js v20 binary |
+| `/home/wilsonprem/.pm2/` | PM2 config, logs, pids |
 
 ## Deployment Steps
 
@@ -92,122 +108,64 @@ cp data/photo-orders.json deploy/data/photo-orders.json
 cp data/site-config.json deploy/data/site-config.json
 ```
 
-### 3. Upload to VPS via FTP
+### 3. Upload to VPS via rsync
 
 ```bash
-cd deploy && zip -r ../wilson-premier-deploy.zip . && cd ..
-
-curl -T wilson-premier-deploy.zip \
-  ftp://209.142.66.121/wilson-premier-app/wilson-premier-deploy.zip \
-  --user 'wilsonprem_trajan:<password>'
+rsync -avz --delete \
+  --exclude='.env' \
+  --exclude='public/images/' \
+  -e 'ssh -p 6543' \
+  deploy/ wilsonprem@209.142.66.121:~/wilson-premier-app/
 ```
 
-### 4. Extract on VPS
+The `--exclude='public/images/'` skips the ~920MB property photos (already on VPS). Remove this flag on first deploy or when images change.
 
-Save as `deploy-update.php`, upload, execute:
+To upload images (first deploy or when changed):
+```bash
+rsync -avz -e 'ssh -p 6543' \
+  deploy/public/images/ wilsonprem@209.142.66.121:~/wilson-premier-app/public/images/
+```
+
+### 4. Seed data (first deploy only)
 
 ```bash
-curl -s -T deploy-update.php \
-  ftp://209.142.66.121/public_html/deploy-update.php \
-  --user 'wilsonprem_trajan:<password>'
-
-curl -s --max-time 120 -H "Host: wilson-premier.com" \
-  http://209.142.66.121/deploy-update.php
+ssh -p 6543 wilsonprem@209.142.66.121 '
+  mkdir -p ~/data
+  for f in photo-orders.json site-config.json; do
+    [ ! -f ~/data/$f ] && cp ~/wilson-premier-app/data/$f ~/data/$f && echo "Seeded $f"
+    [ -f ~/data/$f ] && echo "$f already exists"
+  done
+'
 ```
 
-**`deploy-update.php`:**
-```php
-<?php
-set_time_limit(120);
-$appDir = '/home/wilsonprem/wilson-premier-app';
-$dataDir = '/home/wilsonprem/data';
-
-// Create persistent data directory
-if (!is_dir($dataDir)) {
-    mkdir($dataDir, 0755, true);
-    echo "Created $dataDir\n";
-}
-
-// Extract the new deploy FIRST (so seed files are available)
-$zip = "$appDir/wilson-premier-deploy.zip";
-if (file_exists($zip)) {
-    $za = new ZipArchive();
-    if ($za->open($zip) === TRUE) {
-        $za->extractTo($appDir);
-        $za->close();
-        echo "Extracted deploy zip\n";
-        unlink($zip);
-    }
-}
-
-// Seed data files only if they don't already exist (AFTER extraction)
-foreach (['photo-orders.json', 'site-config.json'] as $file) {
-    $persistent = "$dataDir/$file";
-    $seed = "$appDir/data/$file";
-    if (!file_exists($persistent) && file_exists($seed)) {
-        copy($seed, $persistent);
-        echo "Seeded $file to persistent location\n";
-    } else if (file_exists($persistent)) {
-        echo "$file already exists — keeping it\n";
-    }
-}
-
-echo "Done. Restart the app now.\n";
-unlink(__FILE__);
-```
-
-### 5. Restart the app via PM2
-
-Save as `restart-app.php`, upload, execute:
+### 5. Restart the app
 
 ```bash
-curl -s -T restart-app.php \
-  ftp://209.142.66.121/public_html/restart-app.php \
-  --user 'wilsonprem_trajan:<password>'
-
-curl -s --max-time 25 -H "Host: wilson-premier.com" \
-  http://209.142.66.121/restart-app.php
+ssh -p 6543 wilsonprem@209.142.66.121 '
+  /usr/bin/pm2 stop all
+  pkill -9 -f "next-server" 2>/dev/null
+  sleep 2
+  /usr/bin/pm2 start all
+  sleep 3
+  /usr/bin/pm2 list
+  /usr/bin/pm2 save
+'
 ```
 
-**`restart-app.php`:**
-```php
-<?php
-set_time_limit(20);
-$pm2 = '/usr/bin/pm2';
-
-echo "=== Stopping PM2 process ===\n";
-echo shell_exec("HOME=/home/wilsonprem $pm2 stop all 2>&1") . "\n";
-
-// Kill any orphaned node processes
-shell_exec("pkill -9 -f 'next-server' 2>&1");
-shell_exec("pkill -9 -f 'node.*server.js' 2>&1");
-shell_exec("pkill -9 -f 'node.*app.js' 2>&1");
-sleep(3);
-
-echo "=== Starting PM2 process ===\n";
-echo shell_exec("HOME=/home/wilsonprem $pm2 start all 2>&1") . "\n";
-
-sleep(3);
-
-echo "=== PM2 status ===\n";
-echo shell_exec("HOME=/home/wilsonprem $pm2 list 2>&1") . "\n";
-
-echo "=== Saving PM2 config ===\n";
-echo shell_exec("HOME=/home/wilsonprem $pm2 save 2>&1") . "\n";
-
-unlink(__FILE__);
+If the restart fails with EADDRINUSE, the orphan kill didn't catch everything:
+```bash
+ssh -p 6543 wilsonprem@209.142.66.121 '
+  /usr/bin/pm2 stop all
+  pkill -9 -f node 2>/dev/null
+  sleep 3
+  /usr/bin/pm2 start all
+  /usr/bin/pm2 save
+'
 ```
-
-**Key details:**
-- PM2 is managed by sPanel's Node.js Manager at `/usr/bin/pm2`
-- PM2's saved config runs `app.js` which loads `.env` before starting the server
-- Must kill orphaned `next-server` processes — PM2 sometimes leaves them behind
-- `HOME=/home/wilsonprem` is required for PM2 to find its config
 
 ### 6. Verify
 
 ```bash
-# Photo orders should return data
 curl -s https://wilson-premier.com/api/photo-order?property=_all | python3 -c "
 import json, sys
 data = json.load(sys.stdin)
@@ -223,19 +181,43 @@ for k, v in data.get('orders', {}).items():
 # milan-manor: 86 photos
 ```
 
+## Quick Reference
+
+**One-liner deploy (after build + prepare):**
+```bash
+rsync -avz --delete --exclude='.env' --exclude='public/images/' \
+  -e 'ssh -p 6543' deploy/ wilsonprem@209.142.66.121:~/wilson-premier-app/ && \
+ssh -p 6543 wilsonprem@209.142.66.121 \
+  '/usr/bin/pm2 stop all; pkill -9 -f "next-server" 2>/dev/null; sleep 2; /usr/bin/pm2 start all; /usr/bin/pm2 save; /usr/bin/pm2 list'
+```
+
+**Check logs:**
+```bash
+ssh -p 6543 wilsonprem@209.142.66.121 '/usr/bin/pm2 logs --lines 30 --nostream'
+```
+
+**Check status:**
+```bash
+ssh -p 6543 wilsonprem@209.142.66.121 '/usr/bin/pm2 list'
+```
+
+**Edit .env:**
+```bash
+ssh -p 6543 wilsonprem@209.142.66.121 'nano ~/wilson-premier-app/.env'
+```
+
 ## First-Time Turso Setup
 
-Only needed once to add Turso env vars to the VPS.
+Only needed once when setting up a fresh VPS.
 
-### 1. Set env vars on VPS
+### 1. Set env vars
 
 ```bash
-curl -s -T scripts/set-turso-env.php \
-  ftp://209.142.66.121/public_html/set-turso-env.php \
-  --user 'wilsonprem_trajan:<password>'
-
-curl -s -H "Host: wilson-premier.com" \
-  http://209.142.66.121/set-turso-env.php
+ssh -p 6543 wilsonprem@209.142.66.121 'cat >> ~/wilson-premier-app/.env << "EOF"
+TURSO_DATABASE_URL=libsql://wilson-premier-wilsonprem-dev26.aws-us-east-1.turso.io
+TURSO_AUTH_TOKEN=<paste-token-here>
+PERSISTENT_DATA_DIR=/home/wilsonprem/data
+EOF'
 ```
 
 ### 2. Restart the app (step 5 above)
@@ -243,44 +225,45 @@ curl -s -H "Host: wilson-premier.com" \
 ### 3. Create Turso tables
 
 ```bash
-# Login first to get session token
-curl -s -X POST https://wilson-premier.com/api/admin/auth \
+# Login to get session token
+TOKEN=$(curl -s -X POST https://wilson-premier.com/api/admin/auth \
   -H "Content-Type: application/json" \
   -H "User-Agent: Mozilla/5.0" \
   -d '{"username":"Admin","password":"WPPAdmin26"}' \
-  -D /dev/stderr 2>&1 | head -1
-# Copy the admin-session token from the set-cookie header
+  -c - | grep admin-session | awk '{print $NF}')
 
-# Create tables (requires browser-like headers to pass Apache)
+# Create tables (browser-like headers required to pass Apache)
 curl -s -X POST https://wilson-premier.com/api/admin/migrate \
-  -H "Cookie: admin-session=<token>" \
+  -H "Cookie: admin-session=$TOKEN" \
   -H "User-Agent: Mozilla/5.0" \
   -H "Origin: https://wilson-premier.com" \
   -H "Referer: https://wilson-premier.com/admin"
 ```
 
-### 4. Migrate existing JSON data to Turso
+### 4. Migrate JSON data to Turso
 
 ```bash
 curl -s -X POST https://wilson-premier.com/api/admin/migrate-data \
-  -H "Cookie: admin-session=<token>" \
+  -H "Cookie: admin-session=$TOKEN" \
   -H "User-Agent: Mozilla/5.0" \
   -H "Origin: https://wilson-premier.com" \
   -H "Referer: https://wilson-premier.com/admin"
 ```
 
-Both endpoints are auth-protected. The migration is idempotent — safe to run multiple times (trash and inquiries are cleared before re-inserting).
-
-### 5. Verify Turso is active
-
-Check the Turso dashboard at https://turso.tech/app — tables should show row counts matching the JSON data.
+Migration is idempotent — safe to run multiple times.
 
 ## Important Notes
 
 - **Never delete `/home/wilsonprem/data/`** on the VPS — it's the filesystem fallback
 - **`.env` is the single source of truth** — all env vars live there, `app.js` reads it on startup
-- **PM2 manages the process** — don't use `nohup node app.js` directly, use PM2 stop/start
+- **PM2 manages the process** — don't use `nohup node app.js` directly, use `pm2 stop/start`
 - **Turso going down is not catastrophic** — the app falls back to filesystem JSON automatically
 - **Always run `scripts/backup-production-data.sh` before deploying** — commits a snapshot to git
 - **The admin panel has two logins:** Wilson / PropertyAdmin7283, Admin / WPPAdmin26
 - **Apache blocks bare POST requests** — migration curl commands need browser-like headers (User-Agent, Origin, Referer)
+- **rsync `--exclude='.env'`** is critical — never overwrite the VPS .env with the local one
+- **SSH port is 6543** (not 22) — ScalaHosting/sPanel uses a non-standard port
+
+## Legacy: FTP + PHP Trick
+
+Before SSH was enabled, all server commands ran via uploading `.php` scripts to `public_html/` via FTP and executing them via HTTP. This is no longer needed but the scripts remain in `scripts/` for reference. FTP credentials: `wilsonprem_trajan:USop03TKfN26J` at `ftp://209.142.66.121`.

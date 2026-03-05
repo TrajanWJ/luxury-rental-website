@@ -155,10 +155,9 @@ export default function ContactPage() {
                                     <Phone className="h-6 w-6 text-[#9D5F36]" />
                                 </div>
                                 <h3 className="text-lg font-serif font-medium text-[#2B2B2B] mb-2">Call Us</h3>
-                                <p className="text-[#2B2B2B]/70 text-sm">
-                                    {/* TODO: Add actual phone number */}
-                                    (XXX) XXX-XXXX
-                                </p>
+                                <a href="tel:+17039306999" className="text-[#2B2B2B]/70 text-sm hover:text-[#9D5F36] transition-colors">
+                                    (703) 930-6999
+                                </a>
                             </div>
 
                             {/* Location Card */}
@@ -169,8 +168,7 @@ export default function ContactPage() {
                                 <h3 className="text-lg font-serif font-medium text-[#2B2B2B] mb-2">Visit Us</h3>
                                 <p className="text-[#2B2B2B]/70 text-sm">
                                     Smith Mountain Lake<br />
-                                    Virginia
-                                    {/* TODO: Add actual office address if available */}
+                                    Moneta, Virginia
                                 </p>
                             </div>
                         </motion.div>

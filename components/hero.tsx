@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { HeroBookingWidget } from "./hero-booking-widget"
 
@@ -13,12 +14,18 @@ export default function Hero() {
     <section className="relative min-h-[110vh] flex items-center overflow-hidden bg-[#2B2B2B]">
       {/* Background Image - Full Bleed */}
       <motion.div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/hero-sunset.jpg')",
-          y,
-        }}
+        className="absolute inset-0"
+        style={{ y }}
       >
+        <Image
+          src="/hero-sunset.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+          unoptimized
+        />
         {/* Editorial Grade Overlay: Charcoal Gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B2B2B]/30 via-transparent to-[#2B2B2B]/80" />
         {/* Brand background overlay (linen/taupe wash) */}

@@ -110,5 +110,48 @@ export async function POST() {
     report.siteConfig = { error: err instanceof Error ? err.message : "Unknown error" }
   }
 
+  // 5. Copy uploaded files (floor plans etc.) to persistent dir on VPS
+  if (process.env.PERSISTENT_DATA_DIR) {
+    try {
+      const srcUploads = path.join(process.cwd(), "public", "uploads")
+      const destUploads = path.join(process.env.PERSISTENT_DATA_DIR, "uploads")
+      const copied = copyDirRecursive(srcUploads, destUploads)
+      report.uploads = { copied, dest: destUploads }
+    } catch (err) {
+      report.uploads = { error: err instanceof Error ? err.message : "Unknown error" }
+    }
+  } else {
+    report.uploads = { skipped: true, note: "No PERSISTENT_DATA_DIR — files served from public/" }
+  }
+
   return NextResponse.json({ ok: true, report })
+}
+
+/**
+ * Recursively copy files from src to dest, skipping files that already exist
+ * with the same size. Returns count of files copied.
+ */
+function copyDirRecursive(src: string, dest: string): number {
+  if (!fs.existsSync(src)) return 0
+  if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true })
+
+  let count = 0
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name)
+    const destPath = path.join(dest, entry.name)
+    if (entry.isDirectory()) {
+      count += copyDirRecursive(srcPath, destPath)
+    } else if (entry.isFile()) {
+      // Skip .gitkeep and files that already exist with same size
+      if (entry.name === ".gitkeep") continue
+      if (fs.existsSync(destPath)) {
+        const srcStat = fs.statSync(srcPath)
+        const destStat = fs.statSync(destPath)
+        if (srcStat.size === destStat.size) continue
+      }
+      fs.copyFileSync(srcPath, destPath)
+      count++
+    }
+  }
+  return count
 }
