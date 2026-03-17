@@ -4,6 +4,7 @@ import { useRef, useState, type FormEvent } from "react"
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { useConcierge } from "./concierge-context"
+import { trackCtaClick } from "@/lib/analytics"
 
 const COLORS = {
   linen: "#ECE9E7",
@@ -90,6 +91,7 @@ export default function FooterCTA() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
                 <Button
                   onClick={() => {
+                    trackCtaClick("updates-signup", { context: "footer" })
                     setUpdatesSubmitted(false)
                     setUpdatesError("")
                     setUpdatesOpen(true)
@@ -100,7 +102,10 @@ export default function FooterCTA() {
                 </Button>
 
                 <Button
-                  onClick={() => openContactModal()}
+                  onClick={() => {
+                    trackCtaClick("contact", { context: "footer" })
+                    openContactModal()
+                  }}
                   className="bg-[#ECE9E7]/12 text-[#ECE9E7] hover:bg-[#ECE9E7]/22 rounded-full px-8 py-6 text-xs uppercase tracking-[0.16em] font-semibold transition-all duration-500 min-w-[190px] border border-[#ECE9E7]/45"
                 >
                   Contact Concierge

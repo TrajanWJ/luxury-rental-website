@@ -17,6 +17,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing property param" }, { status: 400 })
   }
 
+  // Read file-store (always available as fallback/merge source)
+  const fileData = readStore()
+
   // Try Turso first
   if (DB_CONFIGURED) {
     try {
@@ -26,6 +29,12 @@ export async function GET(request: NextRequest) {
         for (const row of rows) {
           orders[row.property_slug] = JSON.parse(row.order_data)
         }
+        // Merge in any file-store entries missing from Turso (fallback writes)
+        for (const [key, val] of Object.entries(fileData)) {
+          if (!key.startsWith("_") && Array.isArray(val) && !orders[key]) {
+            orders[key] = val as ImageItem[]
+          }
+        }
         return NextResponse.json({ orders })
       }
 
@@ -34,7 +43,9 @@ export async function GET(request: NextRequest) {
         [property]
       )
       if (rows.length === 0) {
-        return NextResponse.json({ images: null })
+        // Check file-store for fallback data
+        const fileImages = (fileData[property] as ImageItem[]) || null
+        return NextResponse.json({ images: fileImages })
       }
       return NextResponse.json({
         images: JSON.parse(rows[0].order_data),
@@ -46,17 +57,16 @@ export async function GET(request: NextRequest) {
   }
 
   // Filesystem fallback
-  const data = readStore()
   if (property === "_all") {
     const orders: OrderMap = {}
-    for (const [key, val] of Object.entries(data)) {
+    for (const [key, val] of Object.entries(fileData)) {
       if (!key.startsWith("_") && Array.isArray(val)) {
         orders[key] = val as ImageItem[]
       }
     }
     return NextResponse.json({ orders })
   }
-  return NextResponse.json({ images: (data[property] as ImageItem[]) || null })
+  return NextResponse.json({ images: (fileData[property] as ImageItem[]) || null })
 }
 
 export async function POST(request: NextRequest) {

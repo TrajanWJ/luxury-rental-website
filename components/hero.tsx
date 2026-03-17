@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useEffect, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { HeroBookingWidget } from "./hero-booking-widget"
-import { trackEvent } from "@/lib/analytics"
+import { trackHeroScrollPast } from "@/lib/analytics"
 
 export default function Hero() {
   const { scrollY } = useScroll()
@@ -19,7 +19,7 @@ export default function Hero() {
       ([entry]) => {
         if (!entry.isIntersecting && !firedRef.current) {
           firedRef.current = true
-          trackEvent("hero_scroll_past")
+          trackHeroScrollPast()
         }
       },
       { threshold: 0 }

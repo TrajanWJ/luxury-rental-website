@@ -7,7 +7,8 @@ import FooterCTA from "@/components/footer-cta"
 import { ArrowRight, Phone, Globe, Mail, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { experiences, Experience } from "@/lib/experiences"
+import { Experience, getMergedExperiences } from "@/lib/experiences"
+import { useSiteConfig } from "@/components/site-config-context"
 
 const COLORS = {
     linen: "#EAE8E4",  // Main background
@@ -206,6 +207,9 @@ function EditorialExperience({ item, index }: { item: Experience, index: number 
 }
 
 export default function ExperiencesPage() {
+    const { config } = useSiteConfig()
+    const conciergeExperiences = getMergedExperiences(config)
+
     return (
         <main style={{ backgroundColor: COLORS.linen }} className="min-h-screen font-sans selection:bg-stone-300 selection:text-black">
             <Navigation theme="light" />
@@ -241,7 +245,7 @@ export default function ExperiencesPage() {
 
             {/* List of Experiences */}
             <div className="pb-32">
-                {experiences.map((experience, index) => (
+                {conciergeExperiences.map((experience, index) => (
                     <EditorialExperience key={experience.id} item={experience} index={index} />
                 ))}
             </div>

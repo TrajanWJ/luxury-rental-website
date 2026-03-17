@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { useConcierge } from "./concierge-context"
 import { usePhotoOrder } from "./photo-order-context"
 import { usePopupFreeze } from "@/hooks/use-popup-freeze"
+import { trackPopupOpen } from "@/lib/analytics"
 
 import { Property } from "@/lib/data"
 
@@ -28,8 +29,44 @@ export function RealEstateListingModal({ property, onClose }: RealEstateListingM
   const [showPhotoGrid, setShowPhotoGrid] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const { openContactModal } = useConcierge()
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
+
+  useEffect(() => {
+    trackPopupOpen("listing", {
+      popupName: "real-estate-listing-modal",
+      propertyName: property.name,
+      context: "real-estate",
+    })
+  }, [property.name])
+
+  useEffect(() => {
+    if (!show3DView) return
+    trackPopupOpen("media", {
+      popupName: "real-estate-3d-view",
+      propertyName: property.name,
+      context: "real-estate",
+    })
+  }, [property.name, show3DView])
+
+  useEffect(() => {
+    if (!showVideoView) return
+    trackPopupOpen("media", {
+      popupName: "real-estate-video-preview",
+      propertyName: property.name,
+      context: "real-estate",
+    })
+  }, [property.name, showVideoView])
+
+  useEffect(() => {
+    if (!showPhotoGrid) return
+    trackPopupOpen("media", {
+      popupName: "real-estate-photo-grid",
+      propertyName: property.name,
+      context: "real-estate",
+    })
+  }, [property.name, showPhotoGrid])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -40,6 +77,10 @@ export function RealEstateListingModal({ property, onClose }: RealEstateListingM
     window.addEventListener("keydown", handleEscape)
     return () => window.removeEventListener("keydown", handleEscape)
   }, [onClose])
+
+  useEffect(() => {
+    window.setTimeout(() => closeButtonRef.current?.focus(), 50)
+  }, [])
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev === orderedImages.length - 1 ? 0 : prev + 1))
@@ -52,15 +93,19 @@ export function RealEstateListingModal({ property, onClose }: RealEstateListingM
   return (
     <div
       data-popup-root
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
       onClick={onClose}
     >
       <div
-        className="relative bg-white/98 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto scrollbar-hide animate-in zoom-in-95 duration-300 border border-white/20"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="re-listing-modal-title"
+        className="relative bg-white/98 rounded-2xl sm:rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto scrollbar-hide animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
+          ref={closeButtonRef}
           onClick={onClose}
           className="absolute top-4 right-4 z-10 p-2 bg-black/5 hover:bg-black/10 backdrop-blur-sm rounded-full shadow-lg text-slate-700 transition-colors"
           aria-label="Close modal"
@@ -70,7 +115,7 @@ export function RealEstateListingModal({ property, onClose }: RealEstateListingM
 
         {/* Image Gallery */}
         <div
-          className="relative h-[300px] md:h-[400px] bg-slate-100"
+          className="relative h-[240px] sm:h-[300px] md:h-[400px] bg-slate-100"
           onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX }}
           onTouchMove={(e) => { touchEndX.current = e.touches[0].clientX }}
           onTouchEnd={() => {
@@ -149,12 +194,12 @@ export function RealEstateListingModal({ property, onClose }: RealEstateListingM
         </div>
 
         {/* Content */}
-        <div className="p-6 md:p-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 text-balance font-serif">{property.name}</h2>
+        <div className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <h2 id="re-listing-modal-title" className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 text-balance font-serif">{property.name}</h2>
             <button
               onClick={() => setShowPhotoGrid(true)}
-              className="shrink-0 ml-4 px-4 py-2 rounded-full border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#9D5F36]/8 transition-colors"
+              className="shrink-0 self-start sm:self-auto px-4 py-2 rounded-full border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#9D5F36]/8 transition-colors"
             >
               All Photos
             </button>

@@ -245,6 +245,1371 @@
       "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
       "timestamp": "2026-03-17T19:33:48.016Z",
       "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T19:58:46.411Z",
+      "url": "/"
+    },
+    {
+      "event": "hero_scroll_past",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T19:58:49.889Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T19:59:51.305Z",
+      "url": "/book"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T20:00:01.306Z",
+      "url": "/"
+    },
+    {
+      "event": "hero_scroll_past",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T20:06:39.790Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:12:46.064Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T20:12:46.241Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:12:58.079Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T20:12:58.296Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:14:38.428Z",
+      "url": "/",
+      "ctaName": "floor-plans",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:14:49.880Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:14:49.881Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:19:14.477Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:19:20.218Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:19:20.218Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:19:30.322Z",
+      "url": "/",
+      "propertyName": "Suite View",
+      "propertySlug": "suite-view",
+      "context": "property-modal"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:19:30.322Z",
+      "url": "/",
+      "propertyName": "Suite View",
+      "propertySlug": "suite-view",
+      "context": "property-modal"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:22:11.870Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T20:22:12.217Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:22:29.370Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:23:36.839Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T20:23:36.865Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:25:05.983Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:25:43.925Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:28:48.373Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:28:48.373Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:31:14.114Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T20:31:14.380Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T20:32:02.186Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:46:43.713Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T21:46:43.892Z",
+      "url": "/"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:53:33.917Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:53:33.918Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:53:33.918Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:53:33.918Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:54:07.487Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:54:07.487Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:54:07.488Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:54:07.488Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:56:47.328Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:57:47.219Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Betty Ashton Mayo",
+      "context": "entertainment"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T21:58:44.340Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Patriot Fishing Charters",
+      "context": "boating"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:01:34.785Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T22:01:34.911Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:02:01.336Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T22:02:01.597Z",
+      "url": "/"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:47.035Z",
+      "url": "/",
+      "propertyName": "Milan Manor",
+      "propertySlug": "milan-manor",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:47.035Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Milan Manor",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:47.036Z",
+      "url": "/",
+      "propertyName": "Milan Manor",
+      "propertySlug": "milan-manor",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:47.036Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Milan Manor",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:55.342Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:55.343Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:55.343Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:55.343Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:59.330Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:04:59.331Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:05:45.571Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:05:54.107Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:05:54.107Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:06:16.987Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:06:16.987Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:12.775Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:16.042Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:18.484Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:21.002Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:23.374Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:34.618Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:39.037Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:43.982Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:46.542Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:49.664Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:51.543Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:07:59.030Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:08:01.414Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:08:04.368Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:08:04.368Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:08:06.341Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:08:08.779Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:08:08.779Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:08:58.183Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:09:05.996Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:09:12.084Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:09:38.242Z",
+      "url": "/"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:10:11.109Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:10:11.109Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:10:11.109Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:10:11.109Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:10:30.133Z",
+      "url": "/",
+      "ctaName": "all-photos",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:10:30.188Z",
+      "url": "/",
+      "popupType": "media",
+      "popupName": "property-photo-grid",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:11:23.690Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T22:11:24.092Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:11:52.210Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "e63f4d67-1d52-4b61-81f3-7f4a5ba19d8d",
+      "timestamp": "2026-03-17T22:11:52.440Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:48.464Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:48.464Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:50.350Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:50.350Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:50.350Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:50.350Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:54.392Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:54.392Z",
+      "url": "/",
+      "popupType": "booking",
+      "propertyName": "Suite Retreat",
+      "context": "global-event"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:59.920Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:14:59.920Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:15:35.881Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:15:35.882Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:15:56.308Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:17:00.900Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:17:22.115Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:17:24.623Z",
+      "url": "/"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:19:21.176Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:19:21.176Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:19:21.177Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:19:21.177Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:20:21.629Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:20:28.961Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:23:49.132Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:23:54.925Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:24:28.291Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:24:39.998Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:24:45.053Z",
+      "url": "/real-estate",
+      "popupType": "contact",
+      "popupName": "real-estate-contact-modal",
+      "context": "real-estate"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:25:42.205Z",
+      "url": "/real-estate",
+      "popupType": "real-estate",
+      "popupName": "narrative-modal",
+      "context": "distance-access"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:25:59.904Z",
+      "url": "/real-estate",
+      "popupType": "contact",
+      "popupName": "real-estate-contact-modal",
+      "context": "real-estate"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:26:03.339Z",
+      "url": "/real-estate",
+      "popupType": "real-estate",
+      "popupName": "narrative-modal",
+      "context": "distance-access"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:26:24.902Z",
+      "url": "/"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:26:38.925Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:26:46.346Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:27:12.334Z",
+      "url": "/"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:27:18.460Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:27:55.728Z",
+      "url": "/pledge"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:28:02.474Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:23.084Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:26.536Z",
+      "url": "/real-estate",
+      "popupType": "contact",
+      "popupName": "real-estate-contact-modal",
+      "context": "real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:31.394Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:34.392Z",
+      "url": "/",
+      "ctaName": "contact",
+      "context": "nav-desktop"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:35.070Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:44.777Z",
+      "url": "/",
+      "ctaName": "contact",
+      "context": "footer"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:44.777Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:29:57.167Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:30:48.092Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:30:50.352Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:30:51.673Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:30:53.914Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "experience-details",
+      "propertyName": "Wilson Premier Real Estate",
+      "context": "lifestyle"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:31:30.567Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:31:30.568Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:31:30.568Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:31:30.568Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:32:32.421Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:32:32.422Z",
+      "url": "/",
+      "popupType": "booking",
+      "propertyName": "Suite Retreat",
+      "context": "global-event"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:43:27.805Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:12.864Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:15.365Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "hero-widget"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:15.365Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "global-event"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:20.284Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:20.285Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:20.285Z",
+      "url": "/",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:20.285Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:30.215Z",
+      "url": "/",
+      "ctaName": "video-preview",
+      "propertyName": "Suite Retreat",
+      "propertySlug": "suite-retreat",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:30.225Z",
+      "url": "/",
+      "popupType": "media",
+      "popupName": "property-video-preview",
+      "propertyName": "Suite Retreat",
+      "context": "str"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:45:42.942Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "c9f6bbe6-8f00-4cfd-b519-ec34f8c0f104",
+      "timestamp": "2026-03-17T22:50:43.569Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:50:44.893Z",
+      "url": "/real-estate"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:52:57.034Z",
+      "url": "/"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:54:09.891Z",
+      "url": "/",
+      "propertyName": "Penthouse View",
+      "propertySlug": "penthouse-view",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:54:09.891Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Penthouse View",
+      "context": "str"
+    },
+    {
+      "event": "property_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:54:09.891Z",
+      "url": "/",
+      "propertyName": "Penthouse View",
+      "propertySlug": "penthouse-view",
+      "context": "property-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T22:54:09.891Z",
+      "url": "/",
+      "popupType": "listing",
+      "popupName": "property-modal",
+      "propertyName": "Penthouse View",
+      "context": "str"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:04:32.645Z",
+      "url": "/",
+      "ctaName": "contact",
+      "context": "nav-desktop"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:04:33.300Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:04:38.460Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "nav-desktop"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:04:38.461Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "nav-desktop"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:04:41.627Z",
+      "url": "/"
+    },
+    {
+      "event": "cta_click",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:04:43.517Z",
+      "url": "/",
+      "ctaName": "book-now",
+      "context": "nav-desktop"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:04:43.517Z",
+      "url": "/",
+      "popupType": "booking",
+      "context": "nav-desktop"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:09:15.717Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "c9f6bbe6-8f00-4cfd-b519-ec34f8c0f104",
+      "timestamp": "2026-03-17T23:12:23.065Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:12:23.033Z",
+      "url": "/"
     }
   ]
 }

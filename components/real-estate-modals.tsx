@@ -3,6 +3,7 @@
 import { useState, useEffect, type ReactNode } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { X, ChevronLeft, ChevronRight, Phone, Mail, MapPin } from "lucide-react"
+import { trackPopupOpen } from "@/lib/analytics"
 
 /* ─────────────────────────────────────────────
    Types
@@ -974,6 +975,14 @@ export function NarrativeModals({
   const currentIdx = activeModal ? MODAL_ORDER.indexOf(activeModal) : -1
   const prevKey = currentIdx > 0 ? MODAL_ORDER[currentIdx - 1] : MODAL_ORDER[MODAL_ORDER.length - 1]
   const nextKey = currentIdx < MODAL_ORDER.length - 1 ? MODAL_ORDER[currentIdx + 1] : MODAL_ORDER[0]
+
+  useEffect(() => {
+    if (!activeModal) return
+    trackPopupOpen("real-estate", {
+      popupName: "narrative-modal",
+      context: activeModal,
+    })
+  }, [activeModal])
 
   return (
     <AnimatePresence>

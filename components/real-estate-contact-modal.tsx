@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Mail, Phone, User, MessageSquare, Send, CheckCircle2 } from "lucide-react"
 import { useREContact } from "./real-estate-contact-context"
@@ -13,6 +13,7 @@ import { usePopupFreeze } from "@/hooks/use-popup-freeze"
 export function REContactModal() {
     const { isOpen, closeREContactModal, selectedProperty } = useREContact()
     usePopupFreeze(isOpen)
+    const closeButtonRef = useRef<HTMLButtonElement | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
 
@@ -58,10 +59,15 @@ export function REContactModal() {
         }, 2000)
     }
 
+    useEffect(() => {
+        if (!isOpen) return
+        window.setTimeout(() => closeButtonRef.current?.focus(), 50)
+    }, [isOpen])
+
     return (
         <AnimatePresence>
             {isOpen && (
-                <div data-popup-root className="fixed inset-0 z-[110] flex items-center justify-center p-4 md:p-6 text-[#2B2B2B]">
+                <div data-popup-root className="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-4 md:p-6 text-[#2B2B2B]">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -74,16 +80,21 @@ export function REContactModal() {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-lg bg-[#ECE9E7] rounded-[32px] overflow-hidden shadow-2xl"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="re-contact-modal-title"
+                        className="relative w-full max-w-lg max-h-[92dvh] overflow-y-auto bg-[#ECE9E7] rounded-2xl sm:rounded-[32px] shadow-2xl"
                     >
                         <button
+                            ref={closeButtonRef}
                             onClick={closeREContactModal}
-                            className="absolute top-6 right-6 z-10 h-10 w-10 rounded-full bg-white/40 hover:bg-white/60 backdrop-blur-md flex items-center justify-center text-[#2B2B2B] transition-colors"
+                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white/50 hover:bg-white/70 backdrop-blur-md flex items-center justify-center text-[#2B2B2B] transition-colors"
+                            aria-label="Close real estate contact modal"
                         >
                             <X className="h-5 w-5" />
                         </button>
 
-                        <div className="p-8 md:p-12">
+                        <div className="p-5 sm:p-8 md:p-12">
                             {isSuccess ? (
                                 <div className="py-12 text-center space-y-6">
                                     <div className="flex justify-center">
@@ -103,10 +114,21 @@ export function REContactModal() {
                             ) : (
                                 <>
                                     <div className="mb-8">
+                                        <div className="mb-4 flex items-center gap-3">
+                                            <img
+                                                src="/real-estate/craig-headshot.jpg"
+                                                alt="Craig Wilson"
+                                                className="h-14 w-14 rounded-full object-cover border border-[#BCA28A]/35 shadow-sm"
+                                            />
+                                            <div>
+                                                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#BCA28A]">Your Realtor</p>
+                                                <p className="text-sm font-semibold text-[#2B2B2B]">Craig Wilson</p>
+                                            </div>
+                                        </div>
                                         <span className="text-[#BCA28A] text-[10px] font-bold uppercase tracking-[0.2em] mb-3 block">
                                             Real Estate Inquiry
                                         </span>
-                                        <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#2B2B2B] leading-tight">
+                                        <h2 id="re-contact-modal-title" className="text-3xl md:text-4xl font-serif font-medium text-[#2B2B2B] leading-tight">
                                             Contact Craig
                                         </h2>
                                         <p className="text-[#2B2B2B]/60 text-sm font-light mt-3 leading-relaxed">

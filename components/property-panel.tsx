@@ -9,6 +9,7 @@ import { BedDouble, Users, Bath, Anchor, Trees, Waves, DoorOpen, Hotel } from "l
 import { Property } from "@/lib/data"
 import { usePhotoOrder } from "./photo-order-context"
 import { useSiteConfig } from "./site-config-context"
+import { trackCtaClick } from "@/lib/analytics"
 
 interface PropertyPanelProps {
   property: Property
@@ -116,6 +117,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
           >
             <Button
               size="lg"
+              onClick={() => trackCtaClick("view-details", { propertyName: property.name, context: "property-panel" })}
               className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-5 h-[42px] md:w-[240px] md:h-[52px] text-sm md:text-lg shadow-lg hover:scale-105 transition-transform"
             >
               Explore {property.name}
@@ -125,6 +127,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
                 size="lg"
                 onClick={(e) => {
                   e.stopPropagation();
+                  trackCtaClick("video-preview", { propertyName: property.name, context: "property-panel" })
                   onVideoClick?.(e);
                 }}
                 className="bg-white text-primary hover:bg-white/90 rounded-full px-5 h-[42px] md:w-[240px] md:h-[52px] text-sm md:text-lg shadow-lg hover:scale-105 transition-transform border-0"
@@ -137,6 +140,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
                 size="lg"
                 onClick={(e) => {
                   e.stopPropagation();
+                  trackCtaClick("3d-view", { propertyName: property.name, context: "property-panel" })
                   on3DClick?.(e);
                 }}
                 className="bg-white text-primary hover:bg-white/90 rounded-full px-5 h-[42px] md:w-[240px] md:h-[52px] text-sm md:text-lg shadow-lg hover:scale-105 transition-transform border-0"

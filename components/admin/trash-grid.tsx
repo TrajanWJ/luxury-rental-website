@@ -14,6 +14,8 @@ type TrashItem = {
   deleted_at: string
 }
 
+const MEDIA_LIBRARY_UPDATED_EVENT = "admin-media-library-updated"
+
 function formatPropertyName(slug: string): string {
   return slug
     .replace(/-/g, " ")
@@ -64,6 +66,12 @@ export function TrashGrid() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ purgeExpired: true }),
     }).catch(() => {})
+    const handleRefresh = () => {
+      setLoading(true)
+      fetchTrash()
+    }
+    window.addEventListener(MEDIA_LIBRARY_UPDATED_EVENT, handleRefresh)
+    return () => window.removeEventListener(MEDIA_LIBRARY_UPDATED_EVENT, handleRefresh)
   }, [fetchTrash])
 
   const handleRestore = useCallback(async (item: TrashItem) => {
@@ -85,6 +93,7 @@ export function TrashGrid() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: item.id }),
       })
+      window.dispatchEvent(new CustomEvent(MEDIA_LIBRARY_UPDATED_EVENT))
       await fetchTrash()
     } catch (err) {
       console.error("Restore failed:", err)
@@ -101,6 +110,7 @@ export function TrashGrid() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       })
+      window.dispatchEvent(new CustomEvent(MEDIA_LIBRARY_UPDATED_EVENT))
       await fetchTrash()
     } catch (err) {
       console.error("Purge failed:", err)
@@ -122,6 +132,7 @@ export function TrashGrid() {
           })
         )
       )
+      window.dispatchEvent(new CustomEvent(MEDIA_LIBRARY_UPDATED_EVENT))
       await fetchTrash()
     } catch (err) {
       console.error("Empty all failed:", err)

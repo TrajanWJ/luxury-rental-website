@@ -22,6 +22,8 @@ import { usePhotoOrder } from "@/components/photo-order-context"
 
 type ImageItem = { src: string; pos: number; locked: boolean }
 
+const MEDIA_LIBRARY_UPDATED_EVENT = "admin-media-library-updated"
+
 function toPropertyKey(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-")
 }
@@ -173,6 +175,7 @@ export function PhotoManager() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ property: propertyKey, src: item.src }),
       })
+      window.dispatchEvent(new CustomEvent(MEDIA_LIBRARY_UPDATED_EVENT))
     } catch (err) {
       console.error("Delete API call failed:", err)
     }

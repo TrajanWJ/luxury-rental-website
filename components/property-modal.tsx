@@ -10,6 +10,7 @@ import { usePhotoOrder } from "./photo-order-context"
 import { useSiteConfig } from "./site-config-context"
 import { FloorPlanLightbox } from "./floor-plan-lightbox"
 import { usePopupFreeze } from "@/hooks/use-popup-freeze"
+import { trackCtaClick, trackPopupOpen, trackPropertyView } from "@/lib/analytics"
 
 import { Property } from "@/lib/data"
 
@@ -36,8 +37,54 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
   const [showPhotoGrid, setShowPhotoGrid] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const { openContactModal } = useConcierge()
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
+
+  useEffect(() => {
+    trackPropertyView(property.name, "property-modal")
+    trackPopupOpen("listing", {
+      popupName: "property-modal",
+      propertyName: property.name,
+      context: "str",
+    })
+  }, [property.name])
+
+  useEffect(() => {
+    if (!show3DView) return
+    trackPopupOpen("media", {
+      popupName: "property-3d-view",
+      propertyName: property.name,
+      context: "str",
+    })
+  }, [property.name, show3DView])
+
+  useEffect(() => {
+    if (!showVideoView) return
+    trackPopupOpen("media", {
+      popupName: "property-video-preview",
+      propertyName: property.name,
+      context: "str",
+    })
+  }, [property.name, showVideoView])
+
+  useEffect(() => {
+    if (!showFloorPlans) return
+    trackPopupOpen("media", {
+      popupName: "property-floor-plans",
+      propertyName: property.name,
+      context: "str",
+    })
+  }, [property.name, showFloorPlans])
+
+  useEffect(() => {
+    if (!showPhotoGrid) return
+    trackPopupOpen("media", {
+      popupName: "property-photo-grid",
+      propertyName: property.name,
+      context: "str",
+    })
+  }, [property.name, showPhotoGrid])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -48,6 +95,10 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
     window.addEventListener("keydown", handleEscape)
     return () => window.removeEventListener("keydown", handleEscape)
   }, [onClose])
+
+  useEffect(() => {
+    window.setTimeout(() => closeButtonRef.current?.focus(), 50)
+  }, [])
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev === orderedImages.length - 1 ? 0 : prev + 1))
@@ -60,15 +111,19 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
   return (
     <div
       data-popup-root
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
       onClick={onClose}
     >
       <div
-        className="relative bg-white/98 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto scrollbar-hide animate-in zoom-in-95 duration-300 border border-white/20"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="property-modal-title"
+        className="relative bg-white/98 rounded-2xl sm:rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto scrollbar-hide animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
+          ref={closeButtonRef}
           onClick={onClose}
           className="absolute top-4 right-4 z-10 p-2 bg-black/5 hover:bg-black/10 backdrop-blur-sm rounded-full shadow-lg text-slate-700 transition-colors"
           aria-label="Close modal"
@@ -78,7 +133,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
 
         {/* Image Gallery */}
         <div
-          className="relative h-[300px] md:h-[400px] bg-slate-100"
+          className="relative h-[240px] sm:h-[300px] md:h-[400px] bg-slate-100"
           onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX }}
           onTouchMove={(e) => { touchEndX.current = e.touches[0].clientX }}
           onTouchEnd={() => {
@@ -152,19 +207,25 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
         </div>
 
         {/* Content */}
-        <div className="p-6 md:p-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 text-balance font-serif">{property.name}</h2>
-            <div className="flex items-center gap-2 shrink-0 ml-4">
+        <div className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <h2 id="property-modal-title" className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 text-balance font-serif">{property.name}</h2>
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
               <button
-                onClick={() => setShowPhotoGrid(true)}
+                onClick={() => {
+                  trackCtaClick("all-photos", { propertyName: property.name, context: "property-modal" })
+                  setShowPhotoGrid(true)
+                }}
                 className="px-4 py-2 rounded-full border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#9D5F36]/8 transition-colors"
               >
                 All Photos
               </button>
               {floorPlans.length > 0 && (
                 <button
-                  onClick={() => setShowFloorPlans(true)}
+                  onClick={() => {
+                    trackCtaClick("floor-plans", { propertyName: property.name, context: "property-modal" })
+                    setShowFloorPlans(true)
+                  }}
                   className="px-4 py-2 rounded-full border border-[#9D5F36]/30 text-[#9D5F36] text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#9D5F36]/8 transition-colors"
                 >
                   Floor Plans
@@ -281,35 +342,22 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
               size="lg"
               className="h-12 py-0 leading-none rounded-xl border border-[#9D5F36] bg-[#9D5F36] hover:bg-[#874E2B] text-white shadow-sm hover:shadow-md transition-all font-semibold text-sm"
               onClick={() => {
+                trackCtaClick("book-now", { propertyName: property.name, context: "property-modal" })
                 window.dispatchEvent(new CustomEvent("open-booking", { detail: { propertyName: property.name } }))
                 onClose()
               }}
             >
               Book This Home
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 py-0 leading-none rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all bg-white font-semibold text-sm"
-              onClick={() => {
-                if (property.hostawayId) {
-                  const ctx = typeof window !== 'undefined' ? (window as any).bookingContext as { startDate?: string; endDate?: string } | undefined : undefined;
-                  let url = `https://wilson-premier.holidayfuture.com/listings/${property.hostawayId}`;
-                  if (ctx?.startDate && ctx?.endDate) {
-                    url += `?start=${ctx.startDate}&end=${ctx.endDate}`;
-                  }
-                  window.open(url, '_blank');
-                }
-              }}
-            >
-              Booking Page
-            </Button>
             {(propertyConfig.videoUrl ?? property.videoUrl) && propertyConfig.videoEnabled !== false && (
               <Button
                 size="lg"
                 variant="outline"
                 className="h-12 py-0 leading-none rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all font-semibold text-sm"
-                onClick={() => setShowVideoView(true)}
+                onClick={() => {
+                  trackCtaClick("video-preview", { propertyName: property.name, context: "property-modal" })
+                  setShowVideoView(true)
+                }}
               >
                 Video Preview
               </Button>
@@ -319,13 +367,17 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
                 size="lg"
                 variant="outline"
                 className="h-12 py-0 leading-none rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all font-semibold text-sm"
-                onClick={() => setShow3DView(true)}
+                onClick={() => {
+                  trackCtaClick("3d-view", { propertyName: property.name, context: "property-modal" })
+                  setShow3DView(true)
+                }}
               >
                 3D View
               </Button>
             )}
             <button
               onClick={() => {
+                trackCtaClick("contact", { propertyName: property.name, context: "property-modal" })
                 onClose()
                 setTimeout(() => openContactModal(property.name), 300)
               }}

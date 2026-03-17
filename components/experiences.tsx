@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { experiences, Experience } from "@/lib/experiences"
+import { Experience, getMergedExperiences } from "@/lib/experiences"
 import { ArrowRight, ChevronLeft, ChevronRight, X, Globe, Phone, Mail, User, Check, Sparkles, Anchor, UtensilsCrossed, CalendarDays, Compass, HelpCircle } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { useConcierge } from "./concierge-context"
 import { usePopupFreeze } from "@/hooks/use-popup-freeze"
+import { useSiteConfig } from "./site-config-context"
+import { trackPopupOpen } from "@/lib/analytics"
 
 // ─── Insider's Guide Categories ───
 const insiderCategories = [
@@ -112,6 +114,8 @@ export default function Experiences({
   showInsidersGuide = true,
   showConciergeDirectory = true,
 }: ExperiencesProps = {}) {
+  const { config } = useSiteConfig()
+  const conciergeExperiences = getMergedExperiences(config)
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<typeof insiderCategories[number] | null>(null)
   const [isListExpanded, setIsListExpanded] = useState(true)
@@ -122,7 +126,24 @@ export default function Experiences({
   usePopupFreeze(!!selectedExperience || !!selectedCategory)
 
   // Get unique experience types for filter buttons
-  const experienceTypes = Array.from(new Set(experiences.map(e => e.type)))
+  const experienceTypes = Array.from(new Set(conciergeExperiences.map(e => e.type)))
+
+  useEffect(() => {
+    if (!selectedCategory) return
+    trackPopupOpen("experience", {
+      popupName: "insiders-guide-category",
+      context: selectedCategory.id,
+    })
+  }, [selectedCategory])
+
+  useEffect(() => {
+    if (!selectedExperience) return
+    trackPopupOpen("experience", {
+      popupName: "experience-details",
+      propertyName: selectedExperience.name,
+      context: selectedExperience.type,
+    })
+  }, [selectedExperience])
 
   // Reset description expanded and image index state when experience changes
   useEffect(() => {
@@ -389,10 +410,10 @@ export default function Experiences({
             }`}
           style={{ color: activeFilter === 'all' ? undefined : COLORS.charcoal }}
         >
-          All ({experiences.length})
+          All ({conciergeExperiences.length})
         </button>
         {experienceTypes.map(type => {
-          const count = experiences.filter(e => e.type === type).length
+          const count = conciergeExperiences.filter(e => e.type === type).length
           const isActive = activeFilter === type
           return (
             <button
@@ -424,7 +445,7 @@ export default function Experiences({
             >
               <div className="container mx-auto px-6 md:px-12 pb-20 pt-2">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6">
-                  {experiences
+                  {conciergeExperiences
                     .filter(exp => activeFilter === 'all' || exp.type === activeFilter)
                     .map((experience, index) => (
                       <motion.div

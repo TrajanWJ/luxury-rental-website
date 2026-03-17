@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, ReactNode } from "react"
+import { slugifyPropertyName, trackPopupOpen } from "@/lib/analytics"
 
 interface ConciergeContextType {
     isOpen: boolean
@@ -18,6 +19,16 @@ export function ConciergeProvider({ children }: { children: ReactNode }) {
     const openContactModal = (experienceName?: string) => {
         setSelectedExperience(experienceName || null)
         setIsOpen(true)
+        trackPopupOpen(
+            "contact",
+            experienceName
+                ? {
+                    popupName: "contact-modal",
+                    propertyName: experienceName,
+                    propertySlug: slugifyPropertyName(experienceName),
+                  }
+                : { popupName: "contact-modal" }
+        )
     }
 
     const closeContactModal = () => {

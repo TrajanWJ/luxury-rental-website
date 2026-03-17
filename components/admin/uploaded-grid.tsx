@@ -1,12 +1,17 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import Image from "next/image"
 import { Upload, Loader2 } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+type UploadedKind = "property-photo" | "floor-plan" | "experience"
+const MEDIA_LIBRARY_UPDATED_EVENT = "admin-media-library-updated"
 
 type UploadedFile = {
   src: string
   property: string | null
+  kind: UploadedKind
   filename: string
   size: number
   modified: string
@@ -35,16 +40,23 @@ function timeAgo(dateStr: string): string {
   return `${days}d ago`
 }
 
+function kindLabel(kind: UploadedKind): string {
+  if (kind === "property-photo") return "Property Photo"
+  if (kind === "floor-plan") return "Floor Plan"
+  return "Experience"
+}
+
 export function UploadedGrid() {
   const [files, setFiles] = useState<UploadedFile[]>([])
   const [loading, setLoading] = useState(true)
+  const [activeKind, setActiveKind] = useState<UploadedKind | "all">("all")
 
   const fetchFiles = useCallback(async () => {
     try {
       const res = await fetch("/api/admin/uploaded-files")
       if (res.ok) {
         const data = await res.json()
-        setFiles(data.files || [])
+        setFiles((data.files || []) as UploadedFile[])
       }
     } catch (err) {
       console.error("Failed to fetch uploaded files:", err)
@@ -55,7 +67,27 @@ export function UploadedGrid() {
 
   useEffect(() => {
     fetchFiles()
+    const handleRefresh = () => {
+      setLoading(true)
+      fetchFiles()
+    }
+    window.addEventListener(MEDIA_LIBRARY_UPDATED_EVENT, handleRefresh)
+    return () => window.removeEventListener(MEDIA_LIBRARY_UPDATED_EVENT, handleRefresh)
   }, [fetchFiles])
+
+  const counts = useMemo(() => {
+    return {
+      all: files.length,
+      property: files.filter((f) => f.kind === "property-photo").length,
+      floorPlans: files.filter((f) => f.kind === "floor-plan").length,
+      experiences: files.filter((f) => f.kind === "experience").length,
+    }
+  }, [files])
+
+  const filtered = useMemo(() => {
+    if (activeKind === "all") return files
+    return files.filter((file) => file.kind === activeKind)
+  }, [files, activeKind])
 
   if (loading) {
     return (
@@ -79,12 +111,35 @@ export function UploadedGrid() {
 
   return (
     <div className="space-y-4">
-      <p className="text-[#ECE9E7]/50 text-sm">
-        {files.length} file{files.length !== 1 ? "s" : ""} uploaded — these persist across deployments
+      <div className="flex flex-wrap items-center gap-2">
+        <FilterPill
+          active={activeKind === "all"}
+          label={`All (${counts.all})`}
+          onClick={() => setActiveKind("all")}
+        />
+        <FilterPill
+          active={activeKind === "property-photo"}
+          label={`Property (${counts.property})`}
+          onClick={() => setActiveKind("property-photo")}
+        />
+        <FilterPill
+          active={activeKind === "floor-plan"}
+          label={`Floor Plans (${counts.floorPlans})`}
+          onClick={() => setActiveKind("floor-plan")}
+        />
+        <FilterPill
+          active={activeKind === "experience"}
+          label={`Experiences (${counts.experiences})`}
+          onClick={() => setActiveKind("experience")}
+        />
+      </div>
+
+      <p className="text-[#ECE9E7]/45 text-sm">
+        {filtered.length} file{filtered.length !== 1 ? "s" : ""} shown
       </p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {files.map((file) => (
+        {filtered.map((file) => (
           <div
             key={file.src}
             className="rounded-xl border border-white/5 bg-white/[0.02] overflow-hidden group"
@@ -97,14 +152,12 @@ export function UploadedGrid() {
                 className="object-cover group-hover:opacity-90 transition-opacity"
                 unoptimized
               />
+              <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-black/50 text-white">
+                {kindLabel(file.kind)}
+              </div>
               {file.property && (
-                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#9D5F36]/80 text-white">
+                <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#9D5F36]/80 text-white">
                   {formatPropertyName(file.property)}
-                </div>
-              )}
-              {!file.property && (
-                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#BCA28A]/80 text-white">
-                  Floor Plan
                 </div>
               )}
             </div>
@@ -118,5 +171,29 @@ export function UploadedGrid() {
         ))}
       </div>
     </div>
+  )
+}
+
+function FilterPill({
+  label,
+  active,
+  onClick,
+}: {
+  label: string
+  active: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors",
+        active
+          ? "bg-[#9D5F36]/15 text-[#9D5F36] border-[#9D5F36]/40"
+          : "text-[#ECE9E7]/45 border-white/10 hover:text-[#ECE9E7]/70 hover:border-white/20"
+      )}
+    >
+      {label}
+    </button>
   )
 }

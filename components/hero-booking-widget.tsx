@@ -28,6 +28,7 @@ import { useDemo } from "@/components/demo-context"
 
 import { useBookingContext } from "@/hooks/use-booking-context"
 import HostawayCalendar from "./hostaway-calendar"
+import { trackCtaClick } from "@/lib/analytics"
 
 export function HeroBookingWidget() {
     const { isDemoMode } = useDemo()
@@ -49,6 +50,10 @@ export function HeroBookingWidget() {
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault()
+        trackCtaClick("book-now", {
+            propertyName: location && location !== "all" ? location : undefined,
+            context: "hero-widget",
+        })
         // Trigger the global booking popup with context
         window.dispatchEvent(new CustomEvent("open-booking-with-context", {
             detail: {

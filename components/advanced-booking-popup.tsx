@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Calendar as CalendarIcon, Users, ArrowRight, Check, Star, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -53,6 +53,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
     const [viewMode, setViewMode] = useState<"detail" | "alternatives">("detail")
     const [heroDescExpanded, setHeroDescExpanded] = useState(false)
     const [expandedTeasers, setExpandedTeasers] = useState<Record<string, boolean>>({})
+    const closeButtonRef = useRef<HTMLButtonElement | null>(null)
 
     // Sync dates from global context (strings "YYYY-MM-DD")
     const from = globalContext.startDate ? new Date(globalContext.startDate + "T00:00:00") : undefined
@@ -129,6 +130,11 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
         }
     }, [isOpen, searchParams])
 
+    useEffect(() => {
+        if (!isOpen) return
+        window.setTimeout(() => closeButtonRef.current?.focus(), 50)
+    }, [isOpen])
+
     const nights = dateRange?.from && dateRange?.to
         ? Math.round((dateRange.to.getTime() - dateRange.from.getTime()) / (1000 * 60 * 60 * 24))
         : 0
@@ -138,7 +144,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
     return (
         <AnimatePresence>
             {isOpen && (
-                <div data-popup-root className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
+                <div data-popup-root className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 md:p-6">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -153,13 +159,18 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 0 }}
-                        className="relative w-full max-w-6xl bg-white/90 backdrop-blur-3xl border border-white/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90dvh] md:h-[90vh]"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="advanced-booking-title"
+                        className="relative w-full max-w-6xl bg-white/90 backdrop-blur-3xl border border-white/60 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[94dvh] md:h-[90vh] max-h-[94dvh]"
                     >
                         <Button
+                            ref={closeButtonRef}
                             variant="ghost"
                             size="icon"
-                            className="absolute top-4 right-4 z-20 rounded-full bg-black/5 hover:bg-black/10 text-[#2B2B2B] transition-all backdrop-blur-sm"
+                            className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 rounded-full bg-black/10 hover:bg-black/20 text-[#2B2B2B] transition-all backdrop-blur-sm"
                             onClick={onClose}
+                            aria-label="Close booking popup"
                         >
                             <X className="h-5 w-5" />
                         </Button>
@@ -295,11 +306,11 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                         </div>
 
                         {/* RIGHT PANEL: Intelligence & Composer */}
-                        <div className="w-full md:w-2/5 flex flex-col h-full bg-white/60 backdrop-blur-2xl min-h-0 border-l border-white/40">
+                        <div className="w-full md:w-2/5 flex flex-col h-full bg-white/60 backdrop-blur-2xl min-h-0 border-t md:border-t-0 md:border-l border-white/40">
                             {/* Scrollable Content Area */}
                             <div className="flex-1 overflow-y-auto scrollbar-hide overscroll-contain pb-32 md:pb-0">
                                 <div className="p-6 md:p-8">
-                                    <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-[#2B2B2B]">
+                                    <h3 id="advanced-booking-title" className="text-xl font-bold mb-6 flex items-center gap-2 text-[#2B2B2B]">
                                         <CalendarIcon className="h-5 w-5 text-[#9D5F36]" />
                                         Availability & Options
                                     </h3>
@@ -412,10 +423,9 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                             {/* Sticky Footer - Always Visible */}
                             <div className="p-4 sm:p-6 border-t border-[#BCA28A]/20 bg-white/80 backdrop-blur-xl shadow-lg">
                                 <div className="flex gap-3">
-
                                     <Button
                                         disabled={!selectedProperty}
-                                        className="flex-1 md:flex-[2] h-14 sm:h-12 rounded-xl bg-[#463930] hover:bg-[#463930]/90 text-white text-sm sm:text-base shadow-lg font-bold disabled:bg-[#ECE9E7] disabled:text-[#BCA28A] disabled:shadow-none"
+                                        className="flex-1 h-14 sm:h-12 rounded-xl bg-[#463930] hover:bg-[#463930]/90 text-white text-sm sm:text-base shadow-lg font-bold disabled:bg-[#ECE9E7] disabled:text-[#BCA28A] disabled:shadow-none"
                                         onClick={() => {
                                             if (selectedProperty?.hostawayId) {
                                                 let url = `https://wilson-premier.holidayfuture.com/checkout/${selectedProperty.hostawayId}`;
@@ -441,6 +451,24 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                         }}
                                     >
                                         {!selectedProperty ? "Choose Home" : "Book Now"}
+                                    </Button>
+                                    <Button
+                                        disabled={!selectedProperty}
+                                        variant="outline"
+                                        className="h-14 sm:h-12 rounded-xl border-[#BCA28A]/40 bg-white/70 text-[#463930] hover:bg-white disabled:opacity-50"
+                                        onClick={() => {
+                                            if (!selectedProperty) return
+                                            onClose()
+                                            window.setTimeout(() => {
+                                                window.dispatchEvent(
+                                                    new CustomEvent("open-property-modal", {
+                                                        detail: { propertyId: selectedProperty.id },
+                                                    }),
+                                                )
+                                            }, 180)
+                                        }}
+                                    >
+                                        This Home
                                     </Button>
                                 </div>
                                 <p className="text-center text-[10px] sm:text-[11px] text-[#BCA28A] mt-3">

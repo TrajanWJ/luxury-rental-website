@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { trackEvent } from "@/lib/analytics"
+import { trackPageView } from "@/lib/analytics"
 
 export function AnalyticsTracker() {
   const pathname = usePathname()
@@ -10,7 +10,7 @@ export function AnalyticsTracker() {
   useEffect(() => {
     // Don't track admin pages
     if (pathname.startsWith("/admin")) return
-    trackEvent("page_view")
+    trackPageView(pathname)
   }, [pathname])
 
   return null

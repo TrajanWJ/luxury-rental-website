@@ -21,6 +21,18 @@ export default function RealEstateNavigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { openREContactModal } = useREContact()
 
+  const vt = {
+    bbH: "md:h-[64px]",
+    cbH: "h-[44px]",
+    mobBbH: "h-[56px]",
+    logoH: "h-[48px] md:h-[58px]",
+    linkSz: "text-[11px]",
+    linkGap: "gap-6",
+    ctaSz: "text-[11px]",
+    ctaPx: "px-6 py-2.5",
+    contextHasBorder: true,
+  }
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     handleScroll()
@@ -28,13 +40,9 @@ export default function RealEstateNavigation() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Lock body scroll when mobile menu is open; close on Escape
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
+    if (mobileMenuOpen) document.body.style.overflow = "hidden"
+    else document.body.style.overflow = ""
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMobileMenuOpen(false)
@@ -51,26 +59,21 @@ export default function RealEstateNavigation() {
     (link: (typeof NAV_LINKS)[number]) => {
       setMobileMenuOpen(false)
 
-      // Contact link opens modal instead of navigating
       if (link.label === "Contact") {
         openREContactModal()
         return
       }
 
-      // Anchor link (has a hash target on the hub page)
       if (link.anchor) {
         if (pathname === "/real-estate") {
-          // Already on the hub — smooth-scroll
           const el = document.querySelector(link.anchor)
           if (el) el.scrollIntoView({ behavior: "smooth" })
         } else {
-          // On another /real-estate/* page — full navigate
           window.location.href = link.href
         }
         return
       }
 
-      // Regular page link
       window.location.href = link.href
     },
     [pathname, openREContactModal],
@@ -78,7 +81,6 @@ export default function RealEstateNavigation() {
 
   return (
     <>
-      {/* ── Navigation ── */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -90,44 +92,36 @@ export default function RealEstateNavigation() {
             : "bg-[#ece4d8]/95",
         )}
       >
-        {/* ── Brand Bar (top) ── */}
         <div className="w-full max-w-[1920px] mx-auto px-3 md:px-6 lg:px-10">
-          <div className="flex items-center justify-between h-14">
-            {/* Left: Logos */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => (window.location.href = "/real-estate")}
-                className="block shrink-0"
-                aria-label="Wilson Premier home"
-              >
-                <img
-                  src="/brand/logo-bold-charcoal.png"
-                  alt="Wilson Premier"
-                  className="h-[48px] w-auto object-contain md:h-[56px]"
-                />
-              </button>
-            </div>
+          <div className={`flex items-center justify-between ${vt.mobBbH} ${vt.bbH}`}>
+            <button
+              onClick={() => (window.location.href = "/real-estate")}
+              className="block shrink-0"
+              aria-label="Wilson Premier home"
+            >
+              <img
+                src="/brand/logo-bold-charcoal.png"
+                alt="Wilson Premier"
+                className={`w-auto object-contain ${vt.logoH} [image-rendering:-webkit-optimize-contrast] contrast-110 saturate-105`}
+              />
+            </button>
 
-            {/* Right: Headshot + CTA (desktop) | Headshot + hamburger (mobile) */}
             <div className="flex items-center gap-3">
-              {/* Craig headshot */}
               <img
                 src="/real-estate/craig-headshot.jpg"
                 alt="Craig Wilson"
                 className="h-8 w-8 rounded-full object-cover border border-[#BCA28A]/40 md:h-9 md:w-9"
               />
 
-              {/* Contact CTA — always visible */}
               <button
                 onClick={() => openREContactModal()}
-                className="inline-flex items-center rounded-full bg-[#9D5F36] px-4 py-1.5 md:px-5 md:py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#864E2B]"
+                className={`inline-flex items-center rounded-full bg-[#9D5F36] text-white transition-colors hover:bg-[#864E2B] font-semibold uppercase tracking-[0.08em] ${vt.ctaPx} ${vt.ctaSz}`}
               >
                 Contact
               </button>
 
-              {/* Mobile hamburger */}
               <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={() => setMobileMenuOpen((v) => !v)}
                 className="md:hidden p-2 rounded-full text-[#2b2925]/75 hover:text-[#1f1d1a] hover:bg-[#1f1d1a]/10 transition-colors"
                 aria-label="Toggle menu"
                 aria-expanded={mobileMenuOpen}
@@ -136,20 +130,15 @@ export default function RealEstateNavigation() {
               </button>
             </div>
           </div>
-        </div>
 
-        {/* ── Nav Links Bar (bottom, desktop only) ── */}
-        <div className="hidden md:block border-t border-[#1f1d1a]/10">
-          <div className="w-full max-w-[1920px] mx-auto px-3 md:px-6 lg:px-10">
-            <div className="flex items-center justify-between h-[42px]">
-              {/* Nav links */}
-              <div className="flex items-center gap-5 lg:gap-7">
-                {NAV_LINKS.map((link) => (
+          <div className={`hidden md:flex items-center justify-between ${vt.contextHasBorder ? "border-t border-[#1f1d1a]/12" : ""} ${vt.cbH}`}>
+            <div className={`flex items-center ${vt.linkGap}`}>
+              {NAV_LINKS.map((link, index) => (
+                <div key={link.label} className="flex items-center">
                   <button
-                    key={link.label}
                     onClick={() => handleNavClick(link)}
                     className={cn(
-                      "text-[12px] lg:text-[13px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors duration-300",
+                      `font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors duration-300 ${vt.linkSz}`,
                       !link.anchor && pathname === link.href
                         ? "text-[#9D5F36]"
                         : "text-[#2b2925]/80 hover:text-[#9D5F36]",
@@ -157,13 +146,16 @@ export default function RealEstateNavigation() {
                   >
                     {link.label}
                   </button>
-                ))}
-              </div>
+                  {index < NAV_LINKS.length - 1 && <span className="mx-3 h-3.5 w-px bg-[#1f1d1a]/20" aria-hidden="true" />}
+                </div>
+              ))}
+            </div>
 
-              {/* Vacation Rentals link */}
+            <div className="flex items-center gap-3">
+              <span className="h-4 w-px bg-[#1f1d1a]/20" aria-hidden="true" />
               <button
                 onClick={() => (window.location.href = "/")}
-                className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.06em] text-[#2b2925]/50 hover:text-[#2b2925]/80 transition-colors"
+                className={`flex items-center gap-1.5 rounded-full border border-[#2b2925]/20 px-4 py-1.5 uppercase tracking-[0.1em] font-semibold text-[#2b2925]/75 hover:text-[#2b2925] hover:border-[#2b2925]/40 transition-colors ${vt.linkSz}`}
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
                 Vacation Rentals
@@ -173,62 +165,50 @@ export default function RealEstateNavigation() {
         </div>
       </motion.nav>
 
-      {/* ── Mobile Menu ── */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-x-0 top-14 bottom-0 z-40 bg-[#ece4d8]/98 backdrop-blur-lg md:hidden overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-40 bg-[#ece4d8]/98 backdrop-blur-lg md:hidden"
           >
-            <div className="px-5 py-6 flex flex-col gap-1">
-              {/* Contact Craig CTA */}
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  openREContactModal()
-                }}
-                className="w-full rounded-full bg-[#9D5F36] py-3 text-base font-semibold text-white transition-colors hover:bg-[#864E2B] min-h-[44px] mb-3"
-              >
-                Contact Craig
-              </button>
+            <div className="pt-[72px] px-5 py-8 h-full overflow-y-auto text-[#25231f]">
+              <div className="rounded-2xl border border-[#1f1d1a]/10 p-4 mb-4">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-[#A4907C]/80 mb-3">Real Estate</p>
+                {NAV_LINKS.map((link) => (
+                  <button
+                    key={link.label}
+                    onClick={() => handleNavClick(link)}
+                    className={cn(
+                      "w-full text-left px-3 py-3 rounded-lg hover:bg-[#1f1d1a]/5 text-[15px]",
+                      !link.anchor && pathname === link.href ? "text-[#9D5F36]" : "text-[#25231f]",
+                    )}
+                  >
+                    {link.label}
+                  </button>
+                ))}
+              </div>
 
-              {/* Nav links */}
-              {NAV_LINKS.map((link) => (
+              <div className="rounded-2xl border border-[#1f1d1a]/10 p-4 mb-4">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-[#A4907C]/80 mb-3">Vacation Rentals</p>
                 <button
-                  key={link.label}
-                  onClick={() => handleNavClick(link)}
-                  className={cn(
-                    "w-full text-left py-3 text-base font-medium border-b border-[#1f1d1a]/10 min-h-[44px] flex items-center transition-colors",
-                    !link.anchor && pathname === link.href
-                      ? "text-[#9D5F36]"
-                      : "text-[#25231f]/90 hover:text-[#9D5F36]",
-                  )}
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    window.location.href = "/"
+                  }}
+                  className="w-full text-left px-3 py-3 rounded-lg hover:bg-[#1f1d1a]/5 text-[15px]"
                 >
-                  {link.label}
+                  Explore STR Site
                 </button>
-              ))}
-
-              {/* Vacation Rentals link */}
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  window.location.href = "/"
-                }}
-                className="flex items-center gap-2 mt-4 py-3 text-sm font-medium text-[#2b2925]/50 hover:text-[#2b2925]/80 transition-colors min-h-[44px]"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Vacation Rentals
-              </button>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── Spacer ── */}
-      <div className="h-14 md:h-[98px]" />
+      <div className="h-[56px] md:h-[108px]" />
     </>
   )
 }

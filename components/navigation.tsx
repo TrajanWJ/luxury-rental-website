@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
 import { AdvancedBookingPopup } from "./advanced-booking-popup"
 import { properties } from "@/lib/data"
 import Link from "next/link"
 import { useConcierge } from "./concierge-context"
 import { usePhotoOrder } from "@/components/photo-order-context"
+import { trackCtaClick, trackPopupOpen } from "@/lib/analytics"
 
 export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light" }) {
   const CONTACT_CONCIERGE_FLAG = "open_concierge_on_home"
@@ -16,12 +17,14 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
   const [bookingOpen, setBookingOpen] = useState(false)
   const { openContactModal } = useConcierge()
   const photoOrder = usePhotoOrder()
+
   const [scrolled, setScrolled] = useState(false)
   const [homesInView, setHomesInView] = useState(false)
   const [milanInView, setMilanInView] = useState(false)
   const [hoveringProperties, setHoveringProperties] = useState(false)
 
   const isDark = theme === "dark"
+  const logoSrc = isDark ? "/brand/logo-bold-light.png" : "/brand/logo-bold-charcoal.png"
   const headerBase = isDark
     ? "bg-[#2B2B2B]/76 border-b border-[#BCA28A]/38 text-[#F1E8DC]"
     : "bg-[#ece4d8]/95 border-b border-[#1f1d1a]/15 text-[#24221e]"
@@ -43,16 +46,32 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
     ? `backdrop-blur-lg ${headerBase}`
     : headerBase
 
+  const vt = {
+    // Single nav profile: A with B-quality controls and spacing
+    bbH: "md:h-[64px]",
+    cbH: "h-[44px]",
+    mobBbH: "h-[56px]",
+    logoH: "h-[48px] sm:h-[52px] md:h-[58px]",
+    linkSz: "text-[11px]",
+    linkGap: "gap-6",
+    ctaSz: "text-[11px]",
+    ctaPx: "px-6 py-2.5",
+    iconSz: "h-8 w-8",
+    showTopIcons: true,
+    showTopBook: true,
+    contextHasBorder: false,
+  }
+
   const [searchParams, setSearchParams] = useState({
     location: "",
     checkIn: "",
     checkOut: "",
-    guests: "1"
+    guests: "1",
   })
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY > 0)
 
       const homesSection = document.getElementById("homes")
       if (!homesSection) {
@@ -93,31 +112,35 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
     window.sessionStorage.removeItem(CONTACT_CONCIERGE_FLAG)
 
     const footer = document.querySelector("#contact")
-    if (footer) {
-      footer.scrollIntoView({ behavior: "smooth" })
-    }
+    if (footer) footer.scrollIntoView({ behavior: "smooth" })
     window.setTimeout(() => openContactModal(), 650)
   }, [openContactModal])
 
   useEffect(() => {
-    // Handle simple booking event (just property name)
     const handleOpenBooking = (e: any) => {
+      trackPopupOpen(
+        "booking",
+        e.detail?.propertyName ? { propertyName: e.detail.propertyName, context: "global-event" } : { context: "global-event" },
+      )
       setSearchParams({
         location: e.detail?.propertyName || "",
         checkIn: "",
         checkOut: "",
-        guests: "1"
+        guests: "1",
       })
       setBookingOpen(true)
     }
 
-    // Handle booking event with full context (property, dates, guests)
     const handleOpenBookingWithContext = (e: any) => {
+      trackPopupOpen(
+        "booking",
+        e.detail?.propertyName ? { propertyName: e.detail.propertyName, context: "global-event" } : { context: "global-event" },
+      )
       setSearchParams({
         location: e.detail?.propertyName || "",
         checkIn: e.detail?.checkIn || "",
         checkOut: e.detail?.checkOut || "",
-        guests: e.detail?.guests || "1"
+        guests: e.detail?.guests || "1",
       })
       setBookingOpen(true)
     }
@@ -130,30 +153,34 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
     }
   }, [])
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [mobileMenuOpen])
 
   const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Our Pledge", href: "/pledge" },
+    { label: "Home", href: "#homes" },
+    { label: "Our Pledge", href: "#pledge" },
     { label: "Lake Experiences", href: "#experiences" },
     { label: "House Rules", href: "/house-rules" },
-    { label: "Concierge", href: "/contact" },
+    { label: "Concierge", href: "#contact" },
   ]
 
   const scrollToSection = (href: string) => {
-    if (href.startsWith('#')) {
-      // Check if we're on the home page
-      if (window.location.pathname === '/' || window.location.pathname === '') {
-        // We're on home page, scroll directly
+    if (href.startsWith("#")) {
+      if (window.location.pathname === "/" || window.location.pathname === "") {
         const element = document.querySelector(href)
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" })
-        }
+        if (element) element.scrollIntoView({ behavior: "smooth" })
       } else {
-        // We're on another page, navigate to home with hash
         window.location.href = `/${href}`
       }
     } else {
-      // Regular route navigation
       window.location.href = href
     }
     setMobileMenuOpen(false)
@@ -166,9 +193,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
 
     if (onHome) {
       const footer = document.querySelector("#contact")
-      if (footer) {
-        footer.scrollIntoView({ behavior: "smooth" })
-      }
+      if (footer) footer.scrollIntoView({ behavior: "smooth" })
       window.setTimeout(() => openContactModal(), 650)
       return
     }
@@ -178,6 +203,14 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
   }
 
   const showTransparentNav = homesInView && !milanInView
+  const condensedDesktopNav = scrolled
+  const shellClass = showTransparentNav
+    ? "bg-transparent border-b border-transparent"
+    : scrolled
+      ? `backdrop-blur-lg ${headerBase} ${headerScrolled}`
+      : isDark
+        ? `backdrop-blur-lg ${headerBase}`
+        : headerBase
 
   return (
     <>
@@ -185,28 +218,157 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.55 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-2 ${showTransparentNav ? "bg-transparent border-b border-transparent" : scrolled ? `backdrop-blur-lg ${headerBase} ${headerScrolled}` : unscrolledShell}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${shellClass}`}
       >
-        <div className="w-full max-w-[1920px] mx-auto px-3 md:px-6 lg:px-10 overflow-hidden">
-          <div className="flex items-center justify-between h-[44px] md:h-[58px]">
+        <div className="w-full max-w-[1920px] mx-auto px-3 md:px-6 lg:px-10">
+          <div className={`flex items-center justify-between ${vt.mobBbH} ${vt.bbH}`}>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15 }}
-              className="flex-shrink-0 flex items-center gap-3"
+              className="flex-shrink-0"
             >
               <Link href="/" className="block shrink-0">
                 <img
-                  src="/brand/logo-bold-linen.png"
+                  src={logoSrc}
                   alt="Wilson Premier"
                   width={300}
                   height={100}
-                  className="h-[36px] w-auto object-contain sm:h-[40px] md:h-[58px]"
+                  className={`w-auto object-contain ${vt.logoH} [image-rendering:-webkit-optimize-contrast] contrast-110 saturate-105`}
                 />
               </Link>
             </motion.div>
 
-            <div className="hidden md:flex items-center gap-3 lg:gap-5">
+            <AnimatePresence>
+              {condensedDesktopNav && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.22, ease: "easeOut" }}
+                  className={`hidden md:flex items-center ${vt.linkGap} ml-8`}
+                >
+                  {navLinks.map((link) => (
+                    <button
+                      key={`condensed-${link.label}`}
+                      onClick={() => {
+                        if (link.label === "Concierge") goToFooterAndOpenConcierge()
+                        else scrollToSection(link.href)
+                      }}
+                      className={`transition-colors duration-300 font-semibold uppercase tracking-[0.08em] whitespace-nowrap ${navText} ${vt.linkSz}`}
+                    >
+                      {link.label}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => scrollToSection("#homes")}
+                    className={`flex items-center gap-1 font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors ${navText} ${vt.linkSz}`}
+                  >
+                    Retreats
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="hidden md:flex items-center gap-2">
+              {vt.showTopIcons && (
+                <>
+                  <button
+                    onClick={() => (window.location.href = "/map")}
+                    className={`${vt.iconSz} inline-flex items-center justify-center rounded-full transition-all ${iconBtn}`}
+                    aria-label="Getting Here - Map"
+                    title="Getting Here"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => {
+                      trackCtaClick("contact", { context: "nav-desktop" })
+                      goToFooterAndOpenConcierge()
+                    }}
+                    className={`${vt.iconSz} inline-flex items-center justify-center rounded-full transition-all ${iconBtn}`}
+                    aria-label="Contact Concierge"
+                    title="Contact Concierge"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                  </button>
+                </>
+              )}
+              {vt.showTopBook && (
+                <button
+                  onClick={() => {
+                    trackCtaClick("book-now", { context: "nav-desktop" })
+                    trackPopupOpen("booking", { context: "nav-desktop" })
+                    setBookingOpen(true)
+                  }}
+                  className={`rounded-full border font-medium uppercase tracking-[0.1em] transition-colors ${desktopBookBtn} ${vt.ctaPx} ${vt.ctaSz}`}
+                >
+                  Book Now
+                </button>
+              )}
+            </div>
+
+            <div className="md:hidden flex items-center gap-1">
+              <button
+                onClick={() => {
+                  trackCtaClick("book-now", { context: "nav-mobile" })
+                  trackPopupOpen("booking", { context: "nav-mobile" })
+                  setBookingOpen(true)
+                }}
+                className={`rounded-full border px-4 py-2 text-[10px] font-medium uppercase tracking-[0.08em] transition-colors ${desktopBookBtn}`}
+              >
+                Book Now
+              </button>
+              <button
+                onClick={() => (window.location.href = "/map")}
+                className={`${vt.iconSz} inline-flex items-center justify-center rounded-full transition-colors ${iconBtn}`}
+                aria-label="Getting Here - Map"
+                title="Getting Here"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </button>
+              <button
+                onClick={() => {
+                  trackCtaClick("contact", { context: "nav-mobile" })
+                  goToFooterAndOpenConcierge()
+                }}
+                className={`${vt.iconSz} inline-flex items-center justify-center rounded-full transition-colors ${iconBtn}`}
+                aria-label="Contact Concierge"
+                title="Contact Concierge"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              </button>
+              <button
+                className={`${vt.iconSz} inline-flex items-center justify-center rounded-full transition-colors ${iconBtn}`}
+                onClick={() => setMobileMenuOpen((v) => !v)}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {!condensedDesktopNav && (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className={`hidden md:flex items-center justify-between ${vt.contextHasBorder ? `border-t ${isDark ? "border-[#d8c7af]/15" : "border-[#1f1d1a]/10"}` : ""} ${vt.cbH}`}
+              >
+                <div className={`flex items-center ${vt.linkGap}`}>
               {navLinks.map((link, index) => (
                 <motion.button
                   key={link.label}
@@ -214,13 +376,10 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.08 * index + 0.2 }}
                   onClick={() => {
-                    if (link.label === "Concierge") {
-                      goToFooterAndOpenConcierge()
-                    } else {
-                      scrollToSection(link.href)
-                    }
+                    if (link.label === "Concierge") goToFooterAndOpenConcierge()
+                    else scrollToSection(link.href)
                   }}
-                  className={`transition-colors duration-300 font-semibold text-[12px] lg:text-[13px] uppercase tracking-[0.08em] whitespace-nowrap px-1 py-2 ${navText}`}
+                  className={`transition-colors duration-300 font-semibold uppercase tracking-[0.08em] whitespace-nowrap ${navText} ${vt.linkSz}`}
                 >
                   {link.label}
                 </motion.button>
@@ -233,7 +392,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               >
                 <button
                   onClick={() => scrollToSection("#homes")}
-                  className={`flex items-center gap-1 font-semibold text-[12px] lg:text-[13px] uppercase tracking-[0.08em] whitespace-nowrap px-1 py-2 transition-colors ${navText}`}
+                  className={`flex items-center gap-1 font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors ${navText} ${vt.linkSz}`}
                 >
                   Retreats
                   <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
@@ -246,7 +405,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.2, ease: "easeOut" }}
-                      className={`absolute top-full right-0 mt-2 w-80 rounded-md shadow-2xl overflow-hidden py-2 border ring-1 ring-black/10 ${dropdownPanel}`}
+                      className={`absolute top-full left-0 mt-2 w-80 rounded-md shadow-2xl overflow-hidden py-2 border ring-1 ring-black/10 ${dropdownPanel}`}
                     >
                       <div className={`px-4 py-2 border-b ${isDark ? "border-[#d8c7af]/15" : "border-[#1f1d1a]/10"}`}>
                         <span className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${isDark ? "text-[#ece2d6]/70" : "text-[#25231f]/70"}`}>
@@ -261,7 +420,6 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                               setHoveringProperties(false)
                               const section = document.getElementById("homes")
                               if (section) section.scrollIntoView({ behavior: "smooth" })
-                              // Open the property modal via custom event
                               setTimeout(() => {
                                 window.dispatchEvent(new CustomEvent("open-property-modal", { detail: { propertyId: prop.id } }))
                               }, 400)
@@ -287,189 +445,104 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                 </AnimatePresence>
               </div>
 
-              <button
-                onClick={() => scrollToSection("/real-estate")}
-                className={`transition-colors duration-300 font-semibold text-[12px] lg:text-[13px] uppercase tracking-[0.08em] whitespace-nowrap px-1 py-2 ${navText}`}
-              >
-                Real Estate
-              </button>
-
-              <div className={`w-px h-7 ${divider}`} />
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => window.location.href = '/map'}
-                  className={`p-2.5 rounded-full transition-all ${iconBtn}`}
-                  aria-label="Getting Here - Map"
-                  title="Getting Here"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </button>
-                <button
-                  onClick={goToFooterAndOpenConcierge}
-                  className={`p-2.5 rounded-full transition-all ${iconBtn}`}
-                  aria-label="Contact Concierge"
-                  title="Contact Concierge"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                  </svg>
-                </button>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.55 }}
-                className="pl-2"
-              >
-                <button
-                  onClick={() => setBookingOpen(true)}
-                  className={`rounded-full border px-6 py-2.5 text-[12px] lg:text-[13px] font-medium uppercase tracking-[0.1em] transition-colors ${desktopBookBtn}`}
-                >
-                  Book Now
-                </button>
-              </motion.div>
             </div>
 
-            <div className="md:hidden flex items-center gap-1">
-              <button
-                onClick={() => setBookingOpen(true)}
-                className={`rounded-full border px-4 py-2 text-[10px] font-medium uppercase tracking-[0.08em] transition-colors ${desktopBookBtn}`}
-                aria-label="Book Now"
-              >
-                Book Now
-              </button>
-              <button
-                onClick={() => window.location.href = '/map'}
-                className={`p-2 rounded-full transition-colors ${iconBtn}`}
-                aria-label="Getting Here - Map"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-              </button>
-              <button
-                onClick={goToFooterAndOpenConcierge}
-                className={`p-2 rounded-full transition-colors ${iconBtn}`}
-                aria-label="Contact Concierge"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-              </button>
-              <div className={`w-px h-5 ${divider}`} />
-              <button
-                className={`flex flex-col justify-center items-center p-2 space-y-1.5 focus:outline-none z-50 transition-colors ${iconBtn}`}
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Toggle menu"
-              >
-                <motion.span
-                  animate={mobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                  className={`block w-[28px] h-[2px] ${isDark ? "bg-[#f7f0e7]" : "bg-[#1f1d1a]"}`}
-                />
-                <motion.span
-                  animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                  className={`block w-[28px] h-[2px] ${isDark ? "bg-[#f7f0e7]" : "bg-[#1f1d1a]"}`}
-                />
-                <motion.span
-                  animate={mobileMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                  className={`block w-[28px] h-[2px] ${isDark ? "bg-[#f7f0e7]" : "bg-[#1f1d1a]"}`}
-                />
-              </button>
-            </div>
-
-            <AnimatePresence>
-              {mobileMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: -20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                  className={`md:hidden absolute top-[62px] left-3 right-3 py-5 rounded-md shadow-2xl px-5 flex flex-col gap-1 border ${dropdownPanel}`}
-                >
-                  <Button
-                    onClick={() => {
-                      setBookingOpen(true)
-                      setMobileMenuOpen(false)
-                    }}
-                    className={`w-full py-3 text-base rounded-full mb-2 font-semibold min-h-[44px] ${isDark ? "bg-[#d8c7af] text-[#1f1d1a] hover:bg-[#e8d7bf]" : "bg-[#1f1d1a] text-[#ece4d8] hover:bg-[#2a2723]"}`}
+                {!scrolled && (
+                  <button
+                    onClick={() => scrollToSection("/real-estate")}
+                    className={`flex items-center gap-1.5 rounded-full border px-4 py-1.5 uppercase tracking-[0.1em] font-semibold transition-colors ${vt.linkSz} ${
+                      isDark
+                        ? "border-[#d8c7af]/28 text-[#E7D5BE]/86 hover:text-[#FCF6ED] hover:border-[#d8c7af]/48"
+                        : "border-[#2b2925]/20 text-[#2b2925]/75 hover:text-[#2b2925] hover:border-[#2b2925]/40"
+                    }`}
                   >
-                    Book Now
-                  </Button>
+                    Real Estate
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.nav>
 
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`fixed inset-0 z-40 md:hidden ${isDark ? "bg-[#201d19]/95" : "bg-[#ece4d8]/95"} backdrop-blur-lg`}
+          >
+            <div className={`pt-[72px] px-5 pb-8 h-full overflow-y-auto ${isDark ? "text-[#ECE2D6]" : "text-[#25231F]"}`}>
+              <div className="rounded-2xl border border-white/10 p-4 mb-4">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-[#BCA28A]/70 mb-3">Vacation Rentals</p>
+                <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
-                    <div key={link.label}>
-                      <button
-                        onClick={() => {
-                          if (link.label === "Concierge") {
-                            goToFooterAndOpenConcierge()
-                          } else {
-                            scrollToSection(link.href)
-                          }
-                        }}
-                        className={`w-full text-left transition-all font-medium py-3 text-base border-b min-h-[44px] flex items-center pl-0 ${
-                          isDark
-                            ? "text-[#ece2d6]/90 hover:text-[#f7f0e7] border-[#d8c7af]/12 hover:pl-2"
-                            : "text-[#25231f]/90 hover:text-[#1f1d1a] border-[#1f1d1a]/12 hover:pl-2"
-                        }`}
-                      >
-                        {link.label}
-                      </button>
-
-                      {link.label === "Concierge" && (
-                        <div className={`flex justify-center py-4 border-b ${isDark ? "border-[#d8c7af]/12" : "border-[#1f1d1a]/12"}`}>
-                          <img
-                            src="/brand/logo-bold-linen.png"
-                            alt="Wilson Premier"
-                            width={300}
-                            height={100}
-                            className="h-[44px] w-auto object-contain"
-                          />
-                        </div>
-                      )}
-                    </div>
+                    <button
+                      key={link.label}
+                      onClick={() => {
+                        if (link.label === "Concierge") {
+                          trackCtaClick("contact", { context: "nav-mobile" })
+                          goToFooterAndOpenConcierge()
+                        } else {
+                          scrollToSection(link.href)
+                        }
+                      }}
+                      className="w-full text-left px-3 py-3 rounded-lg hover:bg-white/5 text-[15px]"
+                    >
+                      {link.label}
+                    </button>
                   ))}
-
                   <button
                     onClick={() => scrollToSection("#homes")}
-                    className={`text-left transition-colors font-medium py-3 text-base border-b min-h-[44px] flex items-center ${
-                      isDark
-                        ? "text-[#ece2d6]/90 hover:text-[#f7f0e7] border-[#d8c7af]/12"
-                        : "text-[#25231f]/90 hover:text-[#1f1d1a] border-[#1f1d1a]/12"
-                    }`}
+                    className="w-full text-left px-3 py-3 rounded-lg hover:bg-white/5 text-[15px]"
                   >
                     Retreats
                   </button>
                   <button
-                    onClick={() => scrollToSection("/real-estate")}
-                    className={`text-left transition-colors font-medium py-3 text-base border-b min-h-[44px] flex items-center ${
-                      isDark
-                        ? "text-[#ece2d6]/90 hover:text-[#f7f0e7] border-[#d8c7af]/12"
-                        : "text-[#25231f]/90 hover:text-[#1f1d1a] border-[#1f1d1a]/12"
-                    }`}
+                    onClick={() => (window.location.href = "/map")}
+                    className="w-full text-left px-3 py-3 rounded-lg hover:bg-white/5 text-[15px]"
                   >
-                    Real Estate
+                    Getting Here
                   </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </motion.nav>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 p-4 mb-4">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-[#BCA28A]/70 mb-3">Real Estate</p>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    window.location.href = "/real-estate"
+                  }}
+                  className="w-full text-left px-3 py-3 rounded-lg hover:bg-white/5 text-[15px]"
+                >
+                  Explore Real Estate
+                </button>
+              </div>
+
+              <button
+                onClick={() => {
+                  trackCtaClick("book-now", { context: "nav-mobile" })
+                  trackPopupOpen("booking", { context: "nav-mobile" })
+                  setBookingOpen(true)
+                  setMobileMenuOpen(false)
+                }}
+                className={`w-full rounded-full border uppercase tracking-[0.1em] font-medium ${desktopBookBtn} ${vt.ctaPx} ${vt.ctaSz}`}
+              >
+                Book Now
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AdvancedBookingPopup
         isOpen={bookingOpen}
         onClose={() => {
           setBookingOpen(false)
-          setSearchParams({
-            location: "",
-            checkIn: "",
-            checkOut: "",
-            guests: "1"
-          })
+          setSearchParams({ location: "", checkIn: "", checkOut: "", guests: "1" })
         }}
         searchParams={searchParams}
       />

@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  experimental: {
+    proxyClientMaxBodySize: 25 * 1024 * 1024, // 25 MB — allows large photo uploads through middleware
+  },
   typescript: {
     ignoreBuildErrors: true,
   },

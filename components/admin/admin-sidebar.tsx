@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Building2,
   ImageIcon,
+  FolderOpen,
   Settings2,
   Users,
   Mail,
@@ -40,7 +41,8 @@ const navSections: NavSection[] = [
     label: "Properties",
     items: [
       { href: "/admin/properties", label: "Overview & Ordering", icon: Building2 },
-      { href: "/admin/photos", label: "Photos & Media", icon: ImageIcon },
+      { href: "/admin/photos", label: "Property Photos", icon: ImageIcon },
+      { href: "/admin/media-library", label: "Media Library", icon: FolderOpen },
     ],
   },
   {

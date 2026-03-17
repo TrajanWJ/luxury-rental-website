@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, ReactNode } from "react"
+import { slugifyPropertyName, trackPopupOpen } from "@/lib/analytics"
 
 interface REContactContextType {
     isOpen: boolean
@@ -18,6 +19,17 @@ export function REContactProvider({ children }: { children: ReactNode }) {
     const openREContactModal = (propertyName?: string) => {
         setSelectedProperty(propertyName || null)
         setIsOpen(true)
+        trackPopupOpen(
+            "contact",
+            propertyName
+                ? {
+                    popupName: "real-estate-contact-modal",
+                    propertyName,
+                    propertySlug: slugifyPropertyName(propertyName),
+                    context: "real-estate",
+                  }
+                : { popupName: "real-estate-contact-modal", context: "real-estate" }
+        )
     }
 
     const closeREContactModal = () => {

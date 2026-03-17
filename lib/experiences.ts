@@ -16,6 +16,18 @@ export interface Experience {
     images?: string[];
 }
 
+type ConciergeOverrideLike = Partial<Experience> & {
+    hidden?: boolean;
+}
+
+type ConciergeAdditionLike = Experience
+
+type SiteConfigLike = {
+    conciergeOverrides?: Record<string, ConciergeOverrideLike>
+    conciergeAdditions?: ConciergeAdditionLike[]
+    conciergeOrder?: string[]
+}
+
 export const experiences: Experience[] = [
     {
         id: "napoli-at-the-lake",
@@ -168,7 +180,7 @@ export const experiences: Experience[] = [
     },
     {
         id: "betty-ashton-harpist",
-        name: "Betty Ashton Mayo",
+        name: "Professional Harpist - Betty Ashton Mayo",
         type: "entertainment",
         description: "A professional harpist who spent years performing at Nashville's Ryman Auditorium and the Country Music Hall of Fame.",
         details: "Bring elegant live harp music to your lakefront event, dinner party, or celebration. Betty Ashton's performances create an atmosphere of timeless sophistication.",
@@ -178,7 +190,7 @@ export const experiences: Experience[] = [
         email: "ba@bettyashton.com",
         website: "https://www.bettyashton.com/",
         serviceOffered: "Live Harp Music",
-        imageUrl: "https://images.squarespace-cdn.com/content/v1/5db0b55c9639c745906e3382/e52e3195-8328-481a-b127-e2371f190ec3/Betty+Ashton+Harp.jpeg"
+        imageUrl: "/betty-ashton-mayo-harpist.jpg"
     },
     {
         id: "shows-great-media",
@@ -193,18 +205,6 @@ export const experiences: Experience[] = [
         website: "https://showsgreat.photography/",
         serviceOffered: "Photography & Videography",
         imageUrl: "https://media.hd.pics/2/2egnsckxec.jpg"
-    },
-    {
-        id: "personal-assistant",
-        name: "Personal Assistant Service",
-        type: "lifestyle",
-        description: "Wilson Premier Properties offers a dedicated personal assistant to help facilitate your every need during your stay.",
-        details: "From grocery runs to reservation coordination, your personal assistant is available upon request to ensure your lakefront vacation is completely effortless.",
-        contactName: "",
-        contactTitle: "Personal Assistant",
-        phone: "(703) 930-6999",
-        serviceOffered: "Personal Assistant Service",
-        imageUrl: "/contemporary-lake-house-boat-dock.jpg"
     },
     {
         id: "at-your-service-concierge",
@@ -239,8 +239,54 @@ export const experiences: Experience[] = [
         details: "Find your dream home at Smith Mountain Lake. From waterfront estates to cozy cabins, turn your vacation into a permanent address.",
         contactName: "Wilson Premier Properties",
         contactTitle: "Real Estate Services",
-        website: "https://smllakefront.com/",
+        website: "/real-estate",
         serviceOffered: "Real Estate Services",
-        imageUrl: "/luxury-lakefront-estate-sunset-view.jpg"
+        imageUrl: "/sml-lakefront-pool.png"
     }
 ];
+
+export function getMergedExperiences(config?: SiteConfigLike | null): Experience[] {
+    if (!config) return experiences;
+
+    const overrides = config.conciergeOverrides || {};
+    const additions = config.conciergeAdditions || [];
+    const orderedIds = config.conciergeOrder || [];
+
+    const mergedBase = experiences.map((exp) => {
+        const override = overrides[exp.id];
+        if (!override) return { ...exp, _hidden: false };
+        return {
+            ...exp,
+            ...override,
+            _hidden: !!override.hidden,
+        };
+    });
+
+    const mergedAdditions = additions.map((exp) => {
+        const override = overrides[exp.id];
+        if (!override) return { ...exp, _hidden: false };
+        return {
+            ...exp,
+            ...override,
+            _hidden: !!override.hidden,
+        };
+    });
+
+    const all = [...mergedBase, ...mergedAdditions];
+
+    const ordered = orderedIds.length
+        ? [
+            ...orderedIds
+                .map((id) => all.find((item) => item.id === id))
+                .filter(Boolean) as Array<Experience & { _hidden?: boolean }>,
+            ...all.filter((item) => !orderedIds.includes(item.id)),
+        ]
+        : all;
+
+    return ordered
+        .filter((item) => !item._hidden)
+        .map((item) => {
+            const { _hidden: _unused, ...clean } = item;
+            return clean;
+        });
+}

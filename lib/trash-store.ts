@@ -50,19 +50,48 @@ export async function addToTrash(property: string, src: string): Promise<void> {
 }
 
 export async function listTrash(): Promise<TrashItem[]> {
+  let dbRows: TrashItem[] | null = null
+
   if (DB_CONFIGURED) {
     try {
-      const rows = await query<TrashItem>(
+      dbRows = await query<TrashItem>(
         "SELECT id, property_slug, src, deleted_at FROM trash_items ORDER BY deleted_at DESC"
       )
-      return rows
     } catch {
-      // DB unavailable — fall through to filesystem
+      // DB unavailable — fall through to filesystem only
     }
   }
 
+  // Always check file-store for items that may have been written via fallback
   const data = readStore()
-  return getTrash(data).sort(
+  const fileTrash = getTrash(data)
+
+  if (dbRows === null) {
+    // DB not configured or unavailable — use file-store only
+    return fileTrash.sort(
+      (a, b) => new Date(b.deleted_at).getTime() - new Date(a.deleted_at).getTime()
+    )
+  }
+
+  // Merge: DB is primary, but include any file-store items not in DB (fallback writes)
+  const dbSrcs = new Set(dbRows.map((r) => r.src))
+  const extraFromFile = fileTrash.filter((item) => !dbSrcs.has(item.src))
+
+  if (extraFromFile.length > 0) {
+    // Sync orphaned file-store items back to DB
+    for (const item of extraFromFile) {
+      try {
+        await execute("INSERT OR IGNORE INTO trash_items (property_slug, src) VALUES (?, ?)", [
+          item.property_slug,
+          item.src,
+        ])
+      } catch {
+        // Best-effort sync
+      }
+    }
+  }
+
+  return [...dbRows, ...extraFromFile].sort(
     (a, b) => new Date(b.deleted_at).getTime() - new Date(a.deleted_at).getTime()
   )
 }

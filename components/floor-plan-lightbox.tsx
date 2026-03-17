@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw } from "lucide-react"
 import { usePopupFreeze } from "@/hooks/use-popup-freeze"
+import { trackPopupOpen } from "@/lib/analytics"
 
 interface FloorPlanLightboxProps {
   propertyName: string
@@ -195,6 +196,14 @@ export function FloorPlanLightbox({
     const rect = el.getBoundingClientRect()
     zoomAt(scale - ZOOM_STEP, rect.left + rect.width / 2, rect.top + rect.height / 2)
   }, [scale, zoomAt])
+
+  useEffect(() => {
+    trackPopupOpen("media", {
+      popupName: "floor-plan-lightbox",
+      propertyName,
+      context: "floor-plans",
+    })
+  }, [propertyName])
 
   // Keyboard: +/- to zoom, arrows to pan, Escape to close
   useEffect(() => {
