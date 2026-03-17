@@ -298,21 +298,6 @@ export default function AboutCraigPage() {
             ))}
           </div>
 
-          <motion.div {...reveal} className="mt-6 flex flex-wrap gap-2">
-            <button
-              onClick={() => setActiveModal("craig-story")}
-              className="rounded-full border border-[#9D5F36]/45 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
-            >
-              Open Full Story
-            </button>
-            <button
-              onClick={() => setActiveModal("career-highlights")}
-              className="rounded-full border border-[#2B2B2B]/25 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#2B2B2B]/80 hover:bg-[#2B2B2B]/8 transition-colors"
-            >
-              Open Career Highlights
-            </button>
-          </motion.div>
-
           {/* Advisory Flow Diagram */}
           <motion.div {...reveal} className="mt-12">
             <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-4">

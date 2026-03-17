@@ -1,6 +1,6 @@
 # Production Deployment Guide
 
-**Last updated:** 2026-03-05
+**Last updated:** 2026-03-17
 
 ## Architecture
 
@@ -85,6 +85,12 @@ TURSO_AUTH_TOKEN=<token>
 ./scripts/backup-production-data.sh
 ```
 
+By default this pulls public config. To also back up admin-only config (`emailConfig`, `activityLog`), run:
+
+```bash
+ADMIN_USERNAME='Admin' ADMIN_PASSWORD='***' ./scripts/backup-production-data.sh
+```
+
 This pulls live data from the API and commits it to git as insurance.
 
 ### 1. Build the standalone app
@@ -97,8 +103,9 @@ npm run build
 ### 2. Prepare the deploy folder
 
 ```bash
-rm -rf deploy/.next deploy/node_modules deploy/public deploy/data
-cp -r .next/standalone/* deploy/
+rm -rf deploy
+mkdir -p deploy
+rsync -a --delete --exclude='deploy/' .next/standalone/ deploy/
 cp -r .next/standalone/.next deploy/.next
 cp -r .next/static deploy/.next/static
 cp -r public deploy/public
@@ -107,6 +114,8 @@ mkdir -p deploy/data
 cp data/photo-orders.json deploy/data/photo-orders.json
 cp data/site-config.json deploy/data/site-config.json
 ```
+
+The `--exclude='deploy/'` guard prevents accidental recursive trees like `deploy/deploy/...`.
 
 ### 3. Upload to VPS via rsync
 
@@ -259,6 +268,7 @@ Migration is idempotent — safe to run multiple times.
 - **PM2 manages the process** — don't use `nohup node app.js` directly, use `pm2 stop/start`
 - **Turso going down is not catastrophic** — the app falls back to filesystem JSON automatically
 - **Always run `scripts/backup-production-data.sh` before deploying** — commits a snapshot to git
+- **Use `ADMIN_USERNAME` + `ADMIN_PASSWORD` with the backup script** when you need full site config backup
 - **The admin panel has two logins:** Wilson / PropertyAdmin7283, Admin / WPPAdmin26
 - **Apache blocks bare POST requests** — migration curl commands need browser-like headers (User-Agent, Origin, Referer)
 - **rsync `--exclude='.env'`** is critical — never overwrite the VPS .env with the local one

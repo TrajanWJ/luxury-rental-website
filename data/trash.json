@@ -1,0 +1,394 @@
+{
+  "trash": [
+    {
+      "id": 124,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-132.jpg",
+      "deleted_at": "2026-03-12 00:02:47"
+    },
+    {
+      "id": 123,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-139.jpg",
+      "deleted_at": "2026-03-12 00:02:29"
+    },
+    {
+      "id": 122,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-65.jpg",
+      "deleted_at": "2026-03-11 23:58:13"
+    },
+    {
+      "id": 121,
+      "property_slug": "suite-retreat",
+      "src": "/images/suite-retreat/suite-retreat-111.jpg",
+      "deleted_at": "2026-03-11 23:52:39"
+    },
+    {
+      "id": 120,
+      "property_slug": "suite-retreat",
+      "src": "/uploads/photos/suite-retreat/9e96ebb17096.png",
+      "deleted_at": "2026-03-10 22:25:44"
+    },
+    {
+      "id": 119,
+      "property_slug": "suite-retreat",
+      "src": "/images/suite-retreat/suite-retreat-111.jpg",
+      "deleted_at": "2026-03-06 21:10:13"
+    },
+    {
+      "id": 118,
+      "property_slug": "lake-view",
+      "src": "/images/lake-view/lake-view-15.jpg",
+      "deleted_at": "2026-03-05T03:00:59.453Z"
+    },
+    {
+      "id": 117,
+      "property_slug": "lake-view",
+      "src": "/images/lake-view/lake-view-2.jpg",
+      "deleted_at": "2026-03-05T03:00:43.446Z"
+    },
+    {
+      "id": 116,
+      "property_slug": "lake-view",
+      "src": "/images/lake-view/lake-view-10.jpg",
+      "deleted_at": "2026-03-05T03:00:11.211Z"
+    },
+    {
+      "id": 115,
+      "property_slug": "lake-view",
+      "src": "/images/lake-view/lake-view-6.jpg",
+      "deleted_at": "2026-03-05T02:59:51.246Z"
+    },
+    {
+      "id": 114,
+      "property_slug": "lake-view",
+      "src": "/images/lake-view/lake-view-8.jpg",
+      "deleted_at": "2026-03-05T02:59:34.526Z"
+    },
+    {
+      "id": 113,
+      "property_slug": "penthouse-view",
+      "src": "/images/penthouse-view/penthouse-view-30.jpg",
+      "deleted_at": "2026-03-05T02:58:07.595Z"
+    },
+    {
+      "id": 112,
+      "property_slug": "penthouse-view",
+      "src": "/images/penthouse-view/penthouse-view-23.jpg",
+      "deleted_at": "2026-03-05T02:57:52.752Z"
+    },
+    {
+      "id": 111,
+      "property_slug": "penthouse-view",
+      "src": "/images/penthouse-view/penthouse-view-3.jpg",
+      "deleted_at": "2026-03-05T02:57:20.278Z"
+    },
+    {
+      "id": 110,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-123.jpg",
+      "deleted_at": "2026-03-05T02:56:24.448Z"
+    },
+    {
+      "id": 109,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-138.jpg",
+      "deleted_at": "2026-03-05T02:54:21.925Z"
+    },
+    {
+      "id": 108,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-136.jpg",
+      "deleted_at": "2026-03-05T02:54:17.558Z"
+    },
+    {
+      "id": 107,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-131.jpg",
+      "deleted_at": "2026-03-05T02:54:09.618Z"
+    },
+    {
+      "id": 106,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-130.jpg",
+      "deleted_at": "2026-03-05T02:54:05.651Z"
+    },
+    {
+      "id": 105,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-54.jpg",
+      "deleted_at": "2026-03-05T02:52:02.172Z"
+    },
+    {
+      "id": 104,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-46.jpg",
+      "deleted_at": "2026-03-05T02:51:02.021Z"
+    },
+    {
+      "id": 103,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-155.jpg",
+      "deleted_at": "2026-03-05T02:50:22.207Z"
+    },
+    {
+      "id": 102,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-111.jpg",
+      "deleted_at": "2026-03-05T02:47:34.607Z"
+    },
+    {
+      "id": 101,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-173.jpg",
+      "deleted_at": "2026-03-05T02:44:52.923Z"
+    },
+    {
+      "id": 100,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-172.jpg",
+      "deleted_at": "2026-03-05T02:44:46.329Z"
+    },
+    {
+      "id": 99,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-169.jpg",
+      "deleted_at": "2026-03-05T02:44:38.845Z"
+    },
+    {
+      "id": 98,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-152.jpg",
+      "deleted_at": "2026-03-05T02:43:20.054Z"
+    },
+    {
+      "id": 97,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-148.jpg",
+      "deleted_at": "2026-03-05T02:43:07.637Z"
+    },
+    {
+      "id": 96,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-147.jpg",
+      "deleted_at": "2026-03-05T02:43:01.472Z"
+    },
+    {
+      "id": 95,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-120.jpg",
+      "deleted_at": "2026-03-05T02:42:20.087Z"
+    },
+    {
+      "id": 94,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-119.jpg",
+      "deleted_at": "2026-03-05T02:42:11.063Z"
+    },
+    {
+      "id": 93,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-118.jpg",
+      "deleted_at": "2026-03-05T02:42:06.693Z"
+    },
+    {
+      "id": 92,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-117.jpg",
+      "deleted_at": "2026-03-05T02:42:02.824Z"
+    },
+    {
+      "id": 91,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-116.jpg",
+      "deleted_at": "2026-03-05T02:41:58.780Z"
+    },
+    {
+      "id": 90,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-113.jpg",
+      "deleted_at": "2026-03-05T02:41:49.123Z"
+    },
+    {
+      "id": 89,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-103.jpg",
+      "deleted_at": "2026-03-05T02:38:20.575Z"
+    },
+    {
+      "id": 88,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-99.jpg",
+      "deleted_at": "2026-03-05T02:37:31.237Z"
+    },
+    {
+      "id": 87,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-89.jpg",
+      "deleted_at": "2026-03-05T02:36:48.141Z"
+    },
+    {
+      "id": 86,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-71.jpg",
+      "deleted_at": "2026-03-05T02:36:42.554Z"
+    },
+    {
+      "id": 85,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-87.jpg",
+      "deleted_at": "2026-03-05T02:36:31.258Z"
+    },
+    {
+      "id": 84,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-61.jpg",
+      "deleted_at": "2026-03-05T02:36:19.226Z"
+    },
+    {
+      "id": 83,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-62.jpg",
+      "deleted_at": "2026-03-05T02:36:12.067Z"
+    },
+    {
+      "id": 82,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-43.jpg",
+      "deleted_at": "2026-03-05T02:35:54.174Z"
+    },
+    {
+      "id": 81,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-88.jpg",
+      "deleted_at": "2026-03-05T02:34:44.930Z"
+    },
+    {
+      "id": 80,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-84.jpg",
+      "deleted_at": "2026-03-05T02:34:23.773Z"
+    },
+    {
+      "id": 79,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-55.jpg",
+      "deleted_at": "2026-03-05T02:32:04.117Z"
+    },
+    {
+      "id": 78,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-57.jpg",
+      "deleted_at": "2026-03-05T02:31:39.903Z"
+    },
+    {
+      "id": 77,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-188.jpg",
+      "deleted_at": "2026-03-05T02:28:06.382Z"
+    },
+    {
+      "id": 76,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-191.jpg",
+      "deleted_at": "2026-03-05T02:27:35.843Z"
+    },
+    {
+      "id": 75,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-2.jpg",
+      "deleted_at": "2026-03-05T02:27:15.809Z"
+    },
+    {
+      "id": 74,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-1.jpg",
+      "deleted_at": "2026-03-05T02:27:09.884Z"
+    },
+    {
+      "id": 73,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-140.jpg",
+      "deleted_at": "2026-03-05T02:26:50.951Z"
+    },
+    {
+      "id": 72,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-137.jpg",
+      "deleted_at": "2026-03-05T02:26:43.463Z"
+    },
+    {
+      "id": 71,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-134.jpg",
+      "deleted_at": "2026-03-05T02:26:37.804Z"
+    },
+    {
+      "id": 70,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-133.jpg",
+      "deleted_at": "2026-03-05T02:26:33.616Z"
+    },
+    {
+      "id": 69,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-45.jpg",
+      "deleted_at": "2026-03-05T02:24:13.185Z"
+    },
+    {
+      "id": 68,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-44.jpg",
+      "deleted_at": "2026-03-05T02:24:07.195Z"
+    },
+    {
+      "id": 67,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-34.jpg",
+      "deleted_at": "2026-03-05T02:23:49.229Z"
+    },
+    {
+      "id": 66,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-40.jpg",
+      "deleted_at": "2026-03-05T02:23:18.075Z"
+    },
+    {
+      "id": 65,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-37.jpg",
+      "deleted_at": "2026-03-05T02:23:03.472Z"
+    },
+    {
+      "id": 64,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-35.jpg",
+      "deleted_at": "2026-03-05T02:22:58.805Z"
+    },
+    {
+      "id": 63,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-2.jpg",
+      "deleted_at": "2026-03-05T02:21:59.847Z"
+    },
+    {
+      "id": 62,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-10.jpg",
+      "deleted_at": "2026-03-05T02:21:40.727Z"
+    },
+    {
+      "id": 61,
+      "property_slug": "suite-view",
+      "src": "/images/suite-view/suite-view-1.jpg",
+      "deleted_at": "2026-03-05T02:21:02.261Z"
+    },
+    {
+      "id": 60,
+      "property_slug": "suite-retreat",
+      "src": "/images/suite-retreat/suite-retreat-111.jpg",
+      "deleted_at": "2026-03-05T02:17:47.321Z"
+    }
+  ]
+}

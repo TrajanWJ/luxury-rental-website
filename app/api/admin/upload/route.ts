@@ -57,15 +57,26 @@ export async function POST(request: NextRequest) {
   const targetDir = path.join(UPLOAD_DIR, "photos", property)
   ensureDir(targetDir)
 
+  const MAX_FILE_SIZE = 15 * 1024 * 1024 // 15 MB
   const urls: string[] = []
+  const errors: string[] = []
 
   for (const file of files) {
+    const ext = getExtension(file)
+
+    if (!ALLOWED_EXTENSIONS.has(ext)) {
+      errors.push(`${file.name}: unsupported format (.${ext}). Use JPG, PNG, WebP, or AVIF.`)
+      continue
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      errors.push(`${file.name}: file too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max 15 MB.`)
+      continue
+    }
+
     try {
       const buffer = Buffer.from(await file.arrayBuffer())
       const hash = crypto.createHash("md5").update(buffer).digest("hex").slice(0, 12)
-      const ext = getExtension(file)
-
-      if (!ALLOWED_EXTENSIONS.has(ext)) continue
 
       const filename = `${hash}.${ext}`
       const filePath = path.join(targetDir, filename)
@@ -78,8 +89,13 @@ export async function POST(request: NextRequest) {
       urls.push(`/uploads/photos/${property}/${filename}`)
     } catch (err) {
       console.error("Failed to save uploaded file:", err)
+      errors.push(`${file.name}: server error saving file.`)
     }
   }
 
-  return NextResponse.json({ ok: true, urls })
+  if (urls.length === 0 && errors.length > 0) {
+    return NextResponse.json({ ok: false, urls: [], errors }, { status: 400 })
+  }
+
+  return NextResponse.json({ ok: true, urls, errors })
 }

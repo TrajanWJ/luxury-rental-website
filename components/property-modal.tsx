@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { X, ChevronLeft, ChevronRight, Users, Bed, Bath, Anchor, DoorOpen, Hotel } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -230,7 +229,7 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
               <Bath className="h-5 w-5 text-primary" />
               <span className="font-semibold">{property.bathrooms} Baths</span>
             </div>
-            {property.amenities?.some((a: string) => a?.toLowerCase().includes('dock')) && (
+            {property.amenities?.some((a: string) => a?.toLowerCase().includes('private dock')) && (
               <div className="flex items-center gap-2 text-slate-700">
                 <Anchor className="h-5 w-5 text-primary" />
                 <span className="font-semibold">Private Dock</span>
@@ -288,15 +287,23 @@ export function PropertyModal({ property, onClose, initialShow3D = false, initia
             >
               Book This Home
             </Button>
-            <Link href={`/properties/${property.name.toLowerCase().replace(/\s+/g, '-')}`} className="block">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full h-12 py-0 leading-none rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all bg-white font-semibold text-sm"
-              >
-                View Full Details
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-12 py-0 leading-none rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm hover:shadow-md transition-all bg-white font-semibold text-sm"
+              onClick={() => {
+                if (property.hostawayId) {
+                  const ctx = typeof window !== 'undefined' ? (window as any).bookingContext as { startDate?: string; endDate?: string } | undefined : undefined;
+                  let url = `https://wilson-premier.holidayfuture.com/listings/${property.hostawayId}`;
+                  if (ctx?.startDate && ctx?.endDate) {
+                    url += `?start=${ctx.startDate}&end=${ctx.endDate}`;
+                  }
+                  window.open(url, '_blank');
+                }
+              }}
+            >
+              Booking Page
+            </Button>
             {(propertyConfig.videoUrl ?? property.videoUrl) && propertyConfig.videoEnabled !== false && (
               <Button
                 size="lg"

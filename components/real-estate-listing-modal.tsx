@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { X, ChevronLeft, ChevronRight, Users, Bed, Bath, Anchor, DoorOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -257,15 +256,18 @@ export function RealEstateListingModal({ property, onClose }: RealEstateListingM
                 Video Preview
               </Button>
             )}
-            <Link href={`/properties/${property.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex-1">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full h-12 sm:h-12 py-0 leading-none rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all bg-transparent font-semibold text-sm"
-              >
-                View Full Details
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              variant="outline"
+              className="flex-1 h-12 sm:h-12 py-0 leading-none rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all bg-transparent font-semibold text-sm"
+              onClick={() => {
+                if (property.hostawayId) {
+                  window.open(`https://wilson-premier.holidayfuture.com/listings/${property.hostawayId}`, '_blank')
+                }
+              }}
+            >
+              Booking Page
+            </Button>
           </div>
 
           {/* Footer CTA */}

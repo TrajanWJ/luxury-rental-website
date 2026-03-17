@@ -1,13 +1,13 @@
 "use client"
 
 import { useMemo, useState, type ReactNode, useRef, useEffect } from "react"
-import Link from "next/link"
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion"
 import { CalendarClock, Fish, Home, Mail, MapPin, MessageCircle, Mountain, Phone, TreePine, UserRound, Waves, type LucideIcon } from "lucide-react"
 import { properties } from "@/lib/data"
+import { usePhotoOrder } from "@/components/photo-order-context"
 
 type SectionKey = "about-craig" | "about-sml" | "sml-happenings" | "contact"
-type ModalKey = "craig-story" | "career-highlights" | "sml-deep-dive" | "distance-access" | "market-momentum" | "contact-intent" | null
+type ModalKey = "sml-deep-dive" | "distance-access" | "market-momentum" | "contact-intent" | null
 
 const TABS: Array<{ key: SectionKey; label: string; hint: string; icon: LucideIcon }> = [
   { key: "about-sml", label: "About SML", hint: "Lake profile + market", icon: Mountain },
@@ -49,15 +49,13 @@ export function RealEstateHub() {
   const smoothGlowX = useSpring(glowX, { stiffness: 180, damping: 22 })
   const smoothGlowY = useSpring(glowY, { stiffness: 180, damping: 22 })
 
+  const photoOrder = usePhotoOrder()
   const milan = useMemo(() => properties.find((p) => p.name === "Milan Manor"), [])
 
   const panel = useMemo(() => {
     if (activeTab === "about-craig") {
       return (
-        <AboutCraig
-          onOpen={() => setActiveModal("craig-story")}
-          onOpenCareer={() => setActiveModal("career-highlights")}
-        />
+        <AboutCraig />
       )
     }
     if (activeTab === "about-sml") {
@@ -106,10 +104,10 @@ export function RealEstateHub() {
         <header className="rounded-[28px] border border-[#BCA28A]/35 bg-[linear-gradient(135deg,#1f1d1a_0%,#2B2B2B_100%)] text-[#ECE9E7] p-6 md:p-10 shadow-[0_20px_55px_rgba(0,0,0,0.28)]">
           <p className="text-[11px] uppercase tracking-[0.2em] text-[#D8C6AF]">Smith Mountain Lake Real Estate</p>
           <h1 className="mt-3 font-serif text-4xl md:text-6xl tracking-tight leading-[1.02]">
-            Lakefront Buying and Selling, Done the Right Way
+            Lakefront Buying & Selling with Heart
           </h1>
           <p className="mt-4 max-w-3xl text-[#ECE9E7]/82 leading-relaxed">
-            Discover Smith Mountain Lake through a modern, interactive real-estate experience built around clarity, story, and actionable guidance.
+            Experience Smith Mountain Lake with a calm, relationship&#8209;first approach to real estate, built on honest guidance, local knowledge, and sincere care for your goals.
           </p>
         </header>
 
@@ -121,7 +119,7 @@ export function RealEstateHub() {
             className="mt-7 grid md:grid-cols-[1.2fr_1fr] overflow-hidden rounded-[26px] border border-[#BCA28A]/30 bg-[#25221D] shadow-[0_18px_44px_rgba(0,0,0,0.3)]"
           >
             <div className="relative min-h-[260px] md:min-h-[380px]">
-              <img src={milan.image} alt={milan.name} className="h-full w-full object-cover" />
+              <img src={photoOrder.getHeroImage(milan)} alt={milan.name} className="h-full w-full object-cover" />
               <div className="absolute left-4 top-4 rounded-full border border-[#E7D6C1]/45 bg-[#9D5F36]/90 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#F8F1E8]">
                 For Sale
               </div>
@@ -135,12 +133,14 @@ export function RealEstateHub() {
                 <Stat label="Guests" value={String(milan.sleeps)} />
               </div>
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <Link
-                  href="/properties/milan-manor-house"
+                <button
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent("open-property-modal", { detail: { propertyId: milan.id } }))
+                  }}
                   className="inline-flex items-center justify-center rounded-full bg-[#ECE9E7] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#1f1d1a] hover:bg-white transition-colors"
                 >
                   View Listing
-                </Link>
+                </button>
                 <button
                   onClick={() => setActiveModal("market-momentum")}
                   className="inline-flex items-center justify-center rounded-full border border-[#ECE9E7]/55 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/12 transition-colors"
@@ -305,7 +305,7 @@ export function RealEstateHub() {
   )
 }
 
-function AboutCraig({ onOpen, onOpenCareer }: { onOpen: () => void; onOpenCareer: () => void }) {
+function AboutCraig() {
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-[#2B2B2B]/12 bg-[linear-gradient(135deg,#ffffff_0%,#f7f1e8_100%)] p-5 md:p-6">
@@ -324,26 +324,6 @@ function AboutCraig({ onOpen, onOpenCareer }: { onOpen: () => void; onOpenCareer
           </div>
         </div>
       </div>
-
-      <StoryBlock overline="Approach" title="How Craig Works">
-        <div className="grid sm:grid-cols-3 gap-2">
-          <QuickPill title="Listen First" text="Goals before listings." />
-          <QuickPill title="Keep It Clear" text="Straight answers, no noise." />
-          <QuickPill title="Execute Tight" text="Timelines and follow-through." />
-        </div>
-        <button
-          onClick={onOpen}
-          className="mt-4 rounded-full border border-[#9D5F36]/45 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
-        >
-          Open Full Story
-        </button>
-        <button
-          onClick={onOpenCareer}
-          className="mt-2 ml-2 rounded-full border border-[#2B2B2B]/25 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#2B2B2B]/80 hover:bg-[#2B2B2B]/8 transition-colors"
-        >
-          Open Career Highlights
-        </button>
-      </StoryBlock>
 
       <StoryBlock overline="Specialties" title="Operational and Advisory Capabilities">
         <div className="flex flex-wrap gap-2">
@@ -552,8 +532,6 @@ function NarrativeModals({
   onChange: (next: Exclude<ModalKey, null>) => void
 }) {
   const modalOrder: Exclude<ModalKey, null>[] = [
-    "craig-story",
-    "career-highlights",
     "sml-deep-dive",
     "distance-access",
     "market-momentum",
@@ -566,89 +544,6 @@ function NarrativeModals({
   }, [active])
 
   const content: Record<Exclude<ModalKey, null>, { title: string; body: ReactNode }> = {
-    "craig-story": {
-      title: "About Craig",
-      body: (
-        <div className="space-y-5 text-[#2B2B2B]/80 leading-relaxed">
-          <div className="grid md:grid-cols-[110px_1fr] gap-4 items-start rounded-2xl border border-[#2B2B2B]/10 bg-white p-3">
-            <img src="/real-estate/craig-headshot.jpg" alt="Craig Wilson" className="h-[110px] w-[110px] rounded-xl object-cover border border-[#2B2B2B]/12" />
-            <div>
-              <p className="text-lg font-serif text-[#2B2B2B]">Craig Wilson</p>
-              <p className="text-[11px] uppercase tracking-[0.11em] text-[#9D5F36] font-semibold mt-1">
-                Real Estate Developer / Agent / Advisor / Investor
-              </p>
-              <p className="mt-2 text-sm text-[#2B2B2B]/76">
-                Executive discipline meets lake-market guidance. The approach is direct: align on goals, frame options, execute with precision.
-              </p>
-            </div>
-          </div>
-
-          <ModalSection title="Operating Style">
-            <div className="grid sm:grid-cols-3 gap-2">
-              <QuickPill title="Listen First" text="Clarify intent and constraints before touring." />
-              <QuickPill title="Structure Fast" text="Prioritize options by fit and timeline." />
-              <QuickPill title="Execute Clean" text="Decisions, paperwork, and follow-through." />
-            </div>
-          </ModalSection>
-
-          <ModalSection title="Background Snapshot">
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Wilson Premier Properties",
-                "John Carroll University",
-                "Centreville, Virginia",
-                "Federal + Commercial Leadership",
-                "Residential + Commercial Investor",
-              ].map((item) => (
-                <span key={item} className="rounded-full border border-[#2B2B2B]/14 bg-white px-3 py-1 text-[10px] uppercase tracking-[0.11em] font-semibold text-[#2B2B2B]/75">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </ModalSection>
-
-          <ModalSection title="Education">
-            <p className="text-sm text-[#2B2B2B]/78">John Carroll University — BSBA, HR Management & Information Systems</p>
-          </ModalSection>
-
-          <ModalSection title="Advisory Flow">
-            <AdvisoryFlowDiagram />
-          </ModalSection>
-        </div>
-      ),
-    },
-    "career-highlights": {
-      title: "Career Highlights",
-      body: (
-        <div className="space-y-5">
-          <ModalSection title="Current Focus">
-            <TimelineRow company="Wilson Premier Properties" role="Real Estate Developer / Agent / Investor" years="2022 - Present" />
-          </ModalSection>
-
-          <ModalSection title="Prior Leadership Roles">
-            <div className="space-y-2">
-              <TimelineRow company="Recorded Future" role="Federal Account Executive" years="2019 - 2022" />
-              <TimelineRow company="LookingGlass Cyber Solutions" role="Strategic Account Manager" years="2014 - 2019" />
-              <TimelineRow company="SRA International" role="Vice President / Account Manager" years="2012 - 2014" />
-              <TimelineRow company="SEKON" role="Chief Operating / Strategy Officer" years="2000 - 2012" />
-            </div>
-          </ModalSection>
-
-          <ModalSection title="Core Competencies">
-            <div className="grid sm:grid-cols-2 gap-2">
-              <QuickPill title="Program + Portfolio" text="Governance, execution, and outcomes." />
-              <QuickPill title="Growth + Capture" text="Pipeline, positioning, conversion." />
-              <QuickPill title="Operations" text="Finance, HR, contracts, delivery." />
-              <QuickPill title="Technical Fluency" text="Enterprise systems + implementation." />
-            </div>
-          </ModalSection>
-
-          <ModalSection title="Career Arc">
-            <CareerArcDiagram />
-          </ModalSection>
-        </div>
-      ),
-    },
     "sml-deep-dive": {
       title: "About Smith Mountain Lake - Deep Dive",
       body: (
@@ -785,14 +680,6 @@ function NarrativeModals({
   }
 
   const quickActions: Record<Exclude<ModalKey, null>, Array<{ label: string; target: Exclude<ModalKey, null> }>> = {
-    "craig-story": [
-      { label: "Career Highlights", target: "career-highlights" },
-      { label: "SML Deep Dive", target: "sml-deep-dive" },
-    ],
-    "career-highlights": [
-      { label: "About Craig", target: "craig-story" },
-      { label: "Market Momentum", target: "market-momentum" },
-    ],
     "sml-deep-dive": [
       { label: "Distance + Access", target: "distance-access" },
       { label: "Market Momentum", target: "market-momentum" },
@@ -807,7 +694,7 @@ function NarrativeModals({
     ],
     "contact-intent": [
       { label: "Market Momentum", target: "market-momentum" },
-      { label: "About Craig", target: "craig-story" },
+      { label: "Market Momentum", target: "market-momentum" },
     ],
   }
 
@@ -985,18 +872,6 @@ function Stat({ label, value }: { label: string; value: string }) {
   )
 }
 
-function TimelineRow({ company, role, years }: { company: string; role: string; years: string }) {
-  return (
-    <div className="rounded-xl border border-[#2B2B2B]/10 bg-white px-3 py-2.5">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-sm font-semibold text-[#2B2B2B]">{company}</p>
-        <span className="text-[10px] uppercase tracking-[0.11em] font-semibold text-[#9D5F36]">{years}</span>
-      </div>
-      <p className="text-xs text-[#2B2B2B]/65 mt-0.5">{role}</p>
-    </div>
-  )
-}
-
 function QuickMetric({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-[#2B2B2B]/10 bg-white px-3 py-2.5">
@@ -1011,46 +886,6 @@ function QuickPill({ title, text }: { title: string; text: string }) {
     <div className="rounded-xl border border-[#2B2B2B]/10 bg-white px-3 py-2.5">
       <p className="text-[10px] uppercase tracking-[0.11em] text-[#9D5F36] font-semibold">{title}</p>
       <p className="mt-1 text-sm text-[#2B2B2B]/72">{text}</p>
-    </div>
-  )
-}
-
-function AdvisoryFlowDiagram() {
-  const steps = ["Discover", "Align", "Tour", "Decide", "Execute"]
-  return (
-    <div className="grid grid-cols-5 gap-2">
-      {steps.map((s, i) => (
-        <motion.div
-          key={s}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, delay: i * 0.05 }}
-          className="rounded-lg border border-[#2B2B2B]/10 bg-white p-2 text-center"
-        >
-          <p className="text-[9px] uppercase tracking-[0.09em] text-[#2B2B2B]/55">{i + 1}</p>
-          <p className="mt-1 text-[11px] font-semibold text-[#2B2B2B]">{s}</p>
-        </motion.div>
-      ))}
-    </div>
-  )
-}
-
-function CareerArcDiagram() {
-  const bars = [30, 45, 60, 72, 85]
-  return (
-    <div className="rounded-xl border border-[#2B2B2B]/10 bg-white p-3">
-      <div className="flex items-end gap-2 h-28">
-        {bars.map((h, i) => (
-          <motion.div
-            key={i}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: `${h}%`, opacity: 1 }}
-            transition={{ duration: 0.35, delay: i * 0.06 }}
-            className="flex-1 rounded-t-md bg-gradient-to-t from-[#9D5F36] to-[#d4b08f]"
-          />
-        ))}
-      </div>
-      <p className="mt-2 text-[11px] text-[#2B2B2B]/62">Leadership depth across operations, growth, and delivery.</p>
     </div>
   )
 }

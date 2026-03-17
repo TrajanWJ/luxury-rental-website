@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react"
+import { Mail, MapPin, Send, CheckCircle2 } from "lucide-react"
 import Navigation from "@/components/navigation"
 
 export default function ContactPage() {
@@ -142,22 +142,22 @@ export default function ContactPage() {
                 <section className="py-20 md:py-28">
                     <div className="container mx-auto px-6 md:px-12 max-w-6xl">
 
-                        {/* Contact Cards */}
+                        {/* Contact Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="grid md:grid-cols-2 gap-6 mb-16"
                         >
-                            {/* Phone Card */}
+                            {/* Email Card */}
                             <div className="bg-white border border-[#BCA28A]/30 rounded-2xl p-8 hover:border-[#9D5F36] transition-all duration-300 hover:shadow-lg">
                                 <div className="w-12 h-12 rounded-full bg-[#9D5F36]/10 flex items-center justify-center mb-4">
-                                    <Phone className="h-6 w-6 text-[#9D5F36]" />
+                                    <Mail className="h-6 w-6 text-[#9D5F36]" />
                                 </div>
-                                <h3 className="text-lg font-serif font-medium text-[#2B2B2B] mb-2">Call Us</h3>
-                                <a href="tel:+17039306999" className="text-[#2B2B2B]/70 text-sm hover:text-[#9D5F36] transition-colors">
-                                    (703) 930-6999
-                                </a>
+                                <h3 className="text-lg font-serif font-medium text-[#2B2B2B] mb-2">Email Us</h3>
+                                <p className="text-[#2B2B2B]/70 text-sm">
+                                    Use the form below and our team will respond within 24 hours.
+                                </p>
                             </div>
 
                             {/* Location Card */}

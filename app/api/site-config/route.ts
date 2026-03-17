@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { verifySessionToken, COOKIE_NAME } from "@/lib/admin-auth"
 import {
   getSiteConfig,
   saveSiteConfig,
@@ -6,7 +7,17 @@ import {
   type SiteConfig,
 } from "@/lib/site-config-store"
 
+async function isAuthenticated(request: NextRequest): Promise<boolean> {
+  const token = request.cookies.get(COOKIE_NAME)?.value
+  if (!token) return false
+  return verifySessionToken(token)
+}
+
 export async function GET(request: NextRequest) {
+  if (!(await isAuthenticated(request))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const section = request.nextUrl.searchParams.get("section")
 
   const config = await getSiteConfig()
@@ -23,6 +34,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await isAuthenticated(request))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const body = await request.json()
     const { config, logAction } = body as {

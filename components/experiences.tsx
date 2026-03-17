@@ -748,10 +748,11 @@ export default function Experiences({
 
                   {/* Section 4: Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3">
+                    {selectedExperience.website && (
                     <motion.a
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      href={selectedExperience.website || "https://smith-mountain-lake.com/things-to-do/"}
+                      href={selectedExperience.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2.5 bg-[#463930] text-[#ECE9E7] px-6 py-3.5 rounded-xl font-bold uppercase tracking-[0.12em] text-[10px] hover:bg-[#2B2B2B] transition-colors duration-300 group shadow-lg flex-1"
@@ -760,6 +761,7 @@ export default function Experiences({
                       Visit Website
                       <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-1" />
                     </motion.a>
+                    )}
 
                     <motion.button
                       whileHover={{ scale: 1.02 }}

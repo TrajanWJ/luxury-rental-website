@@ -1,16 +1,28 @@
 import { SignJWT, jwtVerify } from "jose"
 
-const SECRET = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET || "fallback-dev-secret-change-me")
+const rawSecret = process.env.ADMIN_JWT_SECRET
+if (!rawSecret && process.env.NODE_ENV === "production") {
+  throw new Error("ADMIN_JWT_SECRET environment variable is required in production")
+}
+const SECRET = new TextEncoder().encode(rawSecret || "dev-only-local-secret")
 const COOKIE_NAME = "admin-session"
 const EXPIRY = "7d"
 
-const VALID_CREDENTIALS = [
-  { username: "Wilson", password: "PropertyAdmin7283" },
-  { username: "Admin", password: "WPPAdmin26" },
-]
+function getValidCredentials(): Array<{ username: string; password: string }> {
+  const raw = process.env.ADMIN_CREDENTIALS
+  if (!raw) return []
+  try {
+    return JSON.parse(raw) as Array<{ username: string; password: string }>
+  } catch {
+    console.error("Failed to parse ADMIN_CREDENTIALS env var")
+    return []
+  }
+}
 
 export function validateCredentials(username: string, password: string): boolean {
-  return VALID_CREDENTIALS.some(
+  const creds = getValidCredentials()
+  if (creds.length === 0) return false
+  return creds.some(
     (cred) => cred.username === username && cred.password === password
   )
 }

@@ -71,8 +71,8 @@ export default function RealEstateHero() {
             className="font-serif text-4xl md:text-6xl lg:text-7xl text-[#ECE9E7] leading-[1.05] tracking-tight drop-shadow-lg"
             style={{ textShadow: "0 2px 16px rgba(0,0,0,0.55)" }}
           >
-            Lakefront Buying &amp; Selling,{" "}
-            <span className="italic">Done the Right Way</span>
+            Lakefront Buying &amp; Selling{" "}
+            <span className="italic">with Heart</span>
           </h1>
 
           {/* Subtitle */}
@@ -83,9 +83,9 @@ export default function RealEstateHero() {
             className="text-[#D8C6AF]/90 text-base md:text-lg leading-relaxed max-w-xl"
             style={{ textShadow: "0 1px 8px rgba(0,0,0,0.45)" }}
           >
-            Discover Smith Mountain Lake through a thoughtful, relationship-first
-            approach to real estate — grounded in transparency, local expertise,
-            and genuine care.
+            Experience Smith Mountain Lake with a calm, relationship&#8209;first
+            approach to real estate, built on honest guidance, local knowledge,
+            and sincere care for your goals.
           </motion.p>
 
           {/* CTAs */}

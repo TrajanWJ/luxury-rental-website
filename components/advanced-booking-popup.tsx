@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Calendar as CalendarIcon, Users, ArrowRight, Check, Star, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -12,6 +11,7 @@ import { cn } from "@/lib/utils"
 import HostawayCalendar from "./hostaway-calendar"
 import { useBookingContext } from "@/hooks/use-booking-context"
 import { usePopupFreeze } from "@/hooks/use-popup-freeze"
+import { usePhotoOrder } from "@/components/photo-order-context"
 
 
 // Helper to check if a range includes any booked dates
@@ -45,6 +45,7 @@ import { useDemo } from "@/components/demo-context"
 export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: AdvancedBookingPopupProps) {
     const { isDemoMode } = useDemo()
     const globalContext = useBookingContext()
+    const photoOrder = usePhotoOrder()
     usePopupFreeze(isOpen)
 
     const [matches, setMatches] = useState<Property[]>([])
@@ -52,7 +53,6 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
     const [viewMode, setViewMode] = useState<"detail" | "alternatives">("detail")
     const [heroDescExpanded, setHeroDescExpanded] = useState(false)
     const [expandedTeasers, setExpandedTeasers] = useState<Record<string, boolean>>({})
-    const router = useRouter()
 
     // Sync dates from global context (strings "YYYY-MM-DD")
     const from = globalContext.startDate ? new Date(globalContext.startDate + "T00:00:00") : undefined
@@ -74,20 +74,23 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
         setHeroDescExpanded(false)
     }, [selectedProperty])
 
+    // Get ordered images for the selected property
+    const orderedImages = selectedProperty ? photoOrder.getOrderedImages(selectedProperty) : []
+
     const nextImage = (e?: React.MouseEvent) => {
         e?.stopPropagation()
         if (!selectedProperty) return
-        setCurrentImageIndex((prev) => (prev === (selectedProperty.images?.length || 1) - 1 ? 0 : prev + 1))
+        setCurrentImageIndex((prev) => (prev === orderedImages.length - 1 ? 0 : prev + 1))
     }
 
     const prevImage = (e?: React.MouseEvent) => {
         e?.stopPropagation()
         if (!selectedProperty) return
-        setCurrentImageIndex((prev) => (prev === 0 ? (selectedProperty.images?.length || 1) - 1 : prev - 1))
+        setCurrentImageIndex((prev) => (prev === 0 ? orderedImages.length - 1 : prev - 1))
     }
 
-    // Determine current image source
-    const currentImageSrc = selectedProperty ? (selectedProperty.images?.[currentImageIndex] || selectedProperty.image) : ""
+    // Determine current image source from ordered images
+    const currentImageSrc = orderedImages[currentImageIndex] || (selectedProperty?.image ?? "")
 
     // Effect to calculate "matches" and parse dates when opened
     useEffect(() => {
@@ -95,11 +98,17 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
             const initialGuests = parseInt(searchParams.guests) || 1
             setGuestCount(initialGuests)
 
-            // Parse dates and update global context if they came from search params
-            if (searchParams.checkIn) {
-                // If we have search params but global context is empty, or they differ,
-                // we should update the global context. For now, we assume search params
-                // were already piped into the context by the trigger.
+            // Sync search params dates to global context
+            if (searchParams.checkIn && searchParams.checkOut) {
+                const newState = {
+                    startDate: searchParams.checkIn,
+                    endDate: searchParams.checkOut,
+                };
+                if (typeof window !== 'undefined') {
+                    (window as any).bookingContext = newState;
+                    localStorage.setItem('bookingContext', JSON.stringify(newState));
+                    window.dispatchEvent(new CustomEvent('bookingContextUpdated', { detail: newState }));
+                }
             }
 
             // Filter by guests using valid display properties
@@ -129,7 +138,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
     return (
         <AnimatePresence>
             {isOpen && (
-                <div data-popup-root className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+                <div data-popup-root className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -183,7 +192,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                     </div>
 
                                     {/* Navigation Arrows */}
-                                    {(selectedProperty.images?.length || 0) > 1 && (
+                                    {orderedImages.length > 1 && (
                                         <>
                                             <Button
                                                 variant="ghost"
@@ -237,21 +246,21 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                     {/* Link to Property Modal Dots Style - Positioned lower on mobile */}
                                     <div className="hidden md:block absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-[200px] px-4 z-20">
                                         <div className="flex gap-1.5 overflow-x-auto pb-2 justify-center scrollbar-hide mask-linear-fade">
-                                            {selectedProperty.images?.map((_, index) => (
+                                            {orderedImages.map((_, index) => (
                                                 <button
                                                     key={index}
                                                     onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index); }}
                                                     className={cn(
                                                         "rounded-full transition-all flex-shrink-0 bg-white/30 hover:bg-white/60",
                                                         index === currentImageIndex
-                                                            ? (selectedProperty.images?.length || 0) > 20
+                                                            ? orderedImages.length > 20
                                                                 ? "w-2 h-2 md:w-2.5 md:h-2.5 bg-white"
-                                                                : (selectedProperty.images?.length || 0) > 10
+                                                                : orderedImages.length > 10
                                                                     ? "w-2 h-2 md:w-3 md:h-3 bg-white"
                                                                     : "w-2.5 h-2.5 md:w-3 md:h-3 bg-white"
-                                                            : (selectedProperty.images?.length || 0) > 20
+                                                            : orderedImages.length > 20
                                                                 ? "w-1 h-1 md:w-1.5 md:h-1.5"
-                                                                : (selectedProperty.images?.length || 0) > 10
+                                                                : orderedImages.length > 10
                                                                     ? "w-1.5 h-1.5 md:w-2 md:h-2"
                                                                     : "w-1.5 h-1.5 md:w-2 md:h-2"
                                                     )}
@@ -261,23 +270,15 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                         </div>
                                     </div>
 
-                                    {/* New Action Buttons - Desktop Only */}
+                                    {/* Action Buttons - Desktop Only */}
                                     <div className="hidden md:flex absolute bottom-20 left-8 right-8 z-30 gap-3">
                                         <Button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                // Navigate to internal property page
-                                                router.push(`/properties/${selectedProperty.id}`);
-                                            }}
-                                            variant="outline"
-                                            className="flex-1 bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-md border"
-                                        >
-                                            View Full Info
-                                        </Button>
-                                        <Button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                const url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
+                                                let url = `https://wilson-premier.holidayfuture.com/listings/${selectedProperty.hostawayId}`;
+                                                if (globalContext.startDate && globalContext.endDate) {
+                                                    url += `?start=${globalContext.startDate}&end=${globalContext.endDate}&numberOfGuests=${guestCount}`;
+                                                }
                                                 window.open(url, '_blank');
                                             }}
                                             className="flex-1 bg-[#463930]/90 hover:bg-[#463930] text-white shadow-lg backdrop-blur-md font-semibold border border-white/20"
@@ -365,7 +366,7 @@ export function AdvancedBookingPopup({ isOpen, onClose, searchParams }: Advanced
                                                         )}
                                                     >
                                                         <div className="relative h-20 w-24 rounded-xl overflow-hidden shrink-0 shadow-sm group-hover:shadow transition-all">
-                                                            <Image src={prop.image} alt={prop.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                                                            <Image src={photoOrder.getHeroImage(prop)} alt={prop.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                                                         </div>
                                                         <div className="flex-1 py-1">
                                                             <div className="flex justify-between items-start">

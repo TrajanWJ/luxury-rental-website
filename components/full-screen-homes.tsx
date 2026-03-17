@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { PropertyPanel } from "./property-panel"
 import { PropertyModal } from "./property-modal"
 import { properties, Property } from "@/lib/data"
@@ -53,6 +53,19 @@ export default function FullScreenHomes() {
     setStartWith3D(false)
     setSelectedProperty(property)
   }
+
+  // Listen for "open-property-modal" events from nav or other components
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail
+      if (detail?.propertyId) {
+        const prop = properties.find((p) => p.id === detail.propertyId)
+        if (prop) handlePropertyClick(prop)
+      }
+    }
+    window.addEventListener("open-property-modal", handler)
+    return () => window.removeEventListener("open-property-modal", handler)
+  }, [])
 
   return (
     <>

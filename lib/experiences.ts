@@ -29,7 +29,7 @@ export const experiences: Experience[] = [
         email: "napolibythelake@gmail.com",
         website: "https://napolibythelakesml.com/",
         serviceOffered: "Private Chef, Bartending & Catering",
-        imageUrl: "https://img1.wsimg.com/isteam/ip/6bf85f7d-6c61-49d4-a892-e18e4f131e93/IMG_4873.jpg"
+        imageUrl: "/napoli-by-the-lake.webp"
     },
     {
         id: "lindas-catering",
@@ -54,7 +54,7 @@ export const experiences: Experience[] = [
         email: "atinfo@fuji757.com",
         website: "https://www.mtfujiof757.com/",
         serviceOffered: "Private Hibachi Experience",
-        imageUrl: "/rustic-dining-room-wooden-beams.jpg"
+        imageUrl: "/mt-fuji-hibachi.jpg"
     },
     {
         id: "sml-fine-wines",
@@ -164,20 +164,7 @@ export const experiences: Experience[] = [
         phone: "(704) 421-8778",
         website: "https://www.charlotteefoil.com/",
         serviceOffered: "Electric Hydrofoil Adventures",
-        imageUrl: "https://static.wixstatic.com/media/ece71f_ab958efcd4ca4cb49539b94ec0dbdd88~mv2.jpg"
-    },
-    {
-        id: "charlotte-efoil",
-        name: "CharlotteEfoil",
-        type: "boating",
-        description: "Exclusive electric hydrofoil adventures for individuals, families, and groups of up to 20+ riders — delivered directly to your dock.",
-        details: "Turn an ordinary lake day into something unforgettable. With seasoned professional instruction and dedicated one-on-one coaching, beginners quickly gain confidence and experience the thrill of flying above the water. High energy, safe instruction, incredible memories.",
-        contactName: "Daniel Gleason",
-        contactTitle: "Owner",
-        phone: "(704) 421-8778",
-        website: "https://www.charlotteefoil.com/",
-        serviceOffered: "Electric Hydrofoil Experiences",
-        imageUrl: "/boating-water-sports.png"
+        imageUrl: "/efoil-adventure.png"
     },
     {
         id: "betty-ashton-harpist",
@@ -249,11 +236,9 @@ export const experiences: Experience[] = [
         name: "Wilson Premier Real Estate",
         type: "lifestyle",
         description: "Thought of having your own place at the lake? The owner of Wilson Premier Properties is also a licensed Real Estate Agent.",
-        details: "Craig Wilson can help you find your dream home at Smith Mountain Lake. From waterfront estates to cozy cabins, turn your vacation into a permanent address.",
-        contactName: "Craig Wilson",
-        contactTitle: "CEO & Founder",
-        phone: "(703) 930-6999",
-        email: "craig@wilson-premier.com",
+        details: "Find your dream home at Smith Mountain Lake. From waterfront estates to cozy cabins, turn your vacation into a permanent address.",
+        contactName: "Wilson Premier Properties",
+        contactTitle: "Real Estate Services",
         website: "https://smllakefront.com/",
         serviceOffered: "Real Estate Services",
         imageUrl: "/luxury-lakefront-estate-sunset-view.jpg"

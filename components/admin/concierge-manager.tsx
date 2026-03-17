@@ -12,12 +12,12 @@ import {
   Pencil,
   Plus,
   X,
-  Check,
   Loader2,
   ArrowUp,
   ArrowDown,
   Trash2,
 } from "lucide-react"
+import { SaveIndicator } from "@/components/admin/save-indicator"
 
 const EXPERIENCE_TYPES: ExperienceType[] = [
   "dining",
@@ -36,7 +36,7 @@ export function ConciergeManager() {
   const [editingPartner, setEditingPartner] = useState<(Experience & { isAddition?: boolean }) | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle")
-  const saveTimeout = useRef<NodeJS.Timeout>()
+  const saveTimeout = useRef<NodeJS.Timeout>(undefined)
 
   useEffect(() => {
     fetch("/api/site-config")
@@ -225,22 +225,7 @@ export function ConciergeManager() {
             ))}
           </select>
 
-          {saveStatus !== "idle" && (
-            <div className="flex items-center gap-2 text-xs ml-3">
-              {saveStatus === "saving" && (
-                <>
-                  <Loader2 className="h-3 w-3 animate-spin text-[#BCA28A]" />
-                  <span className="text-[#BCA28A]">Saving...</span>
-                </>
-              )}
-              {saveStatus === "saved" && (
-                <>
-                  <Check className="h-3 w-3 text-emerald-400" />
-                  <span className="text-emerald-400">Saved</span>
-                </>
-              )}
-            </div>
-          )}
+          <SaveIndicator status={saveStatus} />
         </div>
 
         <button

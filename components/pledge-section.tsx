@@ -307,62 +307,32 @@ export default function PledgeSection() {
             </TiltCard>
           </div>
 
-          {/* VALUES — staggered spring cards */}
-          <motion.div
-            ref={valuesRef}
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.35 }}
-            transition={{ duration: 0.65, delay: 0.1 }}
-          >
+          {/* VALUES */}
+          <div ref={valuesRef}>
             <div className="rounded-[24px] border border-[#2B2B2B]/12 bg-white/65 backdrop-blur-md p-5 md:p-6">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#9D5F36] mb-4">Our Values</p>
               <div className="space-y-3">
-                <AnimatePresence initial={false}>
-                  {values.slice(0, revealedValues).map((value, i) => {
-                    const isActive = hoveredValueIndex === i
-                    return (
-                    <motion.div
-                      key={value.name}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 6 }}
-                      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                      whileHover={{ y: -2, transition: { duration: 0.3 } }}
-                      onMouseEnter={() => setHoveredValueIndex(i)}
-                      onMouseLeave={() => setHoveredValueIndex(null)}
-                      className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm px-4 py-4 group/v cursor-default transition-all duration-500 ease-out ${
-                        isActive
-                          ? "border-[#9D5F36]/35 bg-[#FFF8F3] ring-1 ring-[#9D5F36]/12"
-                          : "border-[#2B2B2B]/10 bg-white/75"
-                      }`}
-                    >
-                      <motion.div
-                        aria-hidden
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: isActive ? 0.85 : 0.35 }}
-                        transition={{ duration: 0.5 }}
-                        className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-[#9D5F36] via-[#BCA28A] to-transparent"
-                      />
-                      <div className="flex items-center gap-2.5">
-                        <motion.span
-                          initial={{ scale: 0.7, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ duration: 0.45, ease: "easeOut", delay: 0.04 * i }}
-                          className="flex items-center justify-center w-7 h-7 rounded-full bg-[#9D5F36] text-white text-[11px] font-bold shadow-md shadow-[#9D5F36]/15 ring-2 ring-[#9D5F36]/20"
-                        >
-                          {i + 1}
-                        </motion.span>
-                        <p className={`text-base font-serif transition-colors duration-500 ${isActive ? "text-[#9D5F36]" : "text-[#2B2B2B] group-hover/v:text-[#9D5F36]"}`}>{value.name}</p>
-                      </div>
-                      <p className="mt-1.5 text-sm text-[#2B2B2B]/55 leading-relaxed pl-[38px]">{value.desc}</p>
-                    </motion.div>
-                    )
-                  })}
-                </AnimatePresence>
+                {values.map((value, i) => (
+                  <div
+                    key={value.name}
+                    className="relative overflow-hidden rounded-2xl border border-[#2B2B2B]/10 bg-white/75 hover:border-[#9D5F36]/35 hover:bg-[#FFF8F3] backdrop-blur-sm px-4 py-4 cursor-default transition-colors duration-300"
+                  >
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-[#9D5F36] via-[#BCA28A] to-transparent opacity-35"
+                    />
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#9D5F36] text-white text-[11px] font-bold shadow-md shadow-[#9D5F36]/15 ring-2 ring-[#9D5F36]/20">
+                        {i + 1}
+                      </span>
+                      <p className="text-base font-serif text-[#2B2B2B]">{value.name}</p>
+                    </div>
+                    <p className="mt-1.5 text-sm text-[#2B2B2B]/55 leading-relaxed pl-[38px]">{value.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
       </div>

@@ -103,7 +103,7 @@ export default function RealEstateNavigation() {
                 <img
                   src="/brand/logo-bold-charcoal.png"
                   alt="Wilson Premier"
-                  className="h-[36px] w-auto object-contain md:h-[42px]"
+                  className="h-[48px] w-auto object-contain md:h-[56px]"
                 />
               </button>
             </div>

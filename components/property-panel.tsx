@@ -43,7 +43,7 @@ export function PropertyPanel({ property, index, total, onClick, on3DClick, onVi
   // Helper to pick featured icons
   const getFeaturedIcons = (prop: Property) => {
     const icons = []
-    if (prop.amenities?.some((a: string) => a?.toLowerCase().includes('dock') || a?.toLowerCase().includes('shoreline'))) {
+    if (prop.amenities?.some((a: string) => a?.toLowerCase().includes('private dock') || a?.toLowerCase().includes('shoreline'))) {
       icons.push({ icon: Anchor, label: "Private Dock" })
     }
     if (prop.amenities?.some((a: string) => a?.toLowerCase().includes('acre'))) {

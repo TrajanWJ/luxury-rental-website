@@ -1,0 +1,48 @@
+{
+  "inquiries": [
+    {
+      "id": 6,
+      "name": "Rob Willer",
+      "email": "robwiller6@gmail.com",
+      "phone": "(305) 767-4392",
+      "message": "event space needed",
+      "experience": null,
+      "source": "modal",
+      "email_status": "sent",
+      "created_at": "2026-03-16 15:43:12"
+    },
+    {
+      "id": 5,
+      "name": "Nick",
+      "email": "nick@aeroleads.com",
+      "phone": "+1 (628) 282 4380",
+      "message": "Came across Wilson Premier Properties while researching Events Services companies.\n\nWe help teams get verified business emails and phone numbers for outreach. If useful, I can share a small sample of contacts based on your target audience.\n\nHappy to send a few examples.\n\nNick Smith\nAeroLeads\nEmail: nick@aeroleads.com\nWebsite: https://aeroleads.com\nLive chat: aeroleads.com/chat\nContact us - aeroleads.com/contact",
+      "experience": "reunion-homes",
+      "source": "contact-page",
+      "email_status": "sent",
+      "created_at": "2026-03-11 06:47:11"
+    },
+    {
+      "id": 4,
+      "name": "Marci Waro",
+      "email": "mjwaro@gmail.com",
+      "phone": "5712209289",
+      "message": "Hi Craig, I am the secretary with the SML Charity Home Tour.  I want to ask you some questions about Suite View.  We are planning to rent it with a group of friends in September.  I wanted to know about a couple of the fees so that I can relate back to our friends about them.  I am going to be busy traveling on Tuesday (3/10), but would appreciate a call either evening of 3/9 or 3/11 if possible.  Thanks so much!",
+      "experience": null,
+      "source": "modal",
+      "email_status": "skipped",
+      "created_at": "2026-03-09 22:19:59"
+    },
+    {
+      "id": 3,
+      "name": "Trajan Wiley-Jimenez",
+      "email": "Trajanwj@gmail.com",
+      "phone": "7032231956",
+      "message": "trykjrbyuk5tyuk",
+      "experience": "Suite Retreat",
+      "source": "modal",
+      "email_status": "skipped",
+      "created_at": "2026-03-02T04:27:30.776Z"
+    }
+  ]
+}

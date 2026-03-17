@@ -7,12 +7,16 @@
 
 # production
 /build
+/deploy/
 
 # debug
 npm-debug.log*
 
 # env files
 .env*
+
+# runtime data (contains email config, activity log)
+data/site-config.json
 
 # vercel
 .vercel
@@ -40,6 +44,9 @@ booking_site_data.json
 *.mov
 *.mp4
 *.avi
+
+# superpowers brainstorm files
+.superpowers/
 
 # typescript
 *.tsbuildinfo

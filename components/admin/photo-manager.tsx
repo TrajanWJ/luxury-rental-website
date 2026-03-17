@@ -12,6 +12,9 @@ import {
   Check,
   AlertTriangle,
   Loader2,
+  RotateCcw,
+  ChevronDown,
+  X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { properties, Property } from "@/lib/data"
@@ -24,13 +27,17 @@ function toPropertyKey(name: string) {
 }
 
 function mergeSavedOrder(saved: ImageItem[], current: string[]): ImageItem[] {
-  const currentSet = new Set(current)
-  const kept = saved.filter((item) => currentSet.has(item.src))
-  const keptSrcs = new Set(kept.map((item) => item.src))
-  const newItems = current
-    .filter((src) => !keptSrcs.has(src))
-    .map((src, i) => ({ src, pos: kept.length + i + 1, locked: false }))
-  return [...kept, ...newItems]
+  // If we have a saved order, it's the source of truth (includes uploads).
+  // Only add static images that aren't in the saved order yet.
+  if (saved.length > 0) {
+    const savedSrcs = new Set(saved.map((item) => item.src))
+    const newFromStatic = current
+      .filter((src) => !savedSrcs.has(src))
+      .map((src, i) => ({ src, pos: saved.length + i + 1, locked: false }))
+    return [...saved, ...newFromStatic]
+  }
+  // No saved order yet — use static images as initial state
+  return current.map((src, i) => ({ src, pos: i + 1, locked: false }))
 }
 
 export function PhotoManager() {
@@ -43,6 +50,10 @@ export function PhotoManager() {
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "conflict">("idle")
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+  const [trashOpen, setTrashOpen] = useState(false)
+  const [trashItems, setTrashItems] = useState<{ id: number; property_slug: string; src: string; deleted_at: string }[]>([])
+  const [trashLoading, setTrashLoading] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const dropZoneRef = useRef<HTMLDivElement>(null)
@@ -88,6 +99,7 @@ export function PhotoManager() {
   const handleUpload = useCallback(async (files: FileList | File[]) => {
     if (!files.length) return
     setUploading(true)
+    setUploadError(null)
     try {
       const formData = new FormData()
       formData.append("property", propertyKey)
@@ -98,33 +110,52 @@ export function PhotoManager() {
         method: "POST",
         body: formData,
       })
-      if (res.ok) {
-        const data = await res.json()
-        const newUrls: string[] = data.urls || []
-        if (newUrls.length) {
-          const newItems: ImageItem[] = newUrls.map((src, i) => ({
-            src,
-            pos: reorderImages.length + i + 1,
-            locked: false,
-          }))
-          const updated = [...reorderImages, ...newItems]
-          setReorderImages(updated)
-          // Auto-save after upload
-          setSaveStatus("saving")
-          const result = await saveOrder(propertyKey, updated, version)
-          if (result === "conflict") {
-            setSaveStatus("conflict")
-          } else {
-            setSaveStatus(result ? "saved" : "idle")
-            if (result) {
-              if (savedTimerRef.current) clearTimeout(savedTimerRef.current)
-              savedTimerRef.current = setTimeout(() => setSaveStatus("idle"), 2500)
-            }
+      const data = await res.json()
+
+      // Show errors from server (unsupported format, too large, etc.)
+      if (data.errors?.length) {
+        setUploadError(data.errors.join("\n"))
+      }
+
+      if (!res.ok && !data.urls?.length) {
+        // Total failure — no files saved
+        if (!data.errors?.length) {
+          setUploadError("Upload failed. Please try again.")
+        }
+        return
+      }
+
+      const newUrls: string[] = data.urls || []
+      if (newUrls.length) {
+        // Put new uploads FIRST so they're easy to find and reorder
+        const newItems: ImageItem[] = newUrls.map((src, i) => ({
+          src,
+          pos: i + 1,
+          locked: false,
+        }))
+        // Shift existing items down
+        const shifted = reorderImages.map((img, i) => ({
+          ...img,
+          pos: img.locked ? img.pos : newUrls.length + i + 1,
+        }))
+        const updated = [...newItems, ...shifted]
+        setReorderImages(updated)
+        // Auto-save after upload
+        setSaveStatus("saving")
+        const result = await saveOrder(propertyKey, updated, version)
+        if (result === "conflict") {
+          setSaveStatus("conflict")
+        } else {
+          setSaveStatus(result ? "saved" : "idle")
+          if (result) {
+            if (savedTimerRef.current) clearTimeout(savedTimerRef.current)
+            savedTimerRef.current = setTimeout(() => setSaveStatus("idle"), 2500)
           }
         }
       }
     } catch (err) {
       console.error("Upload failed:", err)
+      setUploadError("Upload failed — network error. Check your connection and try again.")
     } finally {
       setUploading(false)
     }
@@ -166,6 +197,76 @@ export function PhotoManager() {
       }
     }
   }, [propertyKey, reorderImages, version, saveOrder])
+
+  // --- Trash management ---
+  const loadTrash = useCallback(async () => {
+    setTrashLoading(true)
+    try {
+      const res = await fetch("/api/admin/trash")
+      if (res.ok) {
+        const data = await res.json()
+        setTrashItems(data.trash || [])
+      }
+    } catch (err) {
+      console.error("Failed to load trash:", err)
+    } finally {
+      setTrashLoading(false)
+    }
+  }, [])
+
+  const handleRestore = useCallback(async (trashItem: { id: number; property_slug: string; src: string }) => {
+    try {
+      // Remove from trash
+      await fetch("/api/admin/restore", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: trashItem.id }),
+      })
+      // Add back to photo order at position 1 (first)
+      const key = trashItem.property_slug
+      const currentOrder = orders[key] || []
+      const restoredItem: ImageItem = { src: trashItem.src, pos: 1, locked: false }
+      const shifted = currentOrder.map((img) => ({ ...img, pos: img.locked ? img.pos : img.pos + 1 }))
+      const updated = [restoredItem, ...shifted]
+      await saveOrder(key, updated, versions[key])
+      // Refresh trash list
+      setTrashItems((prev) => prev.filter((t) => t.id !== trashItem.id))
+      // If restored to current property, refresh local state
+      if (key === propertyKey) {
+        setReorderImages(updated)
+      }
+    } catch (err) {
+      console.error("Restore failed:", err)
+    }
+  }, [orders, versions, saveOrder, propertyKey])
+
+  const handlePurgeExpired = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/purge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ purgeExpired: true }),
+      })
+      if (res.ok) {
+        await loadTrash()
+      }
+    } catch (err) {
+      console.error("Purge failed:", err)
+    }
+  }, [loadTrash])
+
+  const handlePurgeSingle = useCallback(async (id: number) => {
+    try {
+      await fetch("/api/admin/purge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      })
+      setTrashItems((prev) => prev.filter((t) => t.id !== id))
+    } catch (err) {
+      console.error("Purge single failed:", err)
+    }
+  }, [])
 
   // --- Drop zone drag events ---
   const [dragOver, setDragOver] = useState(false)
@@ -259,7 +360,7 @@ export function PhotoManager() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept=".jpg,.jpeg,.png,.webp,.avif"
           multiple
           className="hidden"
           onChange={(e) => {
@@ -270,6 +371,25 @@ export function PhotoManager() {
           }}
         />
       </div>
+
+      {/* Upload Error Banner */}
+      {uploadError && (
+        <div className="flex items-start gap-3 p-4 rounded-xl bg-red-600/15 border border-red-500/30">
+          <AlertTriangle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-red-300 text-sm font-semibold mb-1">Upload Issue</p>
+            {uploadError.split("\n").map((line, i) => (
+              <p key={i} className="text-red-300/80 text-xs">{line}</p>
+            ))}
+          </div>
+          <button
+            onClick={() => setUploadError(null)}
+            className="text-red-400/60 hover:text-red-300 transition-colors text-xs"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* Photo Grid */}
       <div>
@@ -463,6 +583,83 @@ export function PhotoManager() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Trash Panel */}
+      <div className="bg-[#1C1C1C] rounded-2xl border border-white/5 overflow-hidden">
+        <button
+          onClick={() => { setTrashOpen(!trashOpen); if (!trashOpen) loadTrash() }}
+          className="flex items-center justify-between w-full px-5 py-4 text-left hover:bg-white/[0.02] transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <Trash2 className="h-4 w-4 text-[#BCA28A]" />
+            <span className="text-[#ECE9E7] text-sm font-medium">Trash</span>
+            {trashItems.length > 0 && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-red-600/20 text-red-400 font-medium">
+                {trashItems.length}
+              </span>
+            )}
+          </div>
+          <ChevronDown className={cn("h-4 w-4 text-[#BCA28A] transition-transform", trashOpen && "rotate-180")} />
+        </button>
+
+        {trashOpen && (
+          <div className="px-5 pb-5 border-t border-white/5">
+            {trashLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-5 w-5 text-[#BCA28A] animate-spin" />
+              </div>
+            ) : trashItems.length === 0 ? (
+              <p className="text-[#ECE9E7]/30 text-sm py-6 text-center">Trash is empty</p>
+            ) : (
+              <>
+                <div className="flex items-center justify-between py-3">
+                  <p className="text-[#ECE9E7]/40 text-xs">
+                    Items older than 7 days are auto-purged
+                  </p>
+                  <button
+                    onClick={handlePurgeExpired}
+                    className="text-xs text-red-400/70 hover:text-red-400 transition-colors font-medium"
+                  >
+                    Purge Expired
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+                  {trashItems.map((item) => (
+                    <div key={item.id} className="relative aspect-[4/3] rounded-lg overflow-hidden group border border-white/5">
+                      <Image
+                        src={item.src}
+                        alt={`Trashed photo from ${item.property_slug}`}
+                        fill
+                        className="object-cover opacity-50 group-hover:opacity-80 transition-opacity"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => handleRestore(item)}
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-green-600/90 hover:bg-green-500 text-white text-[10px] font-bold transition-colors"
+                        >
+                          <RotateCcw className="h-3 w-3" /> Restore
+                        </button>
+                        <button
+                          onClick={() => handlePurgeSingle(item.id)}
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-red-600/90 hover:bg-red-500 text-white text-[10px] font-bold transition-colors"
+                        >
+                          <X className="h-3 w-3" /> Delete Forever
+                        </button>
+                      </div>
+                      <div className="absolute bottom-1 left-1 right-1 text-center">
+                        <span className="text-[9px] text-white/60 bg-black/50 px-1.5 py-0.5 rounded">
+                          {item.property_slug}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Delete Confirmation Modal */}

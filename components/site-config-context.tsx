@@ -65,6 +65,7 @@ const DEFAULT_CONFIG: SiteConfig = {
   conciergeOrder: [],
   conciergeAdditions: [],
   activityLog: [],
+  emailConfig: { strRecipients: [], realEstateRecipients: [] },
 }
 
 /* ── Provider ──────────────────────────────────────── */

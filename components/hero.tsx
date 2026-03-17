@@ -1,17 +1,40 @@
 "use client"
 
 import Image from "next/image"
+import { useEffect, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { HeroBookingWidget } from "./hero-booking-widget"
+import { trackEvent } from "@/lib/analytics"
 
 export default function Hero() {
   const { scrollY } = useScroll()
+  const sectionRef = useRef<HTMLElement>(null)
+  const firedRef = useRef(false)
 
-  // Subtle Parallax
-  const y = useTransform(scrollY, [0, 800], [0, 200])
+  // Fire hero_scroll_past once when the hero section scrolls out of view
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && !firedRef.current) {
+          firedRef.current = true
+          trackEvent("hero_scroll_past")
+        }
+      },
+      { threshold: 0 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Subtle Parallax — desktop only, mobile skips to avoid rendering glitches
+  const rawY = useTransform(scrollY, [0, 800], [0, 200])
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
+  const y = isMobile ? 0 : rawY
 
   return (
-    <section className="relative min-h-[110vh] flex items-center overflow-hidden bg-[#2B2B2B]">
+    <section ref={sectionRef} className="relative min-h-[110vh] flex items-center overflow-hidden bg-[#2B2B2B]">
       {/* Background Image - Full Bleed */}
       <motion.div
         className="absolute inset-0"

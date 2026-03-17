@@ -7,6 +7,7 @@ import { ConciergeProvider } from '@/components/concierge-context'
 import { PhotoOrderProvider } from '@/components/photo-order-context'
 import { SiteConfigProvider } from '@/components/site-config-context'
 import { ContactModal } from '@/components/contact-modal'
+import { AnalyticsTracker } from '@/components/analytics-tracker'
 
 import Script from 'next/script'
 
@@ -61,13 +62,14 @@ export default function RootLayout({
               <SiteConfigProvider>
                 {children}
                 <ContactModal />
+                <AnalyticsTracker />
               </SiteConfigProvider>
             </PhotoOrderProvider>
           </ConciergeProvider>
         </DemoProvider>
         <Analytics />
         <Script src="https://d2q3n06xhbi0am.cloudfront.net/calendar.js" strategy="afterInteractive" />
-        {/* Debug script removed for production */}
+        <Script src="/hostaway-debug.js" strategy="afterInteractive" />
       </body>
     </html>
   )

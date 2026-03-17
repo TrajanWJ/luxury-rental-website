@@ -18,6 +18,7 @@ import { properties } from "@/lib/data"
 import { RealEstateListingModal } from "./real-estate-listing-modal"
 import type { ModalKey } from "./real-estate-modals"
 import { useSiteConfig } from "@/components/site-config-context"
+import { usePhotoOrder } from "@/components/photo-order-context"
 
 /* ─────────────────────────────────────────────
    Shared animation defaults
@@ -193,8 +194,8 @@ export function LakeOverviewSection({ onOpenModal }: { onOpenModal?: (key: Exclu
             className="relative rounded-xl overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.12)]"
           >
             <img
-              src="/luxury-lakefront-estate-sunset-view.jpg"
-              alt="Aerial view of Smith Mountain Lake at sunset"
+              src="/sml-lakefront-pool.png"
+              alt="Luxury lakefront estate with pool at Smith Mountain Lake"
               className="w-full h-auto object-cover aspect-[4/3]"
             />
           </motion.div>
@@ -388,12 +389,6 @@ export function LakeLifeSection({ onOpenModal }: { onOpenModal?: (key: Exclude<M
             >
               How seasonal trends shape the market →
             </button>
-            <button
-              onClick={() => onOpenModal("craig-story")}
-              className="rounded-full border border-[#9D5F36]/30 px-4 py-2 text-[11px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36] hover:bg-[#9D5F36]/8 transition-colors"
-            >
-              Meet your guide at the lake →
-            </button>
           </motion.div>
         )}
 
@@ -513,12 +508,6 @@ export function MarketSection({ onOpenModal }: { onOpenModal?: (key: Exclude<Mod
               >
                 Start a Conversation
               </button>
-              <button
-                onClick={() => onOpenModal("craig-story")}
-                className="inline-flex items-center justify-center rounded-md border border-[#ECE9E7]/30 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-[#ECE9E7] hover:bg-[#ECE9E7]/10 transition-colors duration-300"
-              >
-                About Craig
-              </button>
             </div>
           </motion.div>
         )}
@@ -610,6 +599,7 @@ function DrivingDistancesTable() {
 export function FeaturedListingSection({ onOpenModal, onOpenContactModal }: { onOpenModal?: (key: Exclude<ModalKey, null>) => void; onOpenContactModal?: (propertyName: string) => void } = {}) {
   const [showListingModal, setShowListingModal] = useState(false)
   const { config } = useSiteConfig()
+  const photoOrder = usePhotoOrder()
   const milan = properties.find((p) => p.name === "Milan Manor")
   if (!milan) return null
 
@@ -639,7 +629,7 @@ export function FeaturedListingSection({ onOpenModal, onOpenContactModal }: { on
           {/* Image */}
           <div className="relative min-h-[280px] md:min-h-[420px]">
             <img
-              src={milan.image}
+              src={photoOrder.getHeroImage(milan)}
               alt={milan.name}
               className="h-full w-full object-cover"
             />

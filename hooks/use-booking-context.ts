@@ -14,6 +14,13 @@ export function useBookingContext() {
     })
 
     useEffect(() => {
+        // Initialize window.bookingContext if it doesn't exist
+        if (typeof window !== 'undefined' && !(window as any).bookingContext) {
+            (window as any).bookingContext = JSON.parse(
+                localStorage.getItem('bookingContext') || '{"startDate":null,"endDate":null}'
+            );
+        }
+
         // Initial load
         if (typeof window !== 'undefined' && (window as any).bookingContext) {
             setContext((window as any).bookingContext)

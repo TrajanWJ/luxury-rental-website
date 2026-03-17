@@ -89,6 +89,16 @@ export interface ActivityLogEntry {
   user: string
 }
 
+export interface EmailConfig {
+  strRecipients: string[]
+  realEstateRecipients: string[]
+}
+
+export const DEFAULT_EMAIL_CONFIG: EmailConfig = {
+  strRecipients: ["leslie@wilson-premier.com"],
+  realEstateRecipients: ["craig.r.wilson.jr@gmail.com"],
+}
+
 export interface SiteConfig {
   propertyOverrides: Record<string, PropertyOverride>
   propertyOrder: string[]
@@ -97,6 +107,7 @@ export interface SiteConfig {
   conciergeOrder: string[]
   conciergeAdditions: ConciergeAddition[]
   activityLog: ActivityLogEntry[]
+  emailConfig: EmailConfig
 }
 
 /* ── Defaults ──────────────────────────────────────── */
@@ -133,6 +144,7 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   conciergeOrder: [],
   conciergeAdditions: [],
   activityLog: [],
+  emailConfig: DEFAULT_EMAIL_CONFIG,
 }
 
 /* ── File-based storage ────────────────────────────── */

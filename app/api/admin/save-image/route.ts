@@ -24,6 +24,36 @@ function ensureDir(dir: string) {
   }
 }
 
+/** Sanitize subfolder to prevent path traversal */
+function sanitizeSubfolder(subfolder: string): string {
+  return subfolder.replace(/[^a-z0-9\-_]/gi, "")
+}
+
+/** Block requests to private/internal IPs */
+function isAllowedUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url)
+    const hostname = parsed.hostname
+    // Block private ranges, localhost, metadata endpoints
+    if (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "0.0.0.0" ||
+      hostname.startsWith("10.") ||
+      hostname.startsWith("172.") ||
+      hostname.startsWith("192.168.") ||
+      hostname === "169.254.169.254" ||
+      hostname.endsWith(".internal") ||
+      parsed.protocol === "file:"
+    ) {
+      return false
+    }
+    return parsed.protocol === "https:" || parsed.protocol === "http:"
+  } catch {
+    return false
+  }
+}
+
 /**
  * POST /api/admin/save-image
  *
@@ -56,6 +86,11 @@ async function handleUrlDownload(request: NextRequest) {
       return NextResponse.json({ localPath: url })
     }
 
+    // Block internal/private URLs
+    if (!isAllowedUrl(url)) {
+      return NextResponse.json({ error: "URL not allowed" }, { status: 400 })
+    }
+
     // Download the image
     const response = await fetch(url)
     if (!response.ok) {
@@ -74,8 +109,9 @@ async function handleUrlDownload(request: NextRequest) {
       url
     )
 
-    const targetDir = subfolder
-      ? path.join(UPLOAD_DIR, subfolder)
+    const safeSubfolder = sanitizeSubfolder(subfolder)
+    const targetDir = safeSubfolder
+      ? path.join(UPLOAD_DIR, safeSubfolder)
       : UPLOAD_DIR
     ensureDir(targetDir)
 
@@ -87,8 +123,8 @@ async function handleUrlDownload(request: NextRequest) {
     fs.writeFileSync(tmpPath, buffer)
     fs.renameSync(tmpPath, filePath)
 
-    const localPath = subfolder
-      ? `/uploads/${subfolder}/${filename}`
+    const localPath = safeSubfolder
+      ? `/uploads/${safeSubfolder}/${filename}`
       : `/uploads/${filename}`
 
     return NextResponse.json({ localPath, size: buffer.length })
@@ -115,8 +151,9 @@ async function handleFileUpload(request: NextRequest) {
 
     const ext = getExtension(file.type, file.name)
 
-    const targetDir = subfolder
-      ? path.join(UPLOAD_DIR, subfolder)
+    const safeSubfolder = sanitizeSubfolder(subfolder)
+    const targetDir = safeSubfolder
+      ? path.join(UPLOAD_DIR, safeSubfolder)
       : UPLOAD_DIR
     ensureDir(targetDir)
 
@@ -127,8 +164,8 @@ async function handleFileUpload(request: NextRequest) {
     fs.writeFileSync(tmpPath, buffer)
     fs.renameSync(tmpPath, filePath)
 
-    const localPath = subfolder
-      ? `/uploads/${subfolder}/${filename}`
+    const localPath = safeSubfolder
+      ? `/uploads/${safeSubfolder}/${filename}`
       : `/uploads/${filename}`
 
     return NextResponse.json({ localPath, size: buffer.length })

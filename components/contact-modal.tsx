@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Mail, Phone, User, MessageSquare, Send, CheckCircle2 } from "lucide-react"
+import { X, Mail, User, MessageSquare, Send, CheckCircle2 } from "lucide-react"
 import { useConcierge } from "./concierge-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -114,27 +114,6 @@ export function ContactModal() {
                                             Have questions about your stay or a specific experience? We're here to help.
                                         </p>
 
-                                        {/* Direct Contact Info */}
-                                        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-4 pt-4 border-t border-[#BCA28A]/15">
-                                            <a
-                                                href="tel:+17039306999"
-                                                className="inline-flex items-center gap-2 text-sm font-medium text-[#2B2B2B] hover:text-[#9D5F36] transition-colors"
-                                            >
-                                                <span className="flex items-center justify-center h-7 w-7 rounded-full bg-[#BCA28A]/12">
-                                                    <Phone className="h-3.5 w-3.5 text-[#BCA28A]" />
-                                                </span>
-                                                (703) 930-6999
-                                            </a>
-                                            <a
-                                                href="mailto:craig@wilson-premier.com"
-                                                className="inline-flex items-center gap-2 text-sm font-medium text-[#2B2B2B] hover:text-[#9D5F36] transition-colors"
-                                            >
-                                                <span className="flex items-center justify-center h-7 w-7 rounded-full bg-[#BCA28A]/12">
-                                                    <Mail className="h-3.5 w-3.5 text-[#BCA28A]" />
-                                                </span>
-                                                craig@wilson-premier.com
-                                            </a>
-                                        </div>
                                     </div>
 
                                     <form onSubmit={handleSubmit} className="space-y-5">

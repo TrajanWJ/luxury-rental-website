@@ -9,8 +9,6 @@ import { X, ChevronLeft, ChevronRight, Phone, Mail, MapPin } from "lucide-react"
    ───────────────────────────────────────────── */
 
 export type ModalKey =
-  | "craig-story"
-  | "career-highlights"
   | "sml-deep-dive"
   | "distance-access"
   | "market-momentum"
@@ -151,288 +149,6 @@ function AccessBar({ city, time, pct, delay = 0 }: { city: string; time: string;
           transition={{ duration: 0.5, delay }}
           className="h-full rounded-full bg-gradient-to-r from-[#9D5F36] to-[#d4b08f]"
         />
-      </div>
-    </div>
-  )
-}
-
-/* ═════════════════════════════════════════════════
-   1. ABOUT CRAIG — Interactive body
-   ═════════════════════════════════════════════════ */
-
-function CraigStoryBody() {
-  const [tab, setTab] = useState<"story" | "approach" | "values">("story")
-
-  return (
-    <div className="-m-6 md:-m-8">
-      {/* Dark header band */}
-      <div className="bg-[#2B2B2B] px-6 md:px-8 pt-12 pb-8">
-        <div className="flex items-center gap-5">
-          <img
-            src="/real-estate/craig-headshot.jpg"
-            alt="Craig Wilson"
-            className="h-20 w-20 rounded-xl object-cover border-2 border-[#BCA28A]/30 shadow-lg"
-          />
-          <div>
-            <h3 className="text-2xl font-serif text-[#ECE9E7]">Craig Wilson</h3>
-            <p className="text-[11px] uppercase tracking-[0.14em] text-[#BCA28A] font-semibold mt-1">
-              Real Estate Developer &middot; Agent &middot; Investor
-            </p>
-            <p className="text-[10px] text-[#ECE9E7]/40 mt-1">RE/MAX Lakefront Realty &middot; Moneta, VA</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs + Body */}
-      <div className="px-6 md:px-8 pt-5 pb-6 space-y-5">
-        <TabToggle
-          tabs={[
-            { key: "story" as const, label: "Story" },
-            { key: "approach" as const, label: "Approach" },
-            { key: "values" as const, label: "Values" },
-          ]}
-          active={tab}
-          onChange={setTab}
-        />
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={tab}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.18 }}
-          >
-            {tab === "story" && (
-              <div className="space-y-5">
-                <p className="text-sm text-[#2B2B2B]/80 leading-relaxed">
-                  Craig grew up in Ohio and earned his BSBA from John Carroll University. He spent over two decades in federal and commercial leadership roles in Northern Virginia&mdash;from COO at SEKON to Vice President at SRA International to strategic account work in cybersecurity at LookingGlass and Recorded Future.
-                </p>
-                <p className="text-sm text-[#2B2B2B]/80 leading-relaxed">
-                  In 2022, Craig transitioned fully into real estate at Smith Mountain Lake, combining his executive background&mdash;program management, business development, P&amp;L oversight&mdash;with a deep personal connection to the lake. He and his wife Angela now live at SML, where Craig operates as a licensed agent, developer, and investor focused on lakefront properties.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "John Carroll University — BSBA",
-                    "Virginia Licensed Agent",
-                    "NAR Member",
-                    "RVAR Member",
-                    "Father of Four",
-                  ].map((item) => (
-                    <span key={item} className="rounded-full border border-[#BCA28A]/25 bg-[#f8f4ee] px-3 py-1.5 text-[10px] font-medium text-[#2B2B2B]/70">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {tab === "approach" && (
-              <div className="space-y-5">
-                <p className="text-sm text-[#2B2B2B]/80 leading-relaxed">
-                  Craig runs real estate the way he ran enterprise programs: define the objective, eliminate ambiguity, then execute. No fluff, no pressure. Every client engagement follows the same five-phase advisory process:
-                </p>
-                <AdvisoryFlowDiagram />
-                <div className="space-y-3">
-                  {[
-                    { num: "01", title: "Discover", desc: "Understand your goals, timeline, and what matters most. Buying for weekends? Full-time relocation? Investment? The answer shapes every recommendation." },
-                    { num: "02", title: "Align", desc: "Match priorities to the market. Craig narrows the field to properties that fit your criteria — waterfront access, dock quality, depth, views, county tax implications." },
-                    { num: "03", title: "Tour", desc: "Focused property visits, not open-house tours. Each showing is structured around your stated goals, with honest assessments of both strengths and trade-offs." },
-                    { num: "04", title: "Decide", desc: "A clear comparison of options, risk factors surfaced early, and a recommendation based on what Craig knows about the property, the market, and your goals." },
-                    { num: "05", title: "Execute", desc: "Offer strategy, negotiation, inspection coordination, and follow-through from contract to close. Nothing gets dropped." },
-                  ].map((step) => (
-                    <div key={step.num} className="flex gap-3">
-                      <span className="text-[10px] font-bold text-[#BCA28A] mt-1 shrink-0">{step.num}</span>
-                      <div>
-                        <p className="text-sm font-semibold text-[#2B2B2B]">{step.title}</p>
-                        <p className="text-xs text-[#2B2B2B]/60 mt-0.5 leading-relaxed">{step.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {tab === "values" && (
-              <div className="space-y-4">
-                {[
-                  { title: "Steady Guidance", desc: "Real estate decisions at this level deserve a thoughtful, unhurried approach. Craig doesn't rush timelines or push urgency. The goal is a sound decision, not a fast one." },
-                  { title: "Clear Communication", desc: "Transparent, responsive, and straightforward. No jargon, no pressure, no ambiguity. You'll know where things stand at every stage." },
-                  { title: "Attention to Detail", desc: "Nothing gets overlooked — from dock permitting and water depth to septic inspections and county zoning. The details that matter to long-term ownership get flagged early." },
-                  { title: "Genuinely Invested", desc: "Craig takes personal pride in every client relationship. This isn't transactional work. He lives at the lake, he builds at the lake, and his reputation is tied to every outcome." },
-                ].map((value, i) => (
-                  <motion.div
-                    key={value.title}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.2, delay: i * 0.05 }}
-                    className="rounded-xl border border-[#BCA28A]/20 bg-white p-4"
-                  >
-                    <p className="text-sm font-semibold text-[#2B2B2B]">{value.title}</p>
-                    <p className="text-xs text-[#2B2B2B]/65 mt-1 leading-relaxed">{value.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* CTA */}
-        <div className="pt-1">
-          <a
-            href="/real-estate/about"
-            className="inline-flex items-center justify-center rounded-md bg-[#9D5F36] hover:bg-[#874E2B] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.13em] text-white transition-colors duration-300 shadow-sm"
-          >
-            Full Bio &amp; Career History
-          </a>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/* ═════════════════════════════════════════════════
-   2. CAREER HIGHLIGHTS — Interactive body
-   ═════════════════════════════════════════════════ */
-
-function CareerHighlightsBody() {
-  const [tab, setTab] = useState<"timeline" | "skills" | "credentials">("timeline")
-
-  return (
-    <div className="-m-6 md:-m-8">
-      {/* Dark header — current role */}
-      <div className="bg-gradient-to-br from-[#2B2B2B] to-[#3a3530] px-6 md:px-8 pt-12 pb-8">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-[#BCA28A] font-semibold mb-1">Current Role</p>
-        <h3 className="text-2xl font-serif text-[#ECE9E7]">Wilson Premier Properties</h3>
-        <p className="text-sm text-[#ECE9E7]/55 mt-1">Real Estate Developer / Agent / Investor &mdash; 2022&ndash;Present</p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {["20+ Yrs Executive Leadership", "Licensed VA Agent", "Developer & Investor"].map((tag) => (
-            <span key={tag} className="rounded-full border border-[#ECE9E7]/15 bg-[#ECE9E7]/6 px-3 py-1.5 text-[10px] font-medium text-[#ECE9E7]/65">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="px-6 md:px-8 pt-5 pb-6 space-y-5">
-      <TabToggle
-        tabs={[
-          { key: "timeline" as const, label: "Timeline" },
-          { key: "skills" as const, label: "Skills" },
-          { key: "credentials" as const, label: "Credentials" },
-        ]}
-        active={tab}
-        onChange={setTab}
-      />
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={tab}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.18 }}
-        >
-          {tab === "timeline" && (
-            <div className="space-y-5">
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.16em] text-[#BCA28A] font-semibold mb-2">Prior Leadership</p>
-                <div className="border-l-2 border-[#BCA28A]/25 ml-1 pl-4 space-y-0">
-                  {[
-                    { co: "Recorded Future", role: "Federal Account Executive — Threat intelligence platform sales to federal agencies", yr: "2019–2022" },
-                    { co: "LookingGlass Cyber Solutions", role: "Strategic Account Manager — Enterprise cybersecurity for government and defense", yr: "2014–2019" },
-                    { co: "SRA International", role: "Vice President / Account Manager — Federal IT services and consulting delivery", yr: "2012–2014" },
-                    { co: "SEKON", role: "COO / Chief Strategy Officer — Built operations from startup through acquisition", yr: "2000–2012" },
-                  ].map((entry, i) => (
-                    <motion.div
-                      key={entry.co}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.25, delay: i * 0.06 }}
-                      className="relative py-3 border-b border-[#BCA28A]/10 last:border-0"
-                    >
-                      <div className="absolute -left-[21px] top-4 w-2.5 h-2.5 rounded-full bg-[#BCA28A] border-2 border-[#f6efe6]" />
-                      <div>
-                        <div className="flex items-start justify-between gap-3">
-                          <p className="text-sm font-semibold text-[#2B2B2B]">{entry.co}</p>
-                          <span className="text-[10px] font-medium text-[#2B2B2B]/45 shrink-0">{entry.yr}</span>
-                        </div>
-                        <p className="text-xs text-[#2B2B2B]/55 mt-0.5">{entry.role}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Growth trajectory */}
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.16em] text-[#BCA28A] font-semibold mb-3">Growth Trajectory</p>
-                <CareerArcDiagram />
-              </div>
-            </div>
-          )}
-
-          {tab === "skills" && (
-            <div className="space-y-4">
-              <p className="text-sm text-[#2B2B2B]/75 leading-relaxed">
-                20+ years of executive leadership translated into a disciplined, client-first real estate practice.
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { skill: "Program & Portfolio Management", desc: "Coordinated multimillion-dollar delivery programs across agencies and timelines" },
-                  { skill: "Business Development", desc: "Built client relationships and pipelines in competitive federal and commercial markets" },
-                  { skill: "P&L / Operations", desc: "Managed full P&L responsibility, HR, finance, and IT infrastructure" },
-                  { skill: "Strategy & Planning", desc: "Designed go-to-market strategies and long-term positioning for growth" },
-                  { skill: "Negotiation & Capture", desc: "Led proposal development and contract negotiation at the enterprise level" },
-                  { skill: "Market Analysis", desc: "Evaluates SML inventory, pricing trends, and seasonal patterns for buyers and sellers" },
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.skill}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.2, delay: i * 0.04 }}
-                    className="rounded-xl border border-[#BCA28A]/20 bg-white p-3"
-                  >
-                    <p className="text-xs font-semibold text-[#2B2B2B]">{item.skill}</p>
-                    <p className="text-[10px] text-[#2B2B2B]/55 mt-0.5 leading-relaxed">{item.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {tab === "credentials" && (
-            <div className="space-y-4">
-              <div className="grid gap-3">
-                {[
-                  { label: "License", value: "Commonwealth of Virginia — Real Estate Agent" },
-                  { label: "Brokerage", value: "RE/MAX Lakefront Realty Inc., Moneta, VA" },
-                  { label: "Education", value: "John Carroll University — Bachelor of Science in Business Administration" },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-xl border border-[#BCA28A]/20 bg-white p-4">
-                    <p className="text-[10px] uppercase tracking-[0.12em] text-[#9D5F36] font-semibold">{item.label}</p>
-                    <p className="text-sm text-[#2B2B2B]/80 mt-1">{item.value}</p>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.16em] text-[#BCA28A] font-semibold mb-3">Associations</p>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "National Association of Realtors (NAR)",
-                    "Roanoke Valley Association of REALTORS (RVAR)",
-                    "RE/MAX Lakefront Realty Inc.",
-                  ].map((item) => (
-                    <span key={item} className="rounded-full border border-[#BCA28A]/25 bg-[#f8f4ee] px-3 py-1.5 text-[10px] font-medium text-[#2B2B2B]/70">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
       </div>
     </div>
   )
@@ -1190,8 +906,6 @@ function ContactIntentBody() {
    ═════════════════════════════════════════════════ */
 
 const MODAL_ORDER: Exclude<ModalKey, null>[] = [
-  "craig-story",
-  "career-highlights",
   "sml-deep-dive",
   "distance-access",
   "market-momentum",
@@ -1200,14 +914,6 @@ const MODAL_ORDER: Exclude<ModalKey, null>[] = [
 
 function getModalContent(onClose: () => void): Record<Exclude<ModalKey, null>, { title: string; body: ReactNode }> {
   return {
-    "craig-story": {
-      title: "About Craig",
-      body: <CraigStoryBody />,
-    },
-    "career-highlights": {
-      title: "Career Highlights",
-      body: <CareerHighlightsBody />,
-    },
     "sml-deep-dive": {
       title: "Smith Mountain Lake",
       body: <SmlDeepDiveBody onClose={onClose} />,
@@ -1232,8 +938,6 @@ function getModalContent(onClose: () => void): Record<Exclude<ModalKey, null>, {
    ───────────────────────────────────────────── */
 
 const MODAL_LABELS: Record<Exclude<ModalKey, null>, string> = {
-  "craig-story": "About Craig",
-  "career-highlights": "Career",
   "sml-deep-dive": "The Lake",
   "distance-access": "Access",
   "market-momentum": "Market",

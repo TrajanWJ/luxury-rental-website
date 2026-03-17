@@ -62,9 +62,38 @@ export default function HostawayCalendar({ listingId }: HostawayCalendarProps) {
         return () => clearTimeout(timer);
     }, [stableDates]);
 
-    // State Sync Listener
+    // State Sync Listener — handles both date updates and clears from iframe
     useEffect(() => {
+        const parseHostawayDate = (dateStr: string): string | null => {
+            if (!dateStr) return null;
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+            const monthMap: Record<string, number> = {
+                jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6,
+                jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12,
+            };
+            const match = dateStr.match(/([A-Za-z]{3,})\s+(\d+)(?:,?\s+(\d{4}))?/);
+            if (!match) return null;
+            const m = monthMap[match[1].toLowerCase().substring(0, 3)];
+            if (!m) return null;
+            const d = match[2];
+            const y = match[3] || new Date().getFullYear();
+            return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        };
+
         const handleMessage = (event: MessageEvent) => {
+            if (event.data?.type === 'hostaway-dates-updated') {
+                const startDate = parseHostawayDate(event.data.checkIn);
+                const endDate = parseHostawayDate(event.data.checkOut);
+                if (typeof window !== 'undefined') {
+                    const newState = {
+                        startDate: startDate || (window as any).bookingContext?.startDate as string | null || null,
+                        endDate: endDate || (window as any).bookingContext?.endDate as string | null || null,
+                    };
+                    (window as any).bookingContext = newState;
+                    localStorage.setItem('bookingContext', JSON.stringify(newState));
+                    window.dispatchEvent(new CustomEvent('bookingContextUpdated', { detail: newState }));
+                }
+            }
             if (event.data?.type === 'hostaway-dates-cleared') {
                 if (typeof window !== 'undefined') {
                     const emptyState = { startDate: null, endDate: null };
@@ -73,7 +102,7 @@ export default function HostawayCalendar({ listingId }: HostawayCalendarProps) {
                     window.dispatchEvent(new CustomEvent('bookingContextUpdated', { detail: emptyState }));
                 }
             }
-        }
+        };
         window.addEventListener('message', handleMessage);
         return () => window.removeEventListener('message', handleMessage);
     }, []);
@@ -87,14 +116,14 @@ export default function HostawayCalendar({ listingId }: HostawayCalendarProps) {
 
     if (!stableDates) {
         return (
-            <div className="w-[360px] h-[420px] bg-white flex items-center justify-center rounded-2xl shadow-xl">
+            <div className="w-full max-w-[360px] h-[420px] bg-white flex items-center justify-center rounded-2xl shadow-xl">
                 <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="w-[360px] relative h-[420px] bg-white rounded-2xl overflow-hidden">
+        <div className="w-full max-w-[360px] relative h-[420px] bg-white rounded-2xl overflow-hidden">
             {/* Glossy Loading Overlay - Premium Design */}
             <div
                 className={`absolute inset-0 z-20 bg-white/60 backdrop-blur-md flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${isLoading ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'}`}

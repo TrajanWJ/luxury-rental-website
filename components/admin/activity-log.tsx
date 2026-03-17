@@ -44,44 +44,65 @@ export function ActivityLog() {
     )
   }
 
+  let lastGroup = ""
+
   return (
     <div className="max-w-3xl space-y-1">
       {entries.map((entry, i) => {
         const date = new Date(entry.timestamp)
         const timeAgo = getTimeAgo(date)
         const isRecent = Date.now() - date.getTime() < 60 * 60 * 1000 // within 1 hour
+        const group = getDateGroup(date)
+        const showHeader = group !== lastGroup
+        lastGroup = group
 
         return (
-          <div
-            key={`${entry.timestamp}-${i}`}
-            className="flex items-start gap-4 px-4 py-3 bg-[#1C1C1C] rounded-xl border border-white/5"
-          >
-            <div
-              className={cn(
-                "mt-0.5 w-2 h-2 rounded-full flex-shrink-0",
-                isRecent ? "bg-[#9D5F36]" : "bg-white/10"
-              )}
-            />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm text-[#ECE9E7]/80">{entry.action}</p>
-              <div className="flex items-center gap-3 mt-1">
-                <span className="text-[11px] text-[#ECE9E7]/25">{entry.user}</span>
-                <span className="text-[11px] text-[#ECE9E7]/15 flex items-center gap-1">
-                  <Clock className="h-2.5 w-2.5" />
-                  {timeAgo}
-                </span>
+          <div key={`${entry.timestamp}-${i}`}>
+            {showHeader && (
+              <div className="text-[#ECE9E7]/20 text-[10px] uppercase tracking-wider pt-4 pb-1 first:pt-0">
+                {group}
               </div>
+            )}
+            <div className="flex items-start gap-4 px-4 py-3 bg-[#1C1C1C] rounded-xl border border-white/5">
+              <div
+                className={cn(
+                  "mt-0.5 w-2 h-2 rounded-full flex-shrink-0",
+                  isRecent ? "bg-[#9D5F36]" : "bg-white/10"
+                )}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-[#ECE9E7]/80">{entry.action}</p>
+                <div className="flex items-center gap-3 mt-1">
+                  <span className="text-[11px] text-[#ECE9E7]/25">{entry.user}</span>
+                  <span className="text-[11px] text-[#ECE9E7]/15 flex items-center gap-1">
+                    <Clock className="h-2.5 w-2.5" />
+                    {timeAgo}
+                  </span>
+                </div>
+              </div>
+              <span className="text-[10px] text-[#ECE9E7]/15 whitespace-nowrap flex-shrink-0 mt-0.5">
+                {date.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                {" "}
+                {date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}
+              </span>
             </div>
-            <span className="text-[10px] text-[#ECE9E7]/15 whitespace-nowrap flex-shrink-0 mt-0.5">
-              {date.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-              {" "}
-              {date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}
-            </span>
           </div>
         )
       })}
     </div>
   )
+}
+
+function getDateGroup(date: Date): string {
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const yesterday = new Date(today.getTime() - 86400000)
+  const weekAgo = new Date(today.getTime() - 7 * 86400000)
+
+  if (date >= today) return "Today"
+  if (date >= yesterday) return "Yesterday"
+  if (date >= weekAgo) return "This Week"
+  return "Older"
 }
 
 function getTimeAgo(date: Date): string {

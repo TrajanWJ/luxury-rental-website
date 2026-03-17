@@ -8,12 +8,14 @@ import { AdvancedBookingPopup } from "./advanced-booking-popup"
 import { properties } from "@/lib/data"
 import Link from "next/link"
 import { useConcierge } from "./concierge-context"
+import { usePhotoOrder } from "@/components/photo-order-context"
 
 export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light" }) {
   const CONTACT_CONCIERGE_FLAG = "open_concierge_on_home"
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [bookingOpen, setBookingOpen] = useState(false)
   const { openContactModal } = useConcierge()
+  const photoOrder = usePhotoOrder()
   const [scrolled, setScrolled] = useState(false)
   const [homesInView, setHomesInView] = useState(false)
   const [milanInView, setMilanInView] = useState(false)
@@ -253,10 +255,22 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                       </div>
                       <div className="max-h-[60vh] overflow-y-auto">
                         {properties.map((prop) => (
-                          <Link key={prop.id} href={`/properties/${prop.name.toLowerCase().replace(/\s+/g, '-')}`} className="block">
+                          <button
+                            key={prop.id}
+                            onClick={() => {
+                              setHoveringProperties(false)
+                              const section = document.getElementById("homes")
+                              if (section) section.scrollIntoView({ behavior: "smooth" })
+                              // Open the property modal via custom event
+                              setTimeout(() => {
+                                window.dispatchEvent(new CustomEvent("open-property-modal", { detail: { propertyId: prop.id } }))
+                              }, 400)
+                            }}
+                            className="block w-full text-left"
+                          >
                             <div className={`flex items-center gap-3 px-4 py-3 transition-colors ${isDark ? "hover:bg-[#d8c7af]/8" : "hover:bg-[#1f1d1a]/6"}`}>
                               <div className={`h-12 w-16 rounded-md overflow-hidden shrink-0 ${isDark ? "bg-[#d8c7af]/10" : "bg-[#1f1d1a]/10"}`}>
-                                <img src={prop.image} alt={prop.name} className="h-full w-full object-cover sepia-[.16]" />
+                                <img src={photoOrder.getHeroImage(prop)} alt={prop.name} className="h-full w-full object-cover sepia-[.16]" />
                               </div>
                               <div>
                                 <p className="font-semibold text-sm font-serif">{prop.name}</p>
@@ -265,7 +279,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
                                 </p>
                               </div>
                             </div>
-                          </Link>
+                          </button>
                         ))}
                       </div>
                     </motion.div>
