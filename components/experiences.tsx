@@ -342,7 +342,7 @@ export default function Experiences({
           PART 3: Collapsible & Filterable Editorial Story Scroll List
       ═══════════════════════════════════════════════════════════════════ */}
       {showConciergeDirectory && (
-      <div style={{ backgroundColor: COLORS.linen }}>
+      <div id="concierge-directory" style={{ backgroundColor: COLORS.linen }}>
         {/* Visual separator */}
         <div className="container mx-auto px-6 md:px-12">
           <div className="h-px w-full" style={{ background: `linear-gradient(to right, transparent, ${COLORS.brass}40, transparent)` }} />

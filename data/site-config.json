@@ -25,8 +25,8 @@
       "fullScreenHomes": true,
       "socialStrip": true,
       "pledge": true,
-      "insidersGuide": false,
-      "conciergeDirectory": true,
+      "insidersGuide": true,
+      "conciergeDirectory": false,
       "footerCta": true,
       "bookPage": true,
       "contactPage": true,
@@ -47,5 +47,115 @@
   },
   "conciergeOverrides": {},
   "conciergeOrder": [],
-  "conciergeAdditions": []
+  "conciergeAdditions": [],
+  "activityLog": [
+    {
+      "action": "conciergeDirectory disabled on STR site",
+      "timestamp": "2026-03-17T23:19:23.842Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "insidersGuide enabled on STR site",
+      "timestamp": "2026-03-17T23:19:05.415Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Milan Manor shown on real estate listings",
+      "timestamp": "2026-03-03T18:43:53.906Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite View",
+      "timestamp": "2026-03-02T18:26:49.514Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite View",
+      "timestamp": "2026-03-02T18:26:31.450Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite View",
+      "timestamp": "2026-03-02T18:25:51.865Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite Retreat",
+      "timestamp": "2026-03-02T18:23:12.895Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "1 floor plan uploaded for Suite Retreat",
+      "timestamp": "2026-03-02T18:22:30.191Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "market enabled on Real Estate site",
+      "timestamp": "2026-03-02T18:18:52.638Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "lakeOverview enabled on Real Estate site",
+      "timestamp": "2026-03-02T18:18:51.810Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Milan Manor hidden on real estate listings",
+      "timestamp": "2026-03-02T18:14:53.333Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat hidden on real estate listings",
+      "timestamp": "2026-03-02T18:14:48.621Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "insidersGuide disabled on STR site",
+      "timestamp": "2026-03-02T18:14:08.901Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat shown on homepage",
+      "timestamp": "2026-03-02T18:10:31.264Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat hidden from homepage",
+      "timestamp": "2026-03-02T18:10:20.262Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "market disabled on Real Estate site",
+      "timestamp": "2026-03-02T18:09:31.203Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "lakeOverview disabled on Real Estate site",
+      "timestamp": "2026-03-02T18:09:22.751Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Suite Retreat shown on real estate listings",
+      "timestamp": "2026-03-02T18:09:03.742Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Penthouse View shown on homepage",
+      "timestamp": "2026-03-02T17:53:30.906Z",
+      "user": "Wilson"
+    },
+    {
+      "action": "Penthouse View hidden from homepage",
+      "timestamp": "2026-03-02T17:53:30.342Z",
+      "user": "Wilson"
+    }
+  ],
+  "emailConfig": {
+    "strRecipients": [
+      "leslie@wilson-premier.com"
+    ],
+    "realEstateRecipients": [
+      "craig.r.wilson.jr@gmail.com"
+    ]
+  }
 }

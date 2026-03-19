@@ -1610,6 +1610,83 @@
       "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
       "timestamp": "2026-03-17T23:12:23.033Z",
       "url": "/"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:19:11.898Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "insiders-guide-category",
+      "context": "boating"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:19:16.220Z",
+      "url": "/",
+      "popupType": "experience",
+      "popupName": "insiders-guide-category",
+      "context": "essentials-faq"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "73ccefec-9177-4a9b-9e91-d658279822af",
+      "timestamp": "2026-03-17T23:24:21.763Z",
+      "url": "/"
+    },
+    {
+      "event": "page_view",
+      "sessionId": "57ad493e-e40a-4f5c-809c-c9320d014a44",
+      "timestamp": "2026-03-19T04:38:00.294Z",
+      "url": "/"
+    },
+    {
+      "event": "hero_scroll_past",
+      "sessionId": "57ad493e-e40a-4f5c-809c-c9320d014a44",
+      "timestamp": "2026-03-19T04:38:02.219Z",
+      "url": "/",
+      "scrollDepth": 100
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "57ad493e-e40a-4f5c-809c-c9320d014a44",
+      "timestamp": "2026-03-19T04:38:21.026Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "57ad493e-e40a-4f5c-809c-c9320d014a44",
+      "timestamp": "2026-03-19T04:38:22.458Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "57ad493e-e40a-4f5c-809c-c9320d014a44",
+      "timestamp": "2026-03-19T04:38:22.905Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "57ad493e-e40a-4f5c-809c-c9320d014a44",
+      "timestamp": "2026-03-19T04:38:25.777Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
+    },
+    {
+      "event": "popup_open",
+      "sessionId": "57ad493e-e40a-4f5c-809c-c9320d014a44",
+      "timestamp": "2026-03-19T04:38:29.186Z",
+      "url": "/",
+      "popupType": "contact",
+      "popupName": "contact-modal"
     }
   ]
 }

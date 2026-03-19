@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ArrowRight, Menu, X } from "lucide-react"
 import { AdvancedBookingPopup } from "./advanced-booking-popup"
 import { properties } from "@/lib/data"
 import Link from "next/link"
 import { useConcierge } from "./concierge-context"
+import { useSiteConfig } from "./site-config-context"
 import { usePhotoOrder } from "@/components/photo-order-context"
 import { trackCtaClick, trackPopupOpen } from "@/lib/analytics"
 
@@ -17,11 +17,13 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
   const [bookingOpen, setBookingOpen] = useState(false)
   const { openContactModal } = useConcierge()
   const photoOrder = usePhotoOrder()
+  const { isSectionEnabled } = useSiteConfig()
+  const insidersGuideEnabled = isSectionEnabled("str", "insidersGuide")
 
   const [scrolled, setScrolled] = useState(false)
   const [homesInView, setHomesInView] = useState(false)
   const [milanInView, setMilanInView] = useState(false)
-  const [hoveringProperties, setHoveringProperties] = useState(false)
+
 
   const isDark = theme === "dark"
   const logoSrc = isDark ? "/brand/logo-bold-light.png" : "/brand/logo-bold-charcoal.png"
@@ -33,9 +35,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
     : "bg-[#ece4d8]/98 shadow-[0_14px_35px_rgba(0,0,0,0.12)]"
   const navText = isDark ? "text-[#E7D5BE]/92 hover:text-[#FCF6ED]" : "text-[#2b2925]/90 hover:text-[#1f1d1a]"
   const divider = isDark ? "bg-[#D8C6AF]/34" : "bg-[#1f1d1a]/20"
-  const dropdownPanel = isDark
-    ? "bg-[#25231f]/98 border-[#D8C6AF]/24 text-[#F0E6DA]"
-    : "bg-[#f2ebe1] border-[#1f1d1a]/15 text-[#25231f]"
+
   const iconBtn = isDark
     ? "text-[#E7D5BE]/84 hover:text-[#FCF6ED] hover:bg-[#BCA28A]/16"
     : "text-[#25231f]/75 hover:text-[#1f1d1a] hover:bg-[#1f1d1a]/10"
@@ -167,7 +167,7 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
   const navLinks = [
     { label: "Home", href: "#homes" },
     { label: "Our Pledge", href: "#pledge" },
-    { label: "Lake Experiences", href: "#experiences" },
+    { label: "Lake Experiences", href: insidersGuideEnabled ? "#experiences" : "#concierge-directory" },
     { label: "House Rules", href: "/house-rules" },
     { label: "Concierge", href: "#contact" },
   ]
@@ -203,7 +203,6 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
   }
 
   const showTransparentNav = homesInView && !milanInView
-  const condensedDesktopNav = scrolled
   const shellClass = showTransparentNav
     ? "bg-transparent border-b border-transparent"
     : scrolled
@@ -239,39 +238,41 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
               </Link>
             </motion.div>
 
-            <AnimatePresence>
-              {condensedDesktopNav && (
-                <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  className={`hidden md:flex items-center ${vt.linkGap} ml-8`}
+            <div className={`hidden md:flex items-center ${vt.linkGap} ml-8`}>
+              {navLinks.map((link) => (
+                <button
+                  key={`nav-${link.label}`}
+                  onClick={() => {
+                    if (link.label === "Concierge") goToFooterAndOpenConcierge()
+                    else scrollToSection(link.href)
+                  }}
+                  className={`transition-colors duration-300 font-semibold uppercase tracking-[0.08em] whitespace-nowrap ${navText} ${vt.linkSz}`}
                 >
-                  {navLinks.map((link) => (
-                    <button
-                      key={`condensed-${link.label}`}
-                      onClick={() => {
-                        if (link.label === "Concierge") goToFooterAndOpenConcierge()
-                        else scrollToSection(link.href)
-                      }}
-                      className={`transition-colors duration-300 font-semibold uppercase tracking-[0.08em] whitespace-nowrap ${navText} ${vt.linkSz}`}
-                    >
-                      {link.label}
-                    </button>
-                  ))}
+                  {link.label}
+                </button>
+              ))}
 
-                  <button
-                    onClick={() => scrollToSection("#homes")}
-                    className={`flex items-center gap-1 font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors ${navText} ${vt.linkSz}`}
-                  >
-                    Retreats
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <button
+                onClick={() => scrollToSection("#homes")}
+                className={`flex items-center gap-1 font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors ${navText} ${vt.linkSz}`}
+              >
+                Retreats
+              </button>
+            </div>
 
             <div className="hidden md:flex items-center gap-2">
+              <button
+                onClick={() => scrollToSection("/real-estate")}
+                className={`flex items-center gap-1.5 rounded-full border px-4 py-1.5 uppercase tracking-[0.1em] font-semibold transition-colors ${vt.linkSz} ${
+                  isDark
+                    ? "border-[#d8c7af]/28 text-[#E7D5BE]/86 hover:text-[#FCF6ED] hover:border-[#d8c7af]/48"
+                    : "border-[#2b2925]/20 text-[#2b2925]/75 hover:text-[#2b2925] hover:border-[#2b2925]/40"
+                }`}
+              >
+                Real Estate
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+              <div className={`h-4 w-px mx-1 ${divider}`} />
               {vt.showTopIcons && (
                 <>
                   <button
@@ -359,110 +360,6 @@ export default function Navigation({ theme = "dark" }: { theme?: "dark" | "light
             </div>
           </div>
 
-          <AnimatePresence>
-            {!condensedDesktopNav && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-                className={`hidden md:flex items-center justify-between ${vt.contextHasBorder ? `border-t ${isDark ? "border-[#d8c7af]/15" : "border-[#1f1d1a]/10"}` : ""} ${vt.cbH}`}
-              >
-                <div className={`flex items-center ${vt.linkGap}`}>
-              {navLinks.map((link, index) => (
-                <motion.button
-                  key={link.label}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08 * index + 0.2 }}
-                  onClick={() => {
-                    if (link.label === "Concierge") goToFooterAndOpenConcierge()
-                    else scrollToSection(link.href)
-                  }}
-                  className={`transition-colors duration-300 font-semibold uppercase tracking-[0.08em] whitespace-nowrap ${navText} ${vt.linkSz}`}
-                >
-                  {link.label}
-                </motion.button>
-              ))}
-
-              <div
-                className="relative group h-full flex items-center"
-                onMouseEnter={() => setHoveringProperties(true)}
-                onMouseLeave={() => setHoveringProperties(false)}
-              >
-                <button
-                  onClick={() => scrollToSection("#homes")}
-                  className={`flex items-center gap-1 font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors ${navText} ${vt.linkSz}`}
-                >
-                  Retreats
-                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${hoveringProperties ? "rotate-180" : ""}`} />
-                </button>
-
-                <AnimatePresence>
-                  {hoveringProperties && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className={`absolute top-full left-0 mt-2 w-80 rounded-md shadow-2xl overflow-hidden py-2 border ring-1 ring-black/10 ${dropdownPanel}`}
-                    >
-                      <div className={`px-4 py-2 border-b ${isDark ? "border-[#d8c7af]/15" : "border-[#1f1d1a]/10"}`}>
-                        <span className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${isDark ? "text-[#ece2d6]/70" : "text-[#25231f]/70"}`}>
-                          Available Properties
-                        </span>
-                      </div>
-                      <div className="max-h-[60vh] overflow-y-auto">
-                        {properties.map((prop) => (
-                          <button
-                            key={prop.id}
-                            onClick={() => {
-                              setHoveringProperties(false)
-                              const section = document.getElementById("homes")
-                              if (section) section.scrollIntoView({ behavior: "smooth" })
-                              setTimeout(() => {
-                                window.dispatchEvent(new CustomEvent("open-property-modal", { detail: { propertyId: prop.id } }))
-                              }, 400)
-                            }}
-                            className="block w-full text-left"
-                          >
-                            <div className={`flex items-center gap-3 px-4 py-3 transition-colors ${isDark ? "hover:bg-[#d8c7af]/8" : "hover:bg-[#1f1d1a]/6"}`}>
-                              <div className={`h-12 w-16 rounded-md overflow-hidden shrink-0 ${isDark ? "bg-[#d8c7af]/10" : "bg-[#1f1d1a]/10"}`}>
-                                <img src={photoOrder.getHeroImage(prop)} alt={prop.name} className="h-full w-full object-cover sepia-[.16]" />
-                              </div>
-                              <div>
-                                <p className="font-semibold text-sm font-serif">{prop.name}</p>
-                                <p className={`text-[11px] ${isDark ? "text-[#ece2d6]/70" : "text-[#25231f]/70"}`}>
-                                  {prop.bedrooms} Beds &middot; {prop.sleeps} Guests
-                                </p>
-                              </div>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-            </div>
-
-                {!scrolled && (
-                  <button
-                    onClick={() => scrollToSection("/real-estate")}
-                    className={`flex items-center gap-1.5 rounded-full border px-4 py-1.5 uppercase tracking-[0.1em] font-semibold transition-colors ${vt.linkSz} ${
-                      isDark
-                        ? "border-[#d8c7af]/28 text-[#E7D5BE]/86 hover:text-[#FCF6ED] hover:border-[#d8c7af]/48"
-                        : "border-[#2b2925]/20 text-[#2b2925]/75 hover:text-[#2b2925] hover:border-[#2b2925]/40"
-                    }`}
-                  >
-                    Real Estate
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </button>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </motion.nav>
 

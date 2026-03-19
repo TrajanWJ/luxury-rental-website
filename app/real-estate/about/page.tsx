@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Shield, Award, Building2, Compass, MessageCircle, Search, Heart } from "lucide-react"
-import { NarrativeModals, TimelineRow, AdvisoryFlowDiagram, CareerArcDiagram, type ModalKey } from "@/components/real-estate-modals"
+import { NarrativeModals, type ModalKey } from "@/components/real-estate-modals"
 
 /* ─────────────────────────────────────────────
    Shared animation defaults
@@ -63,31 +63,6 @@ const ASSOCIATIONS = [
    About Craig Page
    ═══════════════════════════════════════════════ */
 
-const CAREER_TIMELINE = [
-  { company: "Wilson Premier Properties", role: "Real Estate Developer / Agent / Investor", years: "2022 - Present" },
-  { company: "Recorded Future", role: "Federal Account Executive", years: "2019 - 2022" },
-  { company: "LookingGlass Cyber Solutions", role: "Strategic Account Manager", years: "2014 - 2019" },
-  { company: "SRA International", role: "Vice President / Account Manager", years: "2012 - 2014" },
-  { company: "SEKON", role: "Chief Operating / Strategy Officer", years: "2000 - 2012" },
-]
-
-const OPERATING_STYLE = [
-  { title: "Listen First", text: "Goals before listings." },
-  { title: "Structure Fast", text: "Prioritize options by fit and timeline." },
-  { title: "Execute Clean", text: "Timelines and follow-through." },
-]
-
-const SKILLS = [
-  "Program Management",
-  "Business Development",
-  "Strategy",
-  "P&L Oversight",
-  "Capture + Delivery",
-  "SDLC",
-  "Enterprise Applications",
-  "Threat Intelligence",
-  "Operations (HR/Finance/IT)",
-]
 
 export default function AboutCraigPage() {
   const [activeModal, setActiveModal] = useState<ModalKey>(null)
@@ -267,88 +242,6 @@ export default function AboutCraigPage() {
         </div>
       </section>
 
-      {/* ───────────────────────────────────────
-          5. Operating Style + Career
-         ─────────────────────────────────────── */}
-      <section className="bg-white py-16 md:py-24">
-        <div className="container mx-auto px-6 md:px-12">
-          {/* Operating Style */}
-          <motion.div {...reveal}>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-4">
-              Approach
-            </p>
-            <h2 className="font-serif text-3xl md:text-5xl tracking-tight text-[#2B2B2B]">
-              How Craig Works
-            </h2>
-          </motion.div>
-
-          <div className="mt-8 grid sm:grid-cols-3 gap-3">
-            {OPERATING_STYLE.map((pill, i) => (
-              <motion.div
-                key={pill.title}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: i * 0.06 }}
-                className="rounded-2xl border border-[#BCA28A]/35 bg-[#fffaf4] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.04)] transition-shadow"
-              >
-                <p className="text-[10px] uppercase tracking-[0.11em] text-[#9D5F36] font-semibold">{pill.title}</p>
-                <p className="mt-1 text-sm text-[#2B2B2B]/72">{pill.text}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Advisory Flow Diagram */}
-          <motion.div {...reveal} className="mt-12">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-4">
-              Advisory Flow
-            </p>
-            <AdvisoryFlowDiagram />
-          </motion.div>
-
-          {/* Career Timeline */}
-          <motion.div {...reveal} className="mt-14">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-4">
-              Career Timeline
-            </p>
-            <div className="space-y-2">
-              {CAREER_TIMELINE.map((entry, i) => (
-                <motion.div
-                  key={entry.company}
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
-                >
-                  <TimelineRow company={entry.company} role={entry.role} years={entry.years} />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Career Arc Diagram */}
-          <motion.div {...reveal} className="mt-10">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-4">
-              Career Arc
-            </p>
-            <CareerArcDiagram />
-          </motion.div>
-
-          {/* Skills / Competencies */}
-          <motion.div {...reveal} className="mt-14">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#9D5F36] font-semibold mb-4">
-              Specialties
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {SKILLS.map((skill) => (
-                <span key={skill} className="rounded-full border border-[#9D5F36]/28 bg-[#fff8f2] px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] font-semibold text-[#9D5F36]">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ───────────────────────────────────────
           6. CTA Banner

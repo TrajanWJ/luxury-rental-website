@@ -104,7 +104,7 @@ export function RealEstateHub() {
         <header className="rounded-[28px] border border-[#BCA28A]/35 bg-[linear-gradient(135deg,#1f1d1a_0%,#2B2B2B_100%)] text-[#ECE9E7] p-6 md:p-10 shadow-[0_20px_55px_rgba(0,0,0,0.28)]">
           <p className="text-[11px] uppercase tracking-[0.2em] text-[#D8C6AF]">Smith Mountain Lake Real Estate</p>
           <h1 className="mt-3 font-serif text-4xl md:text-6xl tracking-tight leading-[1.02]">
-            Lakefront Buying & Selling with Heart
+            Lake Buying & Selling with Heart
           </h1>
           <p className="mt-4 max-w-3xl text-[#ECE9E7]/82 leading-relaxed">
             Experience Smith Mountain Lake with a calm, relationship&#8209;first approach to real estate, built on honest guidance, local knowledge, and sincere care for your goals.
